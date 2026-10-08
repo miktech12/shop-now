@@ -1,0 +1,2737 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>SHOP NOW | Fashion</title>
+
+<link
+    rel="stylesheet"
+    href="FASIONCSS.css"
+>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            <span>S</span> SHOP NOW
+        </a>
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="search"
+                placeholder="Search fashion..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <!-- HEADER ACTIONS -->
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="wishlist-btn"
+                onclick="toast('Wishlist coming soon ❤️')"
+            >
+                ❤️
+            </button>
+
+
+            <button
+                type="button"
+                class="cart-btn"
+                onclick="openCart()"
+            >
+
+                🛒
+
+                <span
+                    id="cartCount"
+                    class="cart-badge"
+                >
+                    0
+                </span>
+
+            </button>
+
+
+            <!-- LOGIN -->
+
+            <article class="sign-in">
+
+                <a
+                    href="auth.html"
+                    id="authButton"
+                    class="auth-btn"
+                    onclick="
+                        sessionStorage.setItem(
+                            'shopNowReturnTo',
+                            window.location.pathname
+                            .split('/')
+                            .pop() || 'index.html'
+                        )
+                    "
+                >
+                    👤 Login / Sign Up
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="hero-tag">
+            SHOP NOW / FASHION
+        </span>
+
+
+        <h1>
+            STYLE<br>
+            STARTS HERE.
+        </h1>
+
+
+        <p>
+            Discover trendy fashion,
+            stylish outfits and
+            everyday essentials.
+        </p>
+
+
+        <a
+            href="#products"
+            class="hero-btn"
+        >
+            SHOP FASHION →
+        </a>
+
+    </div>
+
+
+    <div class="hero-visual">
+
+        <div class="electronics-circle">
+            👗
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CATEGORIES
+===================================================== -->
+
+<section class="categories-section">
+
+    <div class="categories">
+
+        <button
+            type="button"
+            class="category-btn active"
+            onclick="filterProducts('all', this)"
+        >
+            ALL FASHION
+        </button>
+
+
+        <button
+            type="button"
+            class="category-btn"
+            onclick="filterProducts('dresses', this)"
+        >
+            DRESSES
+        </button>
+
+
+        <button
+            type="button"
+            class="category-btn"
+            onclick="filterProducts('trousers', this)"
+        >
+            TROUSERS
+        </button>
+
+
+        <button
+            type="button"
+            class="category-btn"
+            onclick="filterProducts('suits', this)"
+        >
+            SUITS
+        </button>
+
+
+        <button
+            type="button"
+            class="category-btn"
+            onclick="filterProducts('jackets', this)"
+        >
+            JACKETS
+        </button>
+
+
+        <button
+            type="button"
+            class="category-btn"
+            onclick="filterProducts('shoes', this)"
+        >
+            SHOES
+        </button>
+
+
+        <button
+            type="button"
+            class="category-btn"
+            onclick="filterProducts('others', this)"
+        >
+            OTHERS
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PRODUCTS
+===================================================== -->
+
+<main
+    class="products-section"
+    id="products"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-tag">
+                SHOP NOW
+            </span>
+
+            <h2>
+                Fashion Collection
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="product-grid">
+
+
+        <!-- PRODUCT 1 -->
+
+        <article
+            class="product"
+            data-category="dresses"
+            data-name="2 PIECE SHORTS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="SHORTS.JFIF"
+                    alt="2 Piece Shorts"
+                >
+
+                <span class="badge">
+                    HOT
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    DRESSES
+                </span>
+
+                <h3 class="product-name">
+                    2 PIECE SHORTS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 850,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 2 -->
+
+        <article
+            class="product"
+            data-category="trousers"
+            data-name="WOMEN BLUE JEANS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="blejean female.jfif"
+                    alt="Women Blue Jeans"
+                >
+
+                <span class="badge">
+                    NEW
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    TROUSERS
+                </span>
+
+                <h3 class="product-name">
+                    WOMEN BLUE JEANS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 45,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 3 -->
+
+        <article
+            class="product"
+            data-category="jackets"
+            data-name="PREMIUM JACKET"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="JACKET.jfif"
+                    alt="Premium Jacket"
+                >
+
+                <span class="badge">
+                    NEW
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    JACKETS
+                </span>
+
+                <h3 class="product-name">
+                    PREMIUM JACKET
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 2,450,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 4 -->
+
+        <article
+            class="product"
+            data-category="shoes"
+            data-name="DRIPPY SNEAKERS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="SNEAKERS.webp"
+                    alt="Drippy Sneakers"
+                >
+
+                <span class="badge">
+                    SALE
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    SHOES
+                </span>
+
+                <h3 class="product-name">
+                    DRIPPY SNEAKERS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 35,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 5 -->
+
+        <article
+            class="product"
+            data-category="dresses"
+            data-name="FASHIONABLE DERA DRESS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="deera 6.jfif"
+                    alt="Fashionable Dera Dress"
+                >
+
+                <span class="badge">
+                    TRENDING
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    DRESSES
+                </span>
+
+                <h3 class="product-name">
+                    FASHIONABLE DERA DRESS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 35,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 6 -->
+
+        <article
+            class="product"
+            data-category="suits"
+            data-name="SUITS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="suits.jfif"
+                    alt="Suits"
+                >
+
+                <span class="badge">
+                    NEW
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    SUITS
+                </span>
+
+                <h3 class="product-name">
+                    SUITS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 120,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 7 -->
+
+        <article
+            class="product"
+            data-category="trousers"
+            data-name="MALE BLUE JEANS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="bluejean men.jfif"
+                    alt="Male Blue Jeans"
+                >
+
+                <span class="badge">
+                    HOT
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    TROUSERS
+                </span>
+
+                <h3 class="product-name">
+                    MALE BLUE JEANS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 95,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 8 -->
+
+        <article
+            class="product"
+            data-category="dresses"
+            data-name="BACKLESS DERA DRESS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="deera dress.jfif"
+                    alt="Backless Dera Dress"
+                >
+
+                <span class="badge">
+                    HOT
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    DRESSES
+                </span>
+
+                <h3 class="product-name">
+                    BACKLESS DERA DRESS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 35,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 9 -->
+
+        <article
+            class="product"
+            data-category="others"
+            data-name="RALPH"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="RALPH.jfif"
+                    alt="Ralph Fashion"
+                >
+
+                <span class="badge">
+                    NEW
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    OTHERS
+                </span>
+
+                <h3 class="product-name">
+                    RALPH
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 150,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 10 -->
+
+        <article
+            class="product"
+            data-category="dresses"
+            data-name="POPULAR DRESSES"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="dresses.jfif"
+                    alt="Popular Dresses"
+                >
+
+                <span class="badge">
+                    TRENDING
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    DRESSES
+                </span>
+
+                <h3 class="product-name">
+                    POPULAR DRESSES
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 85,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 11 -->
+
+        <article
+            class="product"
+            data-category="trousers"
+            data-name="GENTLE TROUSER"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="gentle trouser 2.jfif"
+                    alt="Gentle Trouser"
+                >
+
+                <span class="badge">
+                    HOT
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    TROUSERS
+                </span>
+
+                <h3 class="product-name">
+                    GENTLE TROUSER
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 650,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 12 -->
+
+        <article
+            class="product"
+            data-category="shoes"
+            data-name="BALENCIAGA CROCS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="CROCS.jfif"
+                    alt="Balenciaga Crocs"
+                >
+
+                <span class="badge">
+                    NEW
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    SHOES
+                </span>
+
+                <h3 class="product-name">
+                    BALENCIAGA CROCS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 180,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 13 -->
+
+        <article
+            class="product"
+            data-category="trousers"
+            data-name="SEXY TROUSERS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="gentle trouser.jfif"
+                    alt="Sexy Trousers"
+                >
+
+                <span class="badge">
+                    HOT
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    TROUSERS
+                </span>
+
+                <h3 class="product-name">
+                    SEXY TROUSERS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 20,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 14 -->
+
+        <article
+            class="product"
+            data-category="dresses"
+            data-name="STYLE DRESS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="TRENDY DRESS 2.jfif"
+                    alt="Style Dress"
+                >
+
+                <span class="badge">
+                    TRENDING
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    DRESSES
+                </span>
+
+                <h3 class="product-name">
+                    STYLE DRESS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 60,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PRODUCT 15 -->
+
+        <article
+            class="product"
+            data-category="dresses"
+            data-name="PARTY DRESS"
+        >
+
+            <div class="product-image">
+
+                <img
+                    src="dress 2.jfif"
+                    alt="Party Dress"
+                >
+
+                <span class="badge">
+                    NEW
+                </span>
+
+                <button
+                    type="button"
+                    class="wishlist"
+                    onclick="toast('Wishlist coming soon ❤️')"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    DRESSES
+                </span>
+
+                <h3 class="product-name">
+                    PARTY DRESS
+                </h3>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        UGX 210,000
+                    </span>
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     CART
+===================================================== -->
+
+<aside
+    class="cart"
+    id="cart"
+>
+
+    <div class="cart-header">
+
+        <h2>
+            Your Cart 🛒
+        </h2>
+
+        <button
+            type="button"
+            onclick="closeCart()"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <!-- CART ITEMS -->
+
+    <div
+        class="cart-items"
+        id="cartItems"
+    >
+
+        <div class="empty-cart">
+            Your cart is empty 🛒
+        </div>
+
+    </div>
+
+
+    <!-- CHECKOUT FORM -->
+
+    <div
+        class="checkout-form"
+        id="checkoutForm"
+    >
+
+        <h3>
+            Delivery Details 📦
+        </h3>
+
+
+        <input
+            type="text"
+            id="customerName"
+            placeholder="Full Name *"
+            autocomplete="name"
+        >
+
+
+        <input
+            type="tel"
+            id="customerPhone"
+            placeholder="Phone Number *"
+            autocomplete="tel"
+        >
+
+
+        <input
+            type="tel"
+            id="customerWhatsapp"
+            placeholder="WhatsApp Number"
+            autocomplete="tel"
+        >
+
+
+        <input
+            type="text"
+            id="deliveryLocation"
+            placeholder="Delivery Location *"
+            autocomplete="street-address"
+        >
+
+
+        <textarea
+            id="orderNotes"
+            placeholder="Additional instructions (optional)"
+            rows="3"
+        ></textarea>
+
+    </div>
+
+
+    <!-- CART FOOTER -->
+
+    <div class="cart-footer">
+
+        <div class="total">
+
+            <span>
+                Total
+            </span>
+
+            <strong id="cartTotal">
+                UGX 0
+            </strong>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="checkout"
+            id="placeOrderButton"
+            onclick="placeOrder()"
+        >
+            Place Order →
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MOBILE BOTTOM NAV
+===================================================== -->
+
+<nav class="bottom-nav">
+
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+
+
+    <a href="#products">
+        👗
+        <span>Fashion</span>
+    </a>
+
+
+    <button
+        type="button"
+        onclick="openCart()"
+    >
+        🛒
+        <span>Cart</span>
+    </button>
+
+
+    <a href="auth.html">
+        👤
+        <span>Account</span>
+    </a>
+
+</nav>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   SUPABASE CONNECTION
+===================================================== */
+
+const SUPABASE_URL =
+    "https://dawbweoeilojcrnbvnjz.supabase.co";
+
+
+/*
+ IMPORTANT:
+
+ Replace the value below with the SAME
+ Supabase publishable/anon key that was
+ already in your old Fashion HTML.
+
+ DO NOT use your Google Client Secret.
+
+ DO NOT use a Supabase service_role key.
+*/
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "PASTE-YOUR-EXISTING-SUPABASE-PUBLISHABLE-KEY-HERE";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+
+/* =====================================================
+   CART
+===================================================== */
+
+let cart = [];
+
+
+
+/* =====================================================
+   ADD PRODUCT TO CART
+===================================================== */
+
+function addCartFromProduct(button){
+
+    const product =
+        button.closest(".product");
+
+
+    if(!product){
+
+        toast(
+            "Product could not be added ❌"
+        );
+
+        return;
+    }
+
+
+    const nameElement =
+        product.querySelector(
+            ".product-name"
+        );
+
+
+    const priceElement =
+        product.querySelector(
+            ".price"
+        );
+
+
+    if(
+        !nameElement ||
+        !priceElement
+    ){
+
+        toast(
+            "Product information missing ❌"
+        );
+
+        return;
+    }
+
+
+    const name =
+        nameElement
+            .textContent
+            .trim();
+
+
+    const price =
+        Number(
+            priceElement
+                .textContent
+                .replace(
+                    /[^0-9]/g,
+                    ""
+                )
+        );
+
+
+    if(
+        !name ||
+        !price
+    ){
+
+        toast(
+            "Invalid product information ❌"
+        );
+
+        return;
+    }
+
+
+    addCart(
+        name,
+        price
+    );
+
+}
+
+
+
+/* =====================================================
+   ADD CART
+===================================================== */
+
+function addCart(
+    name,
+    price
+){
+
+    const existing =
+        cart.find(
+            item =>
+                item.name === name
+        );
+
+
+    if(existing){
+
+        existing.quantity++;
+
+    }else{
+
+        cart.push({
+
+            name:
+                name,
+
+            price:
+                price,
+
+            quantity:
+                1
+
+        });
+
+    }
+
+
+    updateCart();
+
+
+    toast(
+        name +
+        " added to cart 🛒"
+    );
+
+}
+
+
+
+/* =====================================================
+   UPDATE CART
+===================================================== */
+
+function updateCart(){
+
+    const count =
+        cart.reduce(
+            (
+                total,
+                item
+            ) =>
+                total +
+                item.quantity,
+            0
+        );
+
+
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
+
+
+    if(cartCount){
+
+        cartCount.textContent =
+            count;
+
+    }
+
+
+    renderCart();
+
+}
+
+
+
+/* =====================================================
+   RENDER CART
+===================================================== */
+
+function renderCart(){
+
+    const container =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    const totalElement =
+        document.getElementById(
+            "cartTotal"
+        );
+
+
+    if(
+        !container ||
+        !totalElement
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        cart.length === 0
+    ){
+
+        container.innerHTML = `
+
+            <div class="empty-cart">
+
+                Your cart is empty 🛒
+
+            </div>
+
+        `;
+
+
+        totalElement.textContent =
+            "UGX 0";
+
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    container.innerHTML = "";
+
+
+    cart.forEach(
+        (
+            item,
+            index
+        ) => {
+
+
+            const subtotal =
+                item.price *
+                item.quantity;
+
+
+            total +=
+                subtotal;
+
+
+            container.innerHTML += `
+
+                <div class="cart-item">
+
+                    <div class="cart-item-info">
+
+                        <strong>
+                            ${escapeHTML(item.name)}
+                        </strong>
+
+                        <small>
+                            ${item.quantity}
+                            ×
+                            UGX
+                            ${item.price.toLocaleString()}
+                        </small>
+
+                    </div>
+
+
+                    <div class="cart-item-actions">
+
+                        <button
+                            type="button"
+                            onclick="decreaseQuantity(${index})"
+                        >
+                            −
+                        </button>
+
+
+                        <span>
+                            ${item.quantity}
+                        </span>
+
+
+                        <button
+                            type="button"
+                            onclick="increaseQuantity(${index})"
+                        >
+                            +
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="remove"
+                            onclick="removeItem(${index})"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    totalElement.textContent =
+        "UGX " +
+        total.toLocaleString();
+
+}
+
+
+
+/* =====================================================
+   INCREASE QUANTITY
+===================================================== */
+
+function increaseQuantity(index){
+
+    if(!cart[index]){
+
+        return;
+
+    }
+
+
+    cart[index].quantity++;
+
+
+    updateCart();
+
+}
+
+
+
+/* =====================================================
+   DECREASE QUANTITY
+===================================================== */
+
+function decreaseQuantity(index){
+
+    if(!cart[index]){
+
+        return;
+
+    }
+
+
+    cart[index].quantity--;
+
+
+    if(
+        cart[index].quantity <= 0
+    ){
+
+        cart.splice(
+            index,
+            1
+        );
+
+    }
+
+
+    updateCart();
+
+}
+
+
+
+/* =====================================================
+   REMOVE ITEM
+===================================================== */
+
+function removeItem(index){
+
+    if(!cart[index]){
+
+        return;
+
+    }
+
+
+    const removed =
+        cart[index].name;
+
+
+    cart.splice(
+        index,
+        1
+    );
+
+
+    updateCart();
+
+
+    toast(
+        removed +
+        " removed"
+    );
+
+}
+
+
+
+/* =====================================================
+   OPEN CART
+===================================================== */
+
+function openCart(){
+
+    const cartElement =
+        document.getElementById(
+            "cart"
+        );
+
+
+    if(cartElement){
+
+        cartElement.classList.add(
+            "open"
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CLOSE CART
+===================================================== */
+
+function closeCart(){
+
+    const cartElement =
+        document.getElementById(
+            "cart"
+        );
+
+
+    if(cartElement){
+
+        cartElement.classList.remove(
+            "open"
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CHECK USER LOGIN
+===================================================== */
+
+async function checkUserLogin(){
+
+    try{
+
+        const {
+            data: {
+                session
+            }
+        } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+        const authButton =
+            document.getElementById(
+                "authButton"
+            );
+
+
+        if(!authButton){
+
+            return;
+
+        }
+
+
+        if(session){
+
+            authButton.style.display =
+                "none";
+
+        }else{
+
+            authButton.style.display =
+                "inline-block";
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Login check error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   PLACE ORDER
+===================================================== */
+
+async function placeOrder(){
+
+    /*
+     Cart empty check
+    */
+
+    if(
+        cart.length === 0
+    ){
+
+        toast(
+            "Your cart is empty 🛒"
+        );
+
+        return;
+
+    }
+
+
+    /*
+     Check login
+    */
+
+    const {
+        data: {
+            session
+        },
+        error: sessionError
+    } =
+    await supabaseClient
+        .auth
+        .getSession();
+
+
+    if(sessionError){
+
+        console.error(
+            sessionError
+        );
+
+
+        toast(
+            "Could not check login status ❌"
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+     Customer must login
+    */
+
+    if(!session){
+
+        toast(
+            "Please login before ordering 🔐"
+        );
+
+
+        sessionStorage.setItem(
+            "shopNowReturnTo",
+            window.location.pathname
+                .split("/")
+                .pop() ||
+            "index.html"
+        );
+
+
+        setTimeout(
+            () => {
+
+                window.location.href =
+                    "auth.html";
+
+            },
+            1000
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+     Get customer details
+    */
+
+    const customerName =
+        document
+            .getElementById(
+                "customerName"
+            )
+            .value
+            .trim();
+
+
+    const customerPhone =
+        document
+            .getElementById(
+                "customerPhone"
+            )
+            .value
+            .trim();
+
+
+    const customerWhatsapp =
+        document
+            .getElementById(
+                "customerWhatsapp"
+            )
+            .value
+            .trim();
+
+
+    const deliveryLocation =
+        document
+            .getElementById(
+                "deliveryLocation"
+            )
+            .value
+            .trim();
+
+
+    const orderNotes =
+        document
+            .getElementById(
+                "orderNotes"
+            )
+            .value
+            .trim();
+
+
+
+    /*
+     Validate information
+    */
+
+    if(!customerName){
+
+        toast(
+            "Enter your full name 👤"
+        );
+
+        return;
+
+    }
+
+
+    if(!customerPhone){
+
+        toast(
+            "Enter your phone number 📞"
+        );
+
+        return;
+
+    }
+
+
+    if(!deliveryLocation){
+
+        toast(
+            "Enter your delivery location 📍"
+        );
+
+        return;
+
+    }
+
+
+
+    /*
+     Calculate total
+    */
+
+    let total = 0;
+
+
+    cart.forEach(
+        item => {
+
+            total +=
+                item.price *
+                item.quantity;
+
+        }
+    );
+
+
+
+    /*
+     Disable button
+    */
+
+    const orderButton =
+        document.getElementById(
+            "placeOrderButton"
+        );
+
+
+    if(orderButton){
+
+        orderButton.disabled =
+            true;
+
+
+        orderButton.textContent =
+            "Placing Order...";
+
+    }
+
+
+
+    /*
+     Prepare order items
+    */
+
+    const orderItems =
+        cart.map(
+            item => ({
+
+                name:
+                    item.name,
+
+                price:
+                    item.price,
+
+                quantity:
+                    item.quantity,
+
+                subtotal:
+                    item.price *
+                    item.quantity
+
+            })
+        );
+
+
+
+    /*
+     SEND ORDER TO SUPABASE
+    */
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("orders")
+        .insert([
+
+            {
+
+                user_id:
+                    session.user.id,
+
+                customer_name:
+                    customerName,
+
+                phone:
+                    customerPhone,
+
+                whatsapp:
+                    customerWhatsapp ||
+                    null,
+
+                delivery_location:
+                    deliveryLocation,
+
+                notes:
+                    orderNotes ||
+                    null,
+
+                items:
+                    orderItems,
+
+                total:
+                    total
+
+            }
+
+        ])
+        .select()
+        .single();
+
+
+
+    /*
+     Error
+    */
+
+    if(error){
+
+        console.error(
+            "ORDER ERROR:",
+            error
+        );
+
+
+        toast(
+            "Order failed. Please try again ❌"
+        );
+
+
+        if(orderButton){
+
+            orderButton.disabled =
+                false;
+
+
+            orderButton.textContent =
+                "Place Order →";
+
+        }
+
+
+        return;
+
+    }
+
+
+
+    /*
+     ORDER SUCCESS
+    */
+
+    const orderNumber =
+        data.order_number;
+
+
+
+    /*
+     Clear cart
+    */
+
+    cart = [];
+
+
+    updateCart();
+
+
+
+    /*
+     Clear form
+    */
+
+    document
+        .getElementById(
+            "customerName"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "customerPhone"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "customerWhatsapp"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "deliveryLocation"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "orderNotes"
+        )
+        .value = "";
+
+
+
+    /*
+     Restore button
+    */
+
+    if(orderButton){
+
+        orderButton.disabled =
+            false;
+
+
+        orderButton.textContent =
+            "Place Order →";
+
+    }
+
+
+
+    /*
+     Close cart
+    */
+
+    closeCart();
+
+
+
+    /*
+     Show success
+    */
+
+    setTimeout(
+        () => {
+
+            alert(
+
+                "ORDER PLACED SUCCESSFULLY 🎉\n\n" +
+
+                "Order Number: #" +
+                orderNumber +
+
+                "\n\n" +
+
+                "Thank you for shopping with SHOP NOW."
+
+            );
+
+        },
+        200
+    );
+
+}
+
+
+
+/* =====================================================
+   FIX PRODUCT BUTTONS
+===================================================== */
+
+function fixProductButtons(){
+
+    const products =
+        document.querySelectorAll(
+            ".product"
+        );
+
+
+    products.forEach(
+        product => {
+
+            const button =
+                product.querySelector(
+                    ".add-cart"
+                );
+
+
+            if(!button){
+
+                return;
+
+            }
+
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    addCartFromProduct(
+                        this
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function searchProducts(){
+
+    const searchInput =
+        document.getElementById(
+            "search"
+        );
+
+
+    if(!searchInput){
+
+        return;
+
+    }
+
+
+    const searchTerm =
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
+
+    const products =
+        document.querySelectorAll(
+            ".product"
+        );
+
+
+    products.forEach(
+        product => {
+
+            const nameElement =
+                product.querySelector(
+                    ".product-name"
+                );
+
+
+            const categoryElement =
+                product.querySelector(
+                    ".product-category"
+                );
+
+
+            const name =
+                nameElement
+                    ? nameElement
+                        .textContent
+                        .toLowerCase()
+                    : "";
+
+
+            const category =
+                categoryElement
+                    ? categoryElement
+                        .textContent
+                        .toLowerCase()
+                    : "";
+
+
+            if(
+
+                name.includes(
+                    searchTerm
+                )
+
+                ||
+
+                category.includes(
+                    searchTerm
+                )
+
+            ){
+
+                product.style.display =
+                    "";
+
+            }else{
+
+                product.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   CATEGORY FILTER
+===================================================== */
+
+function filterProducts(
+    category,
+    button
+){
+
+    const products =
+        document.querySelectorAll(
+            ".product"
+        );
+
+
+    const selected =
+        category
+            .toLowerCase();
+
+
+    products.forEach(
+        product => {
+
+            const productCategory =
+                product.dataset.category ||
+                "";
+
+
+            if(
+
+                selected === "all"
+
+                ||
+
+                productCategory ===
+                selected
+
+            ){
+
+                product.style.display =
+                    "";
+
+            }else{
+
+                product.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    /*
+     Active button
+    */
+
+    document
+        .querySelectorAll(
+            ".category-btn"
+        )
+        .forEach(
+            btn => {
+
+                btn.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    if(button){
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function toast(message){
+
+    let toastElement =
+        document.getElementById(
+            "shopNowToast"
+        );
+
+
+    if(!toastElement){
+
+        toastElement =
+            document.createElement(
+                "div"
+            );
+
+
+        toastElement.id =
+            "shopNowToast";
+
+
+        toastElement.className =
+            "toast";
+
+
+        document.body.appendChild(
+            toastElement
+        );
+
+    }
+
+
+    toastElement.textContent =
+        message;
+
+
+    toastElement.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.shopNowToastTimer
+    );
+
+
+    window.shopNowToastTimer =
+        setTimeout(
+            () => {
+
+                toastElement.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =====================================================
+   START SHOP NOW
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        fixProductButtons();
+
+        updateCart();
+
+        checkUserLogin();
+
+
+        /*
+         Search while typing
+        */
+
+        const searchInput =
+            document.getElementById(
+                "search"
+            );
+
+
+        if(searchInput){
+
+            searchInput.addEventListener(
+                "input",
+                searchProducts
+            );
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   AUTH STATE LISTENER
+===================================================== */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        () => {
+
+            checkUserLogin();
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

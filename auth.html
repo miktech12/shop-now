@@ -1,0 +1,2496 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SHOP NOW | Account</title>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =====================================================
+   SHOP NOW ACCOUNT PAGE
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --yellow: #dfff00;
+    --black: #050505;
+    --dark: #0d0d0d;
+    --card: #111111;
+    --gray: #888;
+    --border: #252525;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(223,255,0,0.08),
+            transparent 35%
+        ),
+        #050505;
+    color: white;
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   AUTH PAGE
+===================================================== */
+
+.page {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 1000px;
+
+    min-height: 620px;
+
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+
+    background: #101010;
+
+    border: 1px solid rgba(223,255,0,0.15);
+
+    border-radius: 26px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 0 50px rgba(223,255,0,0.05),
+        0 30px 80px rgba(0,0,0,0.7);
+}
+
+
+/* =====================================================
+   BRAND SECTION
+===================================================== */
+
+.brand {
+    padding: 45px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background:
+        linear-gradient(
+            140deg,
+            rgba(223,255,0,0.07),
+            transparent 60%
+        );
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.logo span {
+    color: var(--yellow);
+}
+
+.brand-content {
+    max-width: 380px;
+}
+
+.brand-content h1 {
+    font-size: clamp(42px, 5vw, 65px);
+    line-height: 0.95;
+
+    margin-bottom: 22px;
+}
+
+.brand-content h1 span {
+    color: var(--yellow);
+}
+
+.brand-content p {
+    color: #999;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.brand-tag {
+    display: inline-block;
+
+    margin-top: 30px;
+
+    border: 1px solid rgba(223,255,0,0.3);
+
+    color: var(--yellow);
+
+    padding: 9px 14px;
+
+    border-radius: 50px;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.brand-footer {
+    color: #555;
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   FORM SECTION
+===================================================== */
+
+.form-section {
+    padding: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #111;
+}
+
+.form-content {
+    width: 100%;
+    max-width: 420px;
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.tabs {
+    display: flex;
+    gap: 30px;
+
+    border-bottom: 1px solid #272727;
+
+    margin-bottom: 30px;
+}
+
+.tab {
+    border: none;
+    background: transparent;
+
+    color: #666;
+
+    padding-bottom: 14px;
+
+    font-weight: 800;
+    font-size: 12px;
+
+    cursor: pointer;
+
+    position: relative;
+}
+
+.tab.active {
+    color: white;
+}
+
+.tab.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -1px;
+
+    width: 100%;
+    height: 2px;
+
+    background: var(--yellow);
+
+    box-shadow: 0 0 12px var(--yellow);
+}
+
+
+/* =====================================================
+   FORM HEADINGS
+===================================================== */
+
+.form-title {
+    font-size: 29px;
+    margin-bottom: 8px;
+}
+
+.form-subtitle {
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    margin-bottom: 25px;
+}
+
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+.input-group {
+    margin-bottom: 17px;
+}
+
+.input-group label {
+    display: block;
+
+    color: #aaa;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+
+    padding: 15px;
+
+    background: #080808;
+
+    border: 1px solid #2a2a2a;
+
+    border-radius: 12px;
+
+    color: white;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: 0.25s;
+}
+
+.input-group input:focus {
+    border-color: rgba(223,255,0,0.7);
+
+    box-shadow:
+        0 0 0 3px rgba(223,255,0,0.05),
+        0 0 20px rgba(223,255,0,0.05);
+}
+
+
+/* =====================================================
+   PASSWORD
+===================================================== */
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 48px;
+}
+
+.password-eye {
+    position: absolute;
+
+    right: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: none;
+
+    color: #777;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.password-eye:hover {
+    color: var(--yellow);
+}
+
+
+/* =====================================================
+   MAIN BUTTON
+===================================================== */
+
+.main-btn {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: var(--yellow);
+
+    color: #050505;
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    margin-top: 5px;
+}
+
+.main-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(223,255,0,0.15);
+}
+
+.main-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   DIVIDER
+===================================================== */
+
+.divider {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 24px 0;
+}
+
+.divider span {
+    flex: 1;
+
+    height: 1px;
+
+    background: #292929;
+}
+
+.divider small {
+    color: #666;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+}
+
+
+/* =====================================================
+   GOOGLE BUTTON
+===================================================== */
+
+.google-btn {
+    width: 100%;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    background: #171717;
+
+    border: 1px solid #292929;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    transition: 0.25s;
+}
+
+.google-btn:hover {
+    transform: translateY(-2px);
+
+    border-color: #555;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+
+    background: white;
+
+    color: #4285f4;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 900;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message {
+    display: none;
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    margin-bottom: 18px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.message.show {
+    display: block;
+}
+
+.message.success {
+    color: var(--yellow);
+
+    background: rgba(223,255,0,0.06);
+
+    border: 1px solid rgba(223,255,0,0.2);
+}
+
+.message.error {
+    color: #ff9b9b;
+
+    background: rgba(255,70,70,0.07);
+
+    border: 1px solid rgba(255,70,70,0.2);
+}
+
+.message.info {
+    color: #aaa;
+
+    background: #171717;
+
+    border: 1px solid #292929;
+}
+
+
+/* =====================================================
+   GOOGLE PROFILE COMPLETION
+===================================================== */
+
+.complete-google {
+    display: none;
+}
+
+.complete-google.show {
+    display: block;
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+.dashboard {
+    min-height: 100vh;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.dashboard.show {
+    display: flex;
+}
+
+.dashboard-card {
+    width: 100%;
+    max-width: 580px;
+
+    padding: 45px;
+
+    background: #111;
+
+    border: 1px solid rgba(223,255,0,0.15);
+
+    border-radius: 25px;
+
+    text-align: center;
+}
+
+.dashboard-logo {
+    font-size: 23px;
+
+    font-weight: 900;
+
+    margin-bottom: 30px;
+}
+
+.dashboard-logo span {
+    color: var(--yellow);
+}
+
+.success-icon {
+    width: 75px;
+    height: 75px;
+
+    border-radius: 50%;
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--yellow);
+
+    color: black;
+
+    font-size: 30px;
+
+    font-weight: 900;
+
+    box-shadow:
+        0 0 30px rgba(223,255,0,0.2);
+
+    margin-bottom: 20px;
+}
+
+.dashboard h2 {
+    font-size: 30px;
+
+    margin-bottom: 10px;
+}
+
+.dashboard p {
+    color: #777;
+
+    font-size: 13px;
+
+    margin-bottom: 25px;
+}
+
+.user-info {
+    border: 1px solid #262626;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    margin-bottom: 20px;
+}
+
+.info-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 15px;
+
+    border-bottom: 1px solid #222;
+
+    gap: 15px;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row span:first-child {
+    color: #666;
+
+    font-size: 11px;
+}
+
+.info-row span:last-child {
+    font-size: 12px;
+
+    font-weight: bold;
+
+    text-align: right;
+}
+
+.dashboard-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.shop-btn,
+.logout-btn {
+    flex: 1;
+
+    padding: 14px;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    text-decoration: none;
+
+    transition: 0.25s;
+}
+
+.shop-btn {
+    background: var(--yellow);
+
+    color: #000;
+
+    border: 1px solid var(--yellow);
+}
+
+.logout-btn {
+    background: #171717;
+
+    color: white;
+
+    border: 1px solid #292929;
+}
+
+.shop-btn:hover,
+.logout-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.85);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 999;
+}
+
+.loading.show {
+    display: flex;
+}
+
+.loader {
+    width: 40px;
+    height: 40px;
+
+    border: 3px solid #292929;
+
+    border-top-color: var(--yellow);
+
+    border-radius: 50%;
+
+    animation: spin 0.8s linear infinite;
+
+    margin: auto;
+}
+
+.loading p {
+    color: #777;
+
+    margin-top: 12px;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 800px) {
+
+    .auth-box {
+        grid-template-columns: 1fr;
+
+        max-width: 500px;
+    }
+
+    .brand {
+        display: none;
+    }
+
+    .form-section {
+        padding: 35px 22px;
+    }
+}
+
+@media (max-width: 450px) {
+
+    .page {
+        padding: 10px;
+    }
+
+    .auth-box {
+        border-radius: 20px;
+    }
+
+    .form-section {
+        padding: 30px 18px;
+    }
+
+    .form-title {
+        font-size: 25px;
+    }
+
+    .dashboard-card {
+        padding: 30px 20px;
+    }
+
+    .dashboard-buttons {
+        flex-direction: column;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     AUTH PAGE
+===================================================== -->
+
+<div class="page" id="authPage">
+
+    <div class="auth-box">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="logo">
+                S <span>SHOP NOW</span>
+            </div>
+
+
+            <div class="brand-content">
+
+                <h1>
+                    SHOP<br>
+                    <span>YOUR WAY.</span>
+                </h1>
+
+                <p>
+                    Create your SHOP NOW account and enjoy
+                    a simpler shopping experience.
+                </p>
+
+                <div class="brand-tag">
+                    ✦ SHOP SMARTER
+                </div>
+
+            </div>
+
+
+            <div class="brand-footer">
+                © 2026 SHOP NOW
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <div class="form-section">
+
+            <div class="form-content">
+
+
+                <!-- TABS -->
+
+                <div class="tabs">
+
+                    <button
+                        class="tab active"
+                        id="signupTab"
+                        onclick="showSignup()">
+
+                        CREATE ACCOUNT
+
+                    </button>
+
+                    <button
+                        class="tab"
+                        id="loginTab"
+                        onclick="showLogin()">
+
+                        LOGIN
+
+                    </button>
+
+                </div>
+
+
+                <!-- MESSAGE -->
+
+                <div
+                    id="message"
+                    class="message">
+                </div>
+
+
+                <!-- =================================================
+                     SIGN UP
+                ================================================== -->
+
+                <div id="signupSection">
+
+                    <h2 class="form-title">
+                        Create account
+                    </h2>
+
+                    <p class="form-subtitle">
+                        Join SHOP NOW using your email address.
+                    </p>
+
+
+                    <form id="signupForm">
+
+
+                        <!-- USERNAME -->
+
+                        <div class="input-group">
+
+                            <label>
+                                USERNAME
+                            </label>
+
+                            <input
+                                id="signupUsername"
+                                type="text"
+                                placeholder="Choose a username"
+                                maxlength="30"
+                                autocomplete="username"
+                                required>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="input-group">
+
+                            <label>
+                                EMAIL
+                            </label>
+
+                            <input
+                                id="signupEmail"
+                                type="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="input-group">
+
+                            <label>
+                                PASSWORD
+                            </label>
+
+                            <div class="password-wrapper">
+
+                                <input
+                                    id="signupPassword"
+                                    type="password"
+                                    placeholder="At least 6 characters"
+                                    minlength="6"
+                                    autocomplete="new-password"
+                                    required>
+
+                                <button
+                                    type="button"
+                                    class="password-eye"
+                                    onclick="togglePassword(
+                                        'signupPassword',
+                                        this
+                                    )">
+
+                                    👁
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="main-btn"
+                            id="signupBtn"
+                            type="submit">
+
+                            CREATE ACCOUNT
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- GOOGLE -->
+
+                    <div class="divider">
+
+                        <span></span>
+
+                        <small>OR</small>
+
+                        <span></span>
+
+                    </div>
+
+
+                    <button
+                        class="google-btn"
+                        onclick="googleAuth()">
+
+                        <span class="google-icon">
+                            G
+                        </span>
+
+                        Continue with Google
+
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     LOGIN
+                ================================================== -->
+
+                <div
+                    id="loginSection"
+                    class="hidden">
+
+                    <h2 class="form-title">
+                        Welcome back
+                    </h2>
+
+                    <p class="form-subtitle">
+                        Login to your SHOP NOW account.
+                    </p>
+
+
+                    <form id="loginForm">
+
+
+                        <!-- EMAIL -->
+
+                        <div class="input-group">
+
+                            <label>
+                                EMAIL
+                            </label>
+
+                            <input
+                                id="loginEmail"
+                                type="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="input-group">
+
+                            <label>
+                                PASSWORD
+                            </label>
+
+                            <div class="password-wrapper">
+
+                                <input
+                                    id="loginPassword"
+                                    type="password"
+                                    placeholder="Your password"
+                                    autocomplete="current-password"
+                                    required>
+
+                                <button
+                                    type="button"
+                                    class="password-eye"
+                                    onclick="togglePassword(
+                                        'loginPassword',
+                                        this
+                                    )">
+
+                                    👁
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="main-btn"
+                            id="loginBtn"
+                            type="submit">
+
+                            LOGIN
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="divider">
+
+                        <span></span>
+
+                        <small>OR</small>
+
+                        <span></span>
+
+                    </div>
+
+
+                    <button
+                        class="google-btn"
+                        onclick="googleAuth()">
+
+                        <span class="google-icon">
+                            G
+                        </span>
+
+                        Continue with Google
+
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     GOOGLE USERNAME
+                ================================================== -->
+
+                <div
+                    id="completeGoogle"
+                    class="complete-google">
+
+                    <h2 class="form-title">
+                        Almost there
+                    </h2>
+
+                    <p class="form-subtitle">
+                        Your Google account is connected.
+                        Choose a username for your SHOP NOW account.
+                    </p>
+
+
+                    <form id="googleProfileForm">
+
+                        <div class="input-group">
+
+                            <label>
+                                USERNAME
+                            </label>
+
+                            <input
+                                id="googleUsername"
+                                type="text"
+                                maxlength="30"
+                                placeholder="Choose a username"
+                                required>
+
+                        </div>
+
+
+                        <button
+                            class="main-btn"
+                            id="googleProfileBtn"
+                            type="submit">
+
+                            FINISH ACCOUNT
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<div
+    class="dashboard"
+    id="dashboard">
+
+    <div class="dashboard-card">
+
+
+        <div class="dashboard-logo">
+            S <span>SHOP NOW</span>
+        </div>
+
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <h2>
+            You're in!
+        </h2>
+
+        <p>
+            Your SHOP NOW account is ready.
+        </p>
+
+
+        <div class="user-info">
+
+            <div class="info-row">
+
+                <span>
+                    USERNAME
+                </span>
+
+                <span id="dashboardUsername">
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span>
+                    EMAIL
+                </span>
+
+                <span id="dashboardEmail">
+                    —
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-buttons">
+
+            <a
+                href="fashion.html"
+                class="shop-btn">
+
+                CONTINUE SHOPPING
+
+            </a>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+
+                LOG OUT
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div
+    class="loading"
+    id="loading">
+
+    <div>
+
+        <div class="loader"></div>
+
+        <p id="loadingText">
+            Please wait...
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   1. SUPABASE CONNECTION
+=========================================================
+
+   Replace these two values with your Supabase values.
+
+========================================================= */
+
+const SUPABASE_URL =
+    "https://dawbweoeilojcrnbvnjz.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_OT_KESJmwBFXiDcd--lnxw_IO7Nzf61";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
+    );
+
+
+/* =========================================================
+   2. ELEMENTS
+========================================================= */
+
+const authPage =
+    document.getElementById("authPage");
+
+const dashboard =
+    document.getElementById("dashboard");
+
+const signupSection =
+    document.getElementById("signupSection");
+
+const loginSection =
+    document.getElementById("loginSection");
+
+const completeGoogle =
+    document.getElementById("completeGoogle");
+
+const signupTab =
+    document.getElementById("signupTab");
+
+const loginTab =
+    document.getElementById("loginTab");
+
+const message =
+    document.getElementById("message");
+
+const loading =
+    document.getElementById("loading");
+
+const loadingText =
+    document.getElementById("loadingText");
+
+
+/* =========================================================
+   3. LOCAL STORAGE
+========================================================= */
+
+const REGISTERED_KEY =
+    "shop_now_registered_v2";
+
+
+/* =========================================================
+   4. MESSAGE
+========================================================= */
+
+function showMessage(text, type = "info") {
+
+    message.textContent = text;
+
+    message.className =
+        "message show " + type;
+
+}
+
+function clearMessage() {
+
+    message.textContent = "";
+
+    message.className =
+        "message";
+
+}
+
+
+/* =========================================================
+   5. LOADING
+========================================================= */
+
+function setLoading(
+    show,
+    text = "Please wait..."
+) {
+
+    loadingText.textContent = text;
+
+    if (show) {
+
+        loading.classList.add("show");
+
+    } else {
+
+        loading.classList.remove("show");
+
+    }
+
+}
+
+
+/* =========================================================
+   6. PASSWORD SHOW/HIDE
+========================================================= */
+
+function togglePassword(
+    inputId,
+    button
+) {
+
+    const input =
+        document.getElementById(inputId);
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        button.textContent = "🙈";
+
+    } else {
+
+        input.type = "password";
+
+        button.textContent = "👁";
+
+    }
+
+}
+
+
+/* =========================================================
+   7. USERNAME VALIDATION
+========================================================= */
+
+function validateUsername(username) {
+
+    username =
+        username.trim();
+
+    if (username.length < 3) {
+
+        throw new Error(
+            "Username must contain at least 3 characters."
+        );
+
+    }
+
+    if (
+        !/^[a-zA-Z0-9_]+$/.test(username)
+    ) {
+
+        throw new Error(
+            "Username can only contain letters, numbers and underscores."
+        );
+
+    }
+
+    return username;
+
+}
+
+
+/* =========================================================
+   8. SHOW SIGNUP
+========================================================= */
+
+function showSignup() {
+
+    clearMessage();
+
+    signupSection.classList.remove("hidden");
+    loginSection.classList.add("hidden");
+    completeGoogle.classList.remove("show");
+
+    signupTab.classList.add("active");
+    loginTab.classList.remove("active");
+
+}
+
+
+/* =========================================================
+   9. SHOW LOGIN
+========================================================= */
+
+function showLogin() {
+
+    clearMessage();
+
+    signupSection.classList.add("hidden");
+    loginSection.classList.remove("hidden");
+    completeGoogle.classList.remove("show");
+
+    signupTab.classList.remove("active");
+    loginTab.classList.add("active");
+
+}
+
+
+/* =========================================================
+   10. GET PROFILE
+========================================================= */
+
+async function getProfile(userId) {
+
+    const { data, error } =
+        await supabaseClient
+            .from("profiles")
+            .select(
+                "id, username, email, created_at"
+            )
+            .eq("id", userId)
+            .maybeSingle();
+
+    if (error) {
+
+        console.error(error);
+
+        return null;
+
+    }
+
+    return data;
+
+}
+
+
+/* =========================================================
+   11. SAVE PROFILE
+========================================================= */
+
+async function saveProfile(
+    user,
+    username
+) {
+
+    const email =
+        user.email || null;
+
+    const { error } =
+        await supabaseClient
+            .from("profiles")
+            .upsert(
+                {
+                    id: user.id,
+                    username: username,
+                    email: email
+                },
+                {
+                    onConflict: "id"
+                }
+            );
+
+    if (error) {
+
+        throw error;
+
+    }
+
+}
+
+
+/* =========================================================
+   12. SIGN UP
+========================================================= */
+
+document
+    .getElementById("signupForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            clearMessage();
+
+            const button =
+                document.getElementById("signupBtn");
+
+            try {
+
+                const username =
+                    validateUsername(
+                        document
+                            .getElementById(
+                                "signupUsername"
+                            )
+                            .value
+                    );
+
+
+                const email =
+                    document
+                        .getElementById(
+                            "signupEmail"
+                        )
+                        .value
+                        .trim()
+                        .toLowerCase();
+
+
+                const password =
+                    document
+                        .getElementById(
+                            "signupPassword"
+                        )
+                        .value;
+
+
+                if (password.length < 6) {
+
+                    throw new Error(
+                        "Password must contain at least 6 characters."
+                    );
+
+                }
+
+
+                button.disabled = true;
+
+                setLoading(
+                    true,
+                    "Creating your account..."
+                );
+
+
+                const { data, error } =
+                    await supabaseClient.auth.signUp({
+
+                        email: email,
+
+                        password: password,
+
+                        options: {
+
+                            data: {
+                                username: username
+                            }
+
+                        }
+
+                    });
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                /*
+                   Remember successful signup
+                   on this browser.
+                */
+
+                localStorage.setItem(
+                    REGISTERED_KEY,
+                    "1"
+                );
+
+
+                /*
+                   If Supabase immediately creates
+                   a session, save profile.
+                */
+
+                if (
+                    data.user &&
+                    data.session
+                ) {
+
+                    await saveProfile(
+                        data.user,
+                        username
+                    );
+
+
+                    await showDashboard(
+                        data.user,
+                        username
+                    );
+
+                } else {
+
+                    /*
+                       Email confirmation is probably ON.
+                    */
+
+                    showLogin();
+
+                    showMessage(
+                        "Account created. Check your email to confirm your account, then log in.",
+                        "success"
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+                    friendlyError(error),
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled = false;
+
+                setLoading(false);
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   13. LOGIN
+========================================================= */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            clearMessage();
+
+            const button =
+                document.getElementById("loginBtn");
+
+            try {
+
+                const email =
+                    document
+                        .getElementById(
+                            "loginEmail"
+                        )
+                        .value
+                        .trim()
+                        .toLowerCase();
+
+
+                const password =
+                    document
+                        .getElementById(
+                            "loginPassword"
+                        )
+                        .value;
+
+
+                button.disabled = true;
+
+                setLoading(
+                    true,
+                    "Logging you in..."
+                );
+
+
+                const { data, error } =
+                    await supabaseClient.auth
+                        .signInWithPassword({
+
+                            email: email,
+
+                            password: password
+
+                        });
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                await showDashboard(
+                    data.user
+                );
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+                    friendlyError(error),
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled = false;
+
+                setLoading(false);
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   14. GOOGLE LOGIN / SIGNUP
+========================================================= */
+
+ 
+async function googleAuth() {
+    clearMessage();
+
+    try {
+        setLoading(true, "Connecting to Google...");
+
+        // Remember the page the user came from
+        const returnTo = sessionStorage.getItem("shopNowReturnTo")
+            || "index.html";
+
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+                redirectTo: window.location.origin + "/" + returnTo
+            }
+        });
+
+        if (error) throw error;
+
+    } catch (error) {
+        console.error(error);
+        showMessage(friendlyError(error), "error");
+        setLoading(false);
+    }
+}
+
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            friendlyError(error),
+            "error"
+        );
+
+        setLoading(false);
+
+    }
+
+}
+
+
+/* =========================================================
+   15. GOOGLE PROFILE
+========================================================= */
+
+document
+    .getElementById("googleProfileForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            clearMessage();
+
+            const button =
+                document.getElementById(
+                    "googleProfileBtn"
+                );
+
+            try {
+
+                const {
+                    data: {
+                        user
+                    }
+                } =
+                    await supabaseClient.auth
+                        .getUser();
+
+
+                if (!user) {
+
+                    throw new Error(
+                        "Google account session was not found."
+                    );
+
+                }
+
+
+                const username =
+                    validateUsername(
+                        document
+                            .getElementById(
+                                "googleUsername"
+                            )
+                            .value
+                    );
+
+
+                button.disabled = true;
+
+                setLoading(
+                    true,
+                    "Saving your account..."
+                );
+
+
+                /*
+                   Save username into auth metadata
+                */
+
+                const {
+                    error:
+                        updateError
+                } =
+                    await supabaseClient.auth
+                        .updateUser({
+
+                            data: {
+                                username:
+                                    username
+                            }
+
+                        });
+
+
+                if (updateError) {
+
+                    throw updateError;
+
+                }
+
+
+                /*
+                   Save profile in database
+                */
+
+                await saveProfile(
+                    user,
+                    username
+                );
+
+
+                localStorage.setItem(
+                    REGISTERED_KEY,
+                    "1"
+                );
+
+
+                await showDashboard(
+                    user,
+                    username
+                );
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+                    friendlyError(error),
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled = false;
+
+                setLoading(false);
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   16. HANDLE SESSION
+========================================================= */
+
+async function handleSession(
+    session
+) {
+
+    /*
+       No active user
+    */
+
+    if (
+        !session ||
+        !session.user
+    ) {
+
+        authPage.style.display =
+            "flex";
+
+        dashboard.classList.remove(
+            "show"
+        );
+
+
+        /*
+           If this browser has already
+           registered, don't show signup.
+        */
+
+        if (
+            localStorage.getItem(
+                REGISTERED_KEY
+            ) === "1"
+        ) {
+
+            signupTab.classList.add(
+                "hidden"
+            );
+
+            showLogin();
+
+        } else {
+
+            signupTab.classList.remove(
+                "hidden"
+            );
+
+            showSignup();
+
+        }
+
+        return;
+
+    }
+
+
+    const user =
+        session.user;
+
+
+    /*
+       Get profile
+    */
+
+    let profile =
+        await getProfile(
+            user.id
+        );
+
+
+    /*
+       Google account without
+       username
+    */
+
+    if (
+        user.app_metadata?.provider === "google" &&
+        (
+            !profile ||
+            !profile.username
+        )
+    ) {
+
+        authPage.style.display =
+            "flex";
+
+        dashboard.classList.remove(
+            "show"
+        );
+
+
+        signupSection.classList.add(
+            "hidden"
+        );
+
+        loginSection.classList.add(
+            "hidden"
+        );
+
+        completeGoogle.classList.add(
+            "show"
+        );
+
+
+        signupTab.classList.add(
+            "hidden"
+        );
+
+        loginTab.classList.add(
+            "hidden"
+        );
+
+
+        /*
+           Suggest username from Google.
+        */
+
+        const metadata =
+            user.user_metadata || {};
+
+        let suggested =
+            metadata.full_name ||
+            metadata.name ||
+            user.email?.split("@")[0] ||
+            "";
+
+
+        suggested =
+            suggested
+                .replace(
+                    /\s+/g,
+                    "_"
+                )
+                .replace(
+                    /[^a-zA-Z0-9_]/g,
+                    ""
+                )
+                .substring(
+                    0,
+                    30
+                );
+
+
+        document
+            .getElementById(
+                "googleUsername"
+            )
+            .value =
+                suggested;
+
+
+        setLoading(false);
+
+        return;
+
+    }
+
+
+    /*
+       Already complete
+    */
+
+    await showDashboard(
+        user,
+        profile?.username
+    );
+
+}
+
+
+/* =========================================================
+   17. DASHBOARD
+========================================================= */
+
+async function showDashboard(
+    user,
+    suppliedUsername = null
+) {
+
+    const profile =
+        await getProfile(
+            user.id
+        );
+
+
+    const username =
+        suppliedUsername ||
+        profile?.username ||
+        user.user_metadata?.username ||
+        "SHOP NOW User";
+
+
+    const email =
+        user.email ||
+        profile?.email ||
+        "—";
+
+
+    document
+        .getElementById(
+            "dashboardUsername"
+        )
+        .textContent =
+            username;
+
+
+    document
+        .getElementById(
+            "dashboardEmail"
+        )
+        .textContent =
+            email;
+
+
+    authPage.style.display =
+        "none";
+
+    dashboard.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   18. LOGOUT
+========================================================= */
+
+async function logout() {
+
+    try {
+
+        setLoading(
+            true,
+            "Logging out..."
+        );
+
+
+        const { error } =
+            await supabaseClient.auth
+                .signOut();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        dashboard.classList.remove(
+            "show"
+        );
+
+        authPage.style.display =
+            "flex";
+
+
+        /*
+           User has registered before,
+           so keep signup hidden.
+        */
+
+        signupTab.classList.add(
+            "hidden"
+        );
+
+
+        showLogin();
+
+
+        document
+            .getElementById(
+                "loginForm"
+            )
+            .reset();
+
+
+        showMessage(
+            "You have been logged out.",
+            "success"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            friendlyError(error),
+            "error"
+        );
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+}
+
+
+/* =========================================================
+   19. ERROR MESSAGES
+========================================================= */
+
+function friendlyError(
+    error
+) {
+
+    const raw =
+        String(
+            error?.message ||
+            error ||
+            ""
+        );
+
+
+    const lower =
+        raw.toLowerCase();
+
+
+    if (
+        lower.includes(
+            "invalid login credentials"
+        )
+    ) {
+
+        return (
+            "Incorrect email or password."
+        );
+
+    }
+
+
+    if (
+        lower.includes(
+            "user already registered"
+        ) ||
+        lower.includes(
+            "already registered"
+        )
+    ) {
+
+        return (
+            "This email is already registered. Please log in."
+        );
+
+    }
+
+
+    if (
+        lower.includes(
+            "duplicate"
+        ) &&
+        lower.includes(
+            "username"
+        )
+    ) {
+
+        return (
+            "That username is already taken."
+        );
+
+    }
+
+
+    if (
+        lower.includes(
+            "redirect"
+        )
+    ) {
+
+        return (
+            "Google sign-in needs the correct redirect URL in Supabase."
+        );
+
+    }
+
+
+    if (
+        lower.includes(
+            "email not confirmed"
+        )
+    ) {
+
+        return (
+            "Please confirm your email before logging in."
+        );
+
+    }
+
+
+    return (
+        raw ||
+        "Something went wrong. Please try again."
+    );
+
+}
+
+
+/* =========================================================
+   20. AUTH STATE LISTENER
+========================================================= */
+
+supabaseClient.auth
+    .onAuthStateChange(
+        (event, session) => {
+
+            setTimeout(
+                () => {
+
+                    handleSession(
+                        session
+                    );
+
+                },
+                0
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   21. INITIAL LOAD
+========================================================= */
+
+async function initialise() {
+
+    try {
+
+        setLoading(
+            true,
+            "Loading SHOP NOW..."
+        );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth
+                .getSession();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        await handleSession(
+            data.session
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Could not load your account.",
+            "error"
+        );
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+}
+
+
+/* START */
+
+initialise();
+
+</script>
+
+</body>
+</html>

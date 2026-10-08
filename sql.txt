@@ -1,0 +1,172 @@
+ -- ============================================
+-- SHOP NOW USER PROFILES
+-- ============================================
+
+create table if not exists public.profiles (
+
+    id uuid primary key
+        references auth.users(id)
+        on delete cascade,
+
+    username text,
+
+    phone text unique,
+
+    created_at timestamptz
+        not null
+        default now(),
+
+    updated_at timestamptz
+        not null
+        default now()
+);
+
+
+-- ============================================
+-- INDEX FOR CASE-INSENSITIVE USERNAMES
+-- ============================================
+
+create unique index if not exists
+profiles_username_lower_unique
+on public.profiles (lower(username))
+where username is not null;
+
+
+-- ============================================
+-- ROW LEVEL SECURITY
+-- ============================================
+
+alter table public.profiles
+enable row level security;
+
+
+-- ============================================
+-- PERMISSIONS
+-- ============================================
+
+grant usage on schema public to authenticated;
+
+grant select, insert, update
+on public.profiles
+to authenticated;
+
+
+-- ============================================
+-- SELECT OWN PROFILE
+-- ============================================
+
+drop policy if exists
+"Users can view their own profile"
+on public.profiles;
+
+create policy
+"Users can view their own profile"
+on public.profiles
+for select
+to authenticated
+using (
+    auth.uid() = id
+);
+
+
+-- ============================================
+-- INSERT OWN PROFILE
+-- ============================================
+
+drop policy if exists
+"Users can create their own profile"
+on public.profiles;
+
+create policy
+"Users can create their own profile"
+on public.profiles
+for insert
+to authenticated
+with check (
+    auth.uid() = id
+);
+
+
+-- ============================================
+-- UPDATE OWN PROFILE
+-- ============================================
+
+drop policy if exists
+"Users can update their own profile"
+on public.profiles;
+
+create policy
+"Users can update their own profile"
+on public.profiles
+for update
+to authenticated
+using (
+    auth.uid() = id
+)
+with check (
+    auth.uid() = id
+);
+
+
+-- ============================================
+-- AUTO-CREATE PROFILE WHEN AUTH USER IS CREATED
+-- ============================================
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+
+    insert into public.profiles (
+        id,
+        username,
+        phone
+    )
+
+    values (
+        new.id,
+        new.raw_user_meta_data ->> 'username',
+        new.phone
+    )
+
+    on conflict (id)
+    do update set
+        username =
+            coalesce(
+                excluded.username,
+                public.profiles.username
+            ),
+
+        phone =
+            coalesce(
+                excluded.phone,
+                public.profiles.phone
+            ),
+
+        updated_at = now();
+
+    return new;
+
+end;
+$$;
+
+
+-- ============================================
+-- TRIGGER
+-- ============================================
+
+drop trigger if exists
+on_auth_user_created
+on auth.users;
+
+create trigger
+on_auth_user_created
+
+after insert on auth.users
+
+for each row
+execute procedure
+public.handle_new_user();
