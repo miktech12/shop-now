@@ -1,22 +1,18 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>SHOP NOW | Account</title>
 
-<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 /* =====================================================
-   SHOP NOW ACCOUNT PAGE
+   BASE
 ===================================================== */
 
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -24,355 +20,479 @@
 
 :root {
     --yellow: #dfff00;
-    --black: #050505;
-    --dark: #0d0d0d;
-    --card: #111111;
-    --gray: #888;
-    --border: #252525;
+    --yellow-dim: rgba(223,255,0,0.15);
+    --bg: #050505;
+    --panel: #0f0f0f;
+    --card: #141414;
+    --input: #0a0a0a;
+    --line: #232323;
+    --line-soft: #1a1a1a;
+    --text: #ffffff;
+    --muted: #7a7a7a;
+    --muted-2: #555;
+    --error: #ff7a7a;
+    --error-bg: rgba(255,80,80,0.06);
+    --error-line: rgba(255,80,80,0.25);
+    --ok: var(--yellow);
+    --ok-bg: rgba(223,255,0,0.06);
+    --ok-line: rgba(223,255,0,0.25);
+}
+
+html,
+body {
+    height: 100%;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     background:
-        radial-gradient(
-            circle at top right,
-            rgba(223,255,0,0.08),
-            transparent 35%
-        ),
-        #050505;
-    color: white;
+        radial-gradient(ellipse at top left, rgba(223,255,0,0.06), transparent 45%),
+        radial-gradient(ellipse at bottom right, rgba(223,255,0,0.04), transparent 45%),
+        var(--bg);
+    color: var(--text);
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
-
 /* =====================================================
-   AUTH PAGE
+   SHELL
 ===================================================== */
 
-.page {
+.shell {
     min-height: 100vh;
-
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    padding: 20px;
+    justify-content: center;
+    padding: 24px;
 }
 
-.auth-box {
+.card {
     width: 100%;
-    max-width: 1000px;
-
-    min-height: 620px;
-
+    max-width: 1040px;
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-
-    background: #101010;
-
-    border: 1px solid rgba(223,255,0,0.15);
-
-    border-radius: 26px;
-
+    grid-template-columns: 1fr 1fr;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 28px;
     overflow: hidden;
-
     box-shadow:
-        0 0 50px rgba(223,255,0,0.05),
-        0 30px 80px rgba(0,0,0,0.7);
+        0 0 0 1px rgba(223,255,0,0.04),
+        0 40px 100px rgba(0,0,0,0.8);
 }
-
 
 /* =====================================================
-   BRAND SECTION
+   BRAND PANEL
 ===================================================== */
 
-.brand {
-    padding: 45px;
-
+.brand-panel {
+    position: relative;
+    padding: 48px 44px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
     background:
-        linear-gradient(
-            140deg,
-            rgba(223,255,0,0.07),
-            transparent 60%
-        );
+        linear-gradient(160deg, rgba(223,255,0,0.08), transparent 55%),
+        var(--panel);
+    border-right: 1px solid var(--line);
+    overflow: hidden;
 }
 
-.logo {
-    font-size: 25px;
+.brand-panel::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    right: -60%;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(223,255,0,0.12), transparent 70%);
+    pointer-events: none;
+}
+
+.brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
     font-weight: 900;
+    letter-spacing: -0.5px;
+    z-index: 1;
 }
 
-.logo span {
-    color: var(--yellow);
-}
-
-.brand-content {
-    max-width: 380px;
-}
-
-.brand-content h1 {
-    font-size: clamp(42px, 5vw, 65px);
-    line-height: 0.95;
-
-    margin-bottom: 22px;
-}
-
-.brand-content h1 span {
-    color: var(--yellow);
-}
-
-.brand-content p {
-    color: #999;
-    line-height: 1.7;
-    font-size: 14px;
-}
-
-.brand-tag {
-    display: inline-block;
-
-    margin-top: 30px;
-
-    border: 1px solid rgba(223,255,0,0.3);
-
-    color: var(--yellow);
-
-    padding: 9px 14px;
-
-    border-radius: 50px;
-
-    font-size: 10px;
-    font-weight: bold;
-
-    letter-spacing: 2px;
-}
-
-.brand-footer {
-    color: #555;
-    font-size: 11px;
-}
-
-
-/* =====================================================
-   FORM SECTION
-===================================================== */
-
-.form-section {
-    padding: 45px;
-
+.brand-mark .badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--yellow);
+    color: #000;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background: #111;
+    font-size: 16px;
+    font-weight: 900;
 }
 
-.form-content {
+.brand-mark em {
+    font-style: normal;
+    color: var(--yellow);
+}
+
+.brand-hero {
+    z-index: 1;
+    max-width: 380px;
+}
+
+.brand-hero h1 {
+    font-size: clamp(38px, 4.6vw, 58px);
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+    font-weight: 900;
+}
+
+.brand-hero h1 span {
+    color: var(--yellow);
+}
+
+.brand-hero p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.brand-features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: #aaa;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    transition: 0.25s;
+}
+
+.feature:hover {
+    border-color: var(--yellow-dim);
+    background: rgba(223,255,0,0.02);
+}
+
+.feature .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+    box-shadow: 0 0 8px var(--yellow);
+    flex-shrink: 0;
+}
+
+.brand-foot {
+    z-index: 1;
+    font-size: 11px;
+    color: var(--muted-2);
+    letter-spacing: 0.5px;
+}
+
+/* =====================================================
+   FORM PANEL
+===================================================== */
+
+.form-panel {
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #101010;
+    min-height: 640px;
+}
+
+.form-wrap {
     width: 100%;
-    max-width: 420px;
+    max-width: 380px;
+    margin: 0 auto;
 }
 
+/* =====================================================
+   HEADINGS
+===================================================== */
+
+.eyebrow {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    color: var(--yellow);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 26px;
+}
 
 /* =====================================================
    TABS
 ===================================================== */
 
 .tabs {
-    display: flex;
-    gap: 30px;
-
-    border-bottom: 1px solid #272727;
-
-    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 4px;
+    background: #0a0a0a;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-bottom: 26px;
 }
 
 .tab {
     border: none;
     background: transparent;
-
-    color: #666;
-
-    padding-bottom: 14px;
-
-    font-weight: 800;
+    color: var(--muted);
     font-size: 12px;
-
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 11px 0;
+    border-radius: 10px;
     cursor: pointer;
-
-    position: relative;
+    transition: 0.25s;
+    font-family: inherit;
 }
 
 .tab.active {
-    color: white;
-}
-
-.tab.active::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    bottom: -1px;
-
-    width: 100%;
-    height: 2px;
-
     background: var(--yellow);
-
-    box-shadow: 0 0 12px var(--yellow);
+    color: #000;
+    box-shadow: 0 4px 20px rgba(223,255,0,0.2);
 }
 
+.tab:not(.active):hover {
+    color: #bbb;
+}
 
 /* =====================================================
-   FORM HEADINGS
+   FIELDS
 ===================================================== */
 
-.form-title {
-    font-size: 29px;
-    margin-bottom: 8px;
+.field {
+    margin-bottom: 14px;
 }
 
-.form-subtitle {
-    color: #777;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-
-    margin-bottom: 25px;
-}
-
-
-/* =====================================================
-   INPUTS
-===================================================== */
-
-.input-group {
-    margin-bottom: 17px;
-}
-
-.input-group label {
+.field label {
     display: block;
-
-    color: #aaa;
-
     font-size: 10px;
-
-    font-weight: bold;
-
-    letter-spacing: 1px;
-
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #9a9a9a;
+    text-transform: uppercase;
     margin-bottom: 8px;
 }
 
-.input-group input {
+.field input {
     width: 100%;
-
-    padding: 15px;
-
-    background: #080808;
-
-    border: 1px solid #2a2a2a;
-
+    padding: 14px 16px;
+    background: var(--input);
+    border: 1px solid var(--line);
     border-radius: 12px;
-
-    color: white;
-
-    outline: none;
-
+    color: #fff;
     font-size: 14px;
-
-    transition: 0.25s;
+    font-family: inherit;
+    outline: none;
+    transition: 0.2s;
 }
 
-.input-group input:focus {
-    border-color: rgba(223,255,0,0.7);
-
-    box-shadow:
-        0 0 0 3px rgba(223,255,0,0.05),
-        0 0 20px rgba(223,255,0,0.05);
+.field input::placeholder {
+    color: #4a4a4a;
 }
 
+.field input:focus {
+    border-color: rgba(223,255,0,0.55);
+    background: #060606;
+    box-shadow: 0 0 0 4px rgba(223,255,0,0.05);
+}
 
-/* =====================================================
-   PASSWORD
-===================================================== */
-
-.password-wrapper {
+.field.with-eye {
     position: relative;
 }
 
-.password-wrapper input {
-    padding-right: 48px;
+.field.with-eye input {
+    padding-right: 50px;
 }
 
-.password-eye {
+.eye-btn {
     position: absolute;
-
-    right: 13px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
+    right: 8px;
+    bottom: 6px;
+    width: 32px;
+    height: 32px;
     border: none;
-
-    background: none;
-
-    color: #777;
-
+    background: transparent;
+    color: var(--muted);
     cursor: pointer;
-
-    font-size: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.password-eye:hover {
+.eye-btn:hover {
     color: var(--yellow);
+    background: rgba(223,255,0,0.05);
 }
 
+.eye-btn svg {
+    width: 16px;
+    height: 16px;
+}
 
 /* =====================================================
-   MAIN BUTTON
+   META ROW
 ===================================================== */
 
-.main-btn {
-    width: 100%;
+.meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0 20px;
+    font-size: 12px;
+}
 
-    padding: 15px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: var(--yellow);
-
-    color: #050505;
-
-    font-size: 13px;
-
-    font-weight: 900;
-
+.check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
+    color: #999;
+    user-select: none;
+}
 
+.check input {
+    display: none;
+}
+
+.check .box {
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+    border: 1.5px solid #333;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.check input:checked + .box {
+    background: var(--yellow);
+    border-color: var(--yellow);
+}
+
+.check input:checked + .box::after {
+    content: "";
+    width: 8px;
+    height: 4px;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+    transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.link {
+    color: var(--yellow);
+    text-decoration: none;
+    font-size: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    cursor: pointer;
     transition: 0.25s;
-
-    margin-top: 5px;
+    font-family: inherit;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
-.main-btn:hover {
+.btn-primary {
+    background: var(--yellow);
+    color: #000;
+}
+
+.btn-primary:hover:not(:disabled) {
     transform: translateY(-2px);
-
-    box-shadow:
-        0 10px 25px rgba(223,255,0,0.15);
+    box-shadow: 0 12px 30px rgba(223,255,0,0.18);
 }
 
-.main-btn:disabled {
+.btn-primary:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
+.btn-ghost {
+    background: #161616;
+    color: #fff;
+    border: 1px solid var(--line);
+}
+
+.btn-ghost:hover:not(:disabled) {
+    border-color: #3a3a3a;
+    background: #1c1c1c;
+    transform: translateY(-2px);
+}
+
+.btn-ghost:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn .g {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 12px;
+    color: #4285f4;
+}
 
 /* =====================================================
    DIVIDER
@@ -380,322 +500,202 @@ body {
 
 .divider {
     display: flex;
-
     align-items: center;
-
-    gap: 12px;
-
-    margin: 24px 0;
+    gap: 14px;
+    margin: 22px 0;
 }
 
 .divider span {
     flex: 1;
-
     height: 1px;
-
-    background: #292929;
+    background: var(--line);
 }
 
 .divider small {
-    color: #666;
-
-    font-size: 9px;
-
-    letter-spacing: 1px;
-}
-
-
-/* =====================================================
-   GOOGLE BUTTON
-===================================================== */
-
-.google-btn {
-    width: 100%;
-
-    padding: 14px;
-
-    border-radius: 12px;
-
-    background: #171717;
-
-    border: 1px solid #292929;
-
-    color: white;
-
-    font-size: 13px;
-
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted-2);
     font-weight: 700;
-
-    cursor: pointer;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 12px;
-
-    transition: 0.25s;
 }
-
-.google-btn:hover {
-    transform: translateY(-2px);
-
-    border-color: #555;
-}
-
-.google-icon {
-    width: 20px;
-    height: 20px;
-
-    background: white;
-
-    color: #4285f4;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-weight: 900;
-
-    font-size: 12px;
-}
-
 
 /* =====================================================
    MESSAGE
 ===================================================== */
 
-.message {
+.msg {
     display: none;
-
     padding: 12px 14px;
-
     border-radius: 10px;
-
-    margin-bottom: 18px;
-
     font-size: 12px;
-
     line-height: 1.5;
+    margin-bottom: 18px;
 }
 
-.message.show {
+.msg.show {
     display: block;
 }
 
-.message.success {
-    color: var(--yellow);
-
-    background: rgba(223,255,0,0.06);
-
-    border: 1px solid rgba(223,255,0,0.2);
+.msg.error {
+    color: var(--error);
+    background: var(--error-bg);
+    border: 1px solid var(--error-line);
 }
 
-.message.error {
-    color: #ff9b9b;
-
-    background: rgba(255,70,70,0.07);
-
-    border: 1px solid rgba(255,70,70,0.2);
+.msg.ok {
+    color: var(--ok);
+    background: var(--ok-bg);
+    border: 1px solid var(--ok-line);
 }
 
-.message.info {
-    color: #aaa;
-
+.msg.info {
+    color: #bbb;
     background: #171717;
-
-    border: 1px solid #292929;
+    border: 1px solid var(--line);
 }
-
 
 /* =====================================================
-   GOOGLE PROFILE COMPLETION
+   VIEWS
 ===================================================== */
 
-.complete-google {
+.view {
     display: none;
+    animation: fadeUp 0.35s ease;
 }
 
-.complete-google.show {
+.view.active {
     display: block;
 }
 
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 /* =====================================================
    DASHBOARD
 ===================================================== */
 
-.dashboard {
-    min-height: 100vh;
-
+.dash {
     display: none;
-
+    min-height: 100vh;
     align-items: center;
     justify-content: center;
-
-    padding: 20px;
+    padding: 24px;
 }
 
-.dashboard.show {
+.dash.active {
     display: flex;
 }
 
-.dashboard-card {
+.dash-card {
     width: 100%;
-    max-width: 580px;
-
-    padding: 45px;
-
-    background: #111;
-
-    border: 1px solid rgba(223,255,0,0.15);
-
-    border-radius: 25px;
-
+    max-width: 520px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    padding: 44px 40px;
     text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
 }
 
-.dashboard-logo {
-    font-size: 23px;
-
+.dash-logo {
+    font-size: 20px;
     font-weight: 900;
-
-    margin-bottom: 30px;
+    margin-bottom: 26px;
 }
 
-.dashboard-logo span {
+.dash-logo span {
     color: var(--yellow);
 }
 
-.success-icon {
-    width: 75px;
-    height: 75px;
-
+.avatar {
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 18px;
     border-radius: 50%;
-
-    margin: auto;
-
+    background: linear-gradient(135deg, var(--yellow), #a8c400);
+    color: #000;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background: var(--yellow);
-
-    color: black;
-
     font-size: 30px;
-
     font-weight: 900;
-
-    box-shadow:
-        0 0 30px rgba(223,255,0,0.2);
-
-    margin-bottom: 20px;
+    box-shadow: 0 0 40px rgba(223,255,0,0.25);
 }
 
-.dashboard h2 {
-    font-size: 30px;
-
-    margin-bottom: 10px;
+.dash-card h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 6px;
 }
 
-.dashboard p {
-    color: #777;
-
+.dash-card .sub {
+    color: var(--muted);
     font-size: 13px;
-
-    margin-bottom: 25px;
+    margin-bottom: 26px;
 }
 
-.user-info {
-    border: 1px solid #262626;
-
+.info-box {
+    border: 1px solid var(--line);
     border-radius: 14px;
-
     overflow: hidden;
-
-    margin-bottom: 20px;
+    text-align: left;
+    margin-bottom: 22px;
 }
 
 .info-row {
     display: flex;
-
     justify-content: space-between;
-
-    padding: 15px;
-
-    border-bottom: 1px solid #222;
-
-    gap: 15px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    gap: 12px;
 }
 
 .info-row:last-child {
     border-bottom: none;
 }
 
-.info-row span:first-child {
-    color: #666;
-
-    font-size: 11px;
+.info-row .k {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
 }
 
-.info-row span:last-child {
-    font-size: 12px;
-
-    font-weight: bold;
-
+.info-row .v {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
     text-align: right;
+    word-break: break-word;
 }
 
-.dashboard-buttons {
+.dash-actions {
     display: flex;
     gap: 10px;
 }
 
-.shop-btn,
-.logout-btn {
+.dash-actions .btn {
     flex: 1;
-
-    padding: 14px;
-
-    border-radius: 11px;
-
-    cursor: pointer;
-
+    padding: 13px;
     font-size: 11px;
-
-    font-weight: bold;
-
     text-decoration: none;
-
-    transition: 0.25s;
 }
 
-.shop-btn {
-    background: var(--yellow);
-
-    color: #000;
-
-    border: 1px solid var(--yellow);
+.redirect-note {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--yellow);
+    display: none;
 }
-
-.logout-btn {
-    background: #171717;
-
-    color: white;
-
-    border: 1px solid #292929;
-}
-
-.shop-btn:hover,
-.logout-btn:hover {
-    transform: translateY(-2px);
-}
-
 
 /* =====================================================
    LOADING
@@ -703,46 +703,37 @@ body {
 
 .loading {
     position: fixed;
-
     inset: 0;
-
     background: rgba(0,0,0,0.85);
-
+    backdrop-filter: blur(4px);
     display: none;
-
-    justify-content: center;
     align-items: center;
-
-    z-index: 999;
+    justify-content: center;
+    z-index: 9999;
 }
 
-.loading.show {
+.loading.active {
     display: flex;
 }
 
-.loader {
-    width: 40px;
-    height: 40px;
+.loading .box {
+    text-align: center;
+}
 
-    border: 3px solid #292929;
-
+.loading .ring {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto;
+    border: 3px solid #1f1f1f;
     border-top-color: var(--yellow);
-
     border-radius: 50%;
-
     animation: spin 0.8s linear infinite;
-
-    margin: auto;
 }
 
 .loading p {
-    color: #777;
-
-    margin-top: 12px;
-
-    font-size: 11px;
-
-    text-align: center;
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 12px;
 }
 
 @keyframes spin {
@@ -751,182 +742,175 @@ body {
     }
 }
 
-
 /* =====================================================
-   MOBILE
+   RESPONSIVE
 ===================================================== */
 
-@media (max-width: 800px) {
-
-    .auth-box {
+@media (max-width: 860px) {
+    .card {
         grid-template-columns: 1fr;
-
-        max-width: 500px;
+        max-width: 480px;
     }
 
-    .brand {
+    .brand-panel {
         display: none;
     }
 
-    .form-section {
-        padding: 35px 22px;
+    .form-panel {
+        padding: 40px 30px;
+        min-height: auto;
     }
 }
 
-@media (max-width: 450px) {
-
-    .page {
-        padding: 10px;
+@media (max-width: 420px) {
+    .shell,
+    .dash {
+        padding: 12px;
     }
 
-    .auth-box {
-        border-radius: 20px;
+    .form-panel {
+        padding: 32px 22px;
     }
 
-    .form-section {
-        padding: 30px 18px;
+    .title {
+        font-size: 24px;
     }
 
-    .form-title {
-        font-size: 25px;
-    }
-
-    .dashboard-card {
-        padding: 30px 20px;
-    }
-
-    .dashboard-buttons {
+    .dash-actions {
         flex-direction: column;
     }
 }
 
-.hidden {
+.hide {
     display: none !important;
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <!-- =====================================================
-     AUTH PAGE
+     MAIN AUTH SHELL
 ===================================================== -->
 
-<div class="page" id="authPage">
+<div class="shell" id="shell">
 
-    <div class="auth-box">
-
+    <div class="card">
 
         <!-- BRAND -->
+        <aside class="brand-panel">
 
-        <div class="brand">
-
-            <div class="logo">
-                S <span>SHOP NOW</span>
+            <div class="brand-mark">
+                <div class="badge">S</div>
+                SHOP<em>NOW</em>
             </div>
 
-
-            <div class="brand-content">
+            <div class="brand-hero">
 
                 <h1>
-                    SHOP<br>
-                    <span>YOUR WAY.</span>
+                    Shop<br>
+                    <span>your way.</span>
                 </h1>
 
                 <p>
-                    Create your SHOP NOW account and enjoy
-                    a simpler shopping experience.
+                    One account. Every device. Zero friction.
                 </p>
 
-                <div class="brand-tag">
-                    ✦ SHOP SMARTER
+                <div class="brand-features">
+
+                    <div class="feature">
+                        <span class="dot"></span>
+                        Email & Google sign in
+                    </div>
+
+                    <div class="feature">
+                        <span class="dot"></span>
+                        Phone number saved to your account
+                    </div>
+
+                    <div class="feature">
+                        <span class="dot"></span>
+                        Password recovery built in
+                    </div>
+
+                    <div class="feature">
+                        <span class="dot"></span>
+                        Stay signed in on this device
+                    </div>
+
                 </div>
 
             </div>
 
-
-            <div class="brand-footer">
-                © 2026 SHOP NOW
+            <div class="brand-foot">
+                © 2026 SHOP NOW · ALL RIGHTS RESERVED
             </div>
 
-        </div>
+        </aside>
 
 
-        <!-- FORM -->
+        <!-- FORM PANEL -->
+        <main class="form-panel">
 
-        <div class="form-section">
+            <div class="form-wrap">
 
-            <div class="form-content">
-
-
-                <!-- TABS -->
-
-                <div class="tabs">
+                <!-- TOP TABS -->
+                <div class="tabs" id="mainTabs">
 
                     <button
                         class="tab active"
-                        id="signupTab"
-                        onclick="showSignup()">
-
-                        CREATE ACCOUNT
-
+                        data-mode="signup"
+                        onclick="switchMainTab('signup')">
+                        SIGN UP
                     </button>
 
                     <button
                         class="tab"
-                        id="loginTab"
-                        onclick="showLogin()">
-
-                        LOGIN
-
+                        data-mode="login"
+                        onclick="switchMainTab('login')">
+                        LOG IN
                     </button>
 
                 </div>
 
 
-                <!-- MESSAGE -->
-
-                <div
-                    id="message"
-                    class="message">
-                </div>
+                <!-- GLOBAL MESSAGE -->
+                <div class="msg" id="msg"></div>
 
 
                 <!-- =================================================
                      SIGN UP
                 ================================================== -->
 
-                <div id="signupSection">
+                <section class="view active" id="view-signup">
 
-                    <h2 class="form-title">
+                    <span class="eyebrow">
                         Create account
+                    </span>
+
+                    <h2 class="title">
+                        Let's get you in.
                     </h2>
 
-                    <p class="form-subtitle">
-                        Join SHOP NOW using your email address.
+                    <p class="subtitle">
+                        Create your SHOP NOW account. No phone OTP required.
                     </p>
 
 
-                    <form id="signupForm">
-
+                    <form id="form-signup">
 
                         <!-- USERNAME -->
-
-                        <div class="input-group">
+                        <div class="field">
 
                             <label>
-                                USERNAME
+                                Username
                             </label>
 
                             <input
-                                id="signupUsername"
+                                id="su-username"
                                 type="text"
-                                placeholder="Choose a username"
                                 maxlength="30"
+                                placeholder="e.g. jane_doe"
                                 autocomplete="username"
                                 required>
 
@@ -934,15 +918,126 @@ body {
 
 
                         <!-- EMAIL -->
-
-                        <div class="input-group">
+                        <div class="field">
 
                             <label>
-                                EMAIL
+                                Email
                             </label>
 
                             <input
-                                id="signupEmail"
+                                id="su-email"
+                                type="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required>
+
+                        </div>
+
+
+                        <!-- PHONE -->
+                        <div class="field">
+
+                            <label>
+                                Phone number
+                            </label>
+
+                            <input
+                                id="su-phone"
+                                type="tel"
+                                placeholder="+256 700 000 000"
+                                autocomplete="tel"
+                                required>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+                        <div class="field with-eye">
+
+                            <label>
+                                Password
+                            </label>
+
+                            <input
+                                id="su-password"
+                                type="password"
+                                minlength="6"
+                                placeholder="At least 6 characters"
+                                autocomplete="new-password"
+                                required>
+
+                            <button
+                                type="button"
+                                class="eye-btn"
+                                onclick="togglePw('su-password', this)">
+                            </button>
+
+                        </div>
+
+
+                        <!-- CREATE -->
+                        <button
+                            class="btn btn-primary"
+                            id="su-btn"
+                            type="submit">
+                            CREATE ACCOUNT
+                        </button>
+
+                    </form>
+
+
+                    <!-- GOOGLE -->
+                    <div class="divider">
+                        <span></span>
+                        <small>OR CONTINUE WITH</small>
+                        <span></span>
+                    </div>
+
+
+                    <button
+                        class="btn btn-ghost"
+                        type="button"
+                        onclick="googleAuth()">
+
+                        <span class="g">G</span>
+
+                        Continue with Google
+
+                    </button>
+
+                </section>
+
+
+                <!-- =================================================
+                     LOGIN
+                ================================================== -->
+
+                <section class="view" id="view-login">
+
+                    <span class="eyebrow">
+                        Welcome back
+                    </span>
+
+                    <h2 class="title">
+                        Sign in.
+                    </h2>
+
+                    <p class="subtitle">
+                        Log in with your email and password.
+                    </p>
+
+
+                    <form id="form-login">
+
+                        <!-- EMAIL -->
+                        <div class="field">
+
+                            <label>
+                                Email
+                            </label>
+
+                            <input
+                                id="li-email"
                                 type="email"
                                 placeholder="you@example.com"
                                 autocomplete="email"
@@ -952,46 +1047,64 @@ body {
 
 
                         <!-- PASSWORD -->
-
-                        <div class="input-group">
+                        <div class="field with-eye">
 
                             <label>
-                                PASSWORD
+                                Password
                             </label>
 
-                            <div class="password-wrapper">
+                            <input
+                                id="li-password"
+                                type="password"
+                                placeholder="Your password"
+                                autocomplete="current-password"
+                                required>
 
-                                <input
-                                    id="signupPassword"
-                                    type="password"
-                                    placeholder="At least 6 characters"
-                                    minlength="6"
-                                    autocomplete="new-password"
-                                    required>
-
-                                <button
-                                    type="button"
-                                    class="password-eye"
-                                    onclick="togglePassword(
-                                        'signupPassword',
-                                        this
-                                    )">
-
-                                    👁
-
-                                </button>
-
-                            </div>
+                            <button
+                                type="button"
+                                class="eye-btn"
+                                onclick="togglePw('li-password', this)">
+                            </button>
 
                         </div>
 
 
+                        <!-- REMEMBER / FORGOT -->
+                        <div class="meta-row">
+
+                            <label class="check">
+
+                                <input
+                                    type="checkbox"
+                                    id="li-remember"
+                                    checked>
+
+                                <span class="box"></span>
+
+                                Remember me
+
+                            </label>
+
+
+                            <button
+                                type="button"
+                                class="link"
+                                onclick="showView('forgot')">
+
+                                Forgot password?
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- LOGIN -->
                         <button
-                            class="main-btn"
-                            id="signupBtn"
+                            class="btn btn-primary"
+                            id="li-btn"
                             type="submit">
 
-                            CREATE ACCOUNT
+                            LOG IN
 
                         </button>
 
@@ -999,182 +1112,221 @@ body {
 
 
                     <!-- GOOGLE -->
-
                     <div class="divider">
-
                         <span></span>
-
-                        <small>OR</small>
-
+                        <small>OR CONTINUE WITH</small>
                         <span></span>
-
                     </div>
 
 
                     <button
-                        class="google-btn"
+                        class="btn btn-ghost"
+                        type="button"
                         onclick="googleAuth()">
 
-                        <span class="google-icon">
-                            G
-                        </span>
+                        <span class="g">G</span>
 
                         Continue with Google
 
                     </button>
 
-                </div>
+                </section>
 
 
                 <!-- =================================================
-                     LOGIN
+                     FORGOT PASSWORD
                 ================================================== -->
 
-                <div
-                    id="loginSection"
-                    class="hidden">
+                <section class="view" id="view-forgot">
 
-                    <h2 class="form-title">
-                        Welcome back
+                    <button
+                        class="back-link"
+                        onclick="showView('login')">
+
+                        ← Back to login
+
+                    </button>
+
+
+                    <span class="eyebrow">
+                        Recovery
+                    </span>
+
+                    <h2 class="title">
+                        Reset password.
                     </h2>
 
-                    <p class="form-subtitle">
-                        Login to your SHOP NOW account.
+                    <p class="subtitle">
+                        Enter your email and we'll send a reset link.
                     </p>
 
 
-                    <form id="loginForm">
+                    <form id="form-forgot">
 
-
-                        <!-- EMAIL -->
-
-                        <div class="input-group">
+                        <div class="field">
 
                             <label>
-                                EMAIL
+                                Email
                             </label>
 
                             <input
-                                id="loginEmail"
+                                id="fp-email"
                                 type="email"
                                 placeholder="you@example.com"
-                                autocomplete="email"
                                 required>
 
                         </div>
 
 
-                        <!-- PASSWORD -->
-
-                        <div class="input-group">
-
-                            <label>
-                                PASSWORD
-                            </label>
-
-                            <div class="password-wrapper">
-
-                                <input
-                                    id="loginPassword"
-                                    type="password"
-                                    placeholder="Your password"
-                                    autocomplete="current-password"
-                                    required>
-
-                                <button
-                                    type="button"
-                                    class="password-eye"
-                                    onclick="togglePassword(
-                                        'loginPassword',
-                                        this
-                                    )">
-
-                                    👁
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
                         <button
-                            class="main-btn"
-                            id="loginBtn"
+                            class="btn btn-primary"
+                            id="fp-btn"
                             type="submit">
 
-                            LOGIN
+                            SEND RESET LINK
 
                         </button>
 
                     </form>
 
-
-                    <div class="divider">
-
-                        <span></span>
-
-                        <small>OR</small>
-
-                        <span></span>
-
-                    </div>
-
-
-                    <button
-                        class="google-btn"
-                        onclick="googleAuth()">
-
-                        <span class="google-icon">
-                            G
-                        </span>
-
-                        Continue with Google
-
-                    </button>
-
-                </div>
+                </section>
 
 
                 <!-- =================================================
-                     GOOGLE USERNAME
+                     RESET PASSWORD
                 ================================================== -->
 
-                <div
-                    id="completeGoogle"
-                    class="complete-google">
+                <section class="view" id="view-reset">
 
-                    <h2 class="form-title">
-                        Almost there
+                    <span class="eyebrow">
+                        Almost done
+                    </span>
+
+                    <h2 class="title">
+                        New password.
                     </h2>
 
-                    <p class="form-subtitle">
-                        Your Google account is connected.
-                        Choose a username for your SHOP NOW account.
+                    <p class="subtitle">
+                        Choose a new password for your account.
                     </p>
 
 
-                    <form id="googleProfileForm">
+                    <form id="form-reset">
 
-                        <div class="input-group">
+                        <div class="field with-eye">
 
                             <label>
-                                USERNAME
+                                New password
                             </label>
 
                             <input
-                                id="googleUsername"
+                                id="rp-password"
+                                type="password"
+                                minlength="6"
+                                placeholder="At least 6 characters"
+                                required>
+
+                            <button
+                                type="button"
+                                class="eye-btn"
+                                onclick="togglePw('rp-password', this)">
+                            </button>
+
+                        </div>
+
+
+                        <div class="field with-eye">
+
+                            <label>
+                                Confirm password
+                            </label>
+
+                            <input
+                                id="rp-confirm"
+                                type="password"
+                                minlength="6"
+                                placeholder="Repeat password"
+                                required>
+
+                            <button
+                                type="button"
+                                class="eye-btn"
+                                onclick="togglePw('rp-confirm', this)">
+                            </button>
+
+                        </div>
+
+
+                        <button
+                            class="btn btn-primary"
+                            id="rp-btn"
+                            type="submit">
+
+                            UPDATE PASSWORD
+
+                        </button>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =================================================
+                     GOOGLE PROFILE
+                ================================================== -->
+
+                <section class="view" id="view-google-profile">
+
+                    <span class="eyebrow">
+                        Almost there
+                    </span>
+
+                    <h2 class="title">
+                        Complete your account.
+                    </h2>
+
+                    <p class="subtitle">
+                        Choose a username and add your phone number.
+                    </p>
+
+
+                    <form id="form-google-profile">
+
+                        <div class="field">
+
+                            <label>
+                                Username
+                            </label>
+
+                            <input
+                                id="gp-username"
                                 type="text"
                                 maxlength="30"
-                                placeholder="Choose a username"
+                                placeholder="e.g. jane_doe"
+                                required>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                Phone number
+                            </label>
+
+                            <input
+                                id="gp-phone"
+                                type="tel"
+                                placeholder="+256 700 000 000"
+                                autocomplete="tel"
                                 required>
 
                         </div>
 
 
                         <button
-                            class="main-btn"
-                            id="googleProfileBtn"
+                            class="btn btn-primary"
+                            id="gp-btn"
                             type="submit">
 
                             FINISH ACCOUNT
@@ -1183,58 +1335,54 @@ body {
 
                     </form>
 
-                </div>
-
+                </section>
 
             </div>
 
-        </div>
+        </main>
 
     </div>
 
 </div>
 
 
-
 <!-- =====================================================
      DASHBOARD
 ===================================================== -->
 
-<div
-    class="dashboard"
-    id="dashboard">
+<div class="dash" id="dash">
 
-    <div class="dashboard-card">
+    <div class="dash-card">
 
-
-        <div class="dashboard-logo">
+        <div class="dash-logo">
             S <span>SHOP NOW</span>
         </div>
 
 
-        <div class="success-icon">
-            ✓
+        <div class="avatar" id="dash-avatar">
+            ?
         </div>
 
 
-        <h2>
+        <h2 id="dash-hello">
             You're in!
         </h2>
 
-        <p>
-            Your SHOP NOW account is ready.
+
+        <p class="sub">
+            Your account is ready.
         </p>
 
 
-        <div class="user-info">
+        <div class="info-box">
 
             <div class="info-row">
 
-                <span>
-                    USERNAME
+                <span class="k">
+                    Username
                 </span>
 
-                <span id="dashboardUsername">
+                <span class="v" id="dash-username">
                     —
                 </span>
 
@@ -1243,11 +1391,24 @@ body {
 
             <div class="info-row">
 
-                <span>
-                    EMAIL
+                <span class="k">
+                    Email
                 </span>
 
-                <span id="dashboardEmail">
+                <span class="v" id="dash-email">
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="k">
+                    Phone
+                </span>
+
+                <span class="v" id="dash-phone">
                     —
                 </span>
 
@@ -1256,11 +1417,12 @@ body {
         </div>
 
 
-        <div class="dashboard-buttons">
+        <div class="dash-actions">
 
             <a
-                href="fashion.html"
-                class="shop-btn">
+                href="#"
+                class="btn btn-primary"
+                id="dash-continue">
 
                 CONTINUE SHOPPING
 
@@ -1268,7 +1430,8 @@ body {
 
 
             <button
-                class="logout-btn"
+                class="btn btn-ghost"
+                type="button"
                 onclick="logout()">
 
                 LOG OUT
@@ -1277,26 +1440,13 @@ body {
 
         </div>
 
-    </div>
 
-</div>
+        <p
+            class="redirect-note"
+            id="redirect-note">
 
+            Redirecting you back…
 
-
-<!-- =====================================================
-     LOADING
-===================================================== -->
-
-<div
-    class="loading"
-    id="loading">
-
-    <div>
-
-        <div class="loader"></div>
-
-        <p id="loadingText">
-            Please wait...
         </p>
 
     </div>
@@ -1304,15 +1454,29 @@ body {
 </div>
 
 
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div class="loading" id="loading">
+
+    <div class="box">
+
+        <div class="ring"></div>
+
+        <p id="loading-text">
+            Please wait…
+        </p>
+
+    </div>
+
+</div>
+
 
 <script>
 
 /* =========================================================
-   1. SUPABASE CONNECTION
-=========================================================
-
-   Replace these two values with your Supabase values.
-
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
@@ -1322,260 +1486,510 @@ const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_OT_KESJmwBFXiDcd--lnxw_IO7Nzf61";
 
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY,
-        {
-            auth: {
-                persistSession: true,
-                autoRefreshToken: true,
-                detectSessionInUrl: true
-            }
+/* =========================================================
+   REMEMBER-ME STORAGE
+========================================================= */
+
+const rememberAdapter = {
+
+    getItem(key) {
+
+        return (
+            localStorage.getItem(key) ??
+            sessionStorage.getItem(key)
+        );
+
+    },
+
+    setItem(key, value) {
+
+        if (
+            localStorage.getItem("shopnow_remember") === "false"
+        ) {
+
+            sessionStorage.setItem(key, value);
+
+        } else {
+
+            localStorage.setItem(key, value);
+
         }
-    );
+
+    },
+
+    removeItem(key) {
+
+        localStorage.removeItem(key);
+        sessionStorage.removeItem(key);
+
+    }
+
+};
+
+
+const sb = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+        auth: {
+
+            storage: rememberAdapter,
+
+            storageKey: "shopnow-auth",
+
+            persistSession: true,
+
+            autoRefreshToken: true,
+
+            detectSessionInUrl: true
+
+        }
+    }
+);
 
 
 /* =========================================================
-   2. ELEMENTS
+   CONSTANTS
 ========================================================= */
 
-const authPage =
-    document.getElementById("authPage");
+const RETURN_KEY =
+    "shopnow_return_to";
 
-const dashboard =
-    document.getElementById("dashboard");
+const REGISTERED_KEY =
+    "shop_now_registered_v3";
 
-const signupSection =
-    document.getElementById("signupSection");
+const REMEMBER_KEY =
+    "shopnow_remember";
 
-const loginSection =
-    document.getElementById("loginSection");
 
-const completeGoogle =
-    document.getElementById("completeGoogle");
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
-const signupTab =
-    document.getElementById("signupTab");
+const shell =
+    document.getElementById("shell");
 
-const loginTab =
-    document.getElementById("loginTab");
+const dash =
+    document.getElementById("dash");
 
-const message =
-    document.getElementById("message");
+const msgEl =
+    document.getElementById("msg");
 
 const loading =
     document.getElementById("loading");
 
 const loadingText =
-    document.getElementById("loadingText");
+    document.getElementById("loading-text");
+
+const redirectNote =
+    document.getElementById("redirect-note");
 
 
 /* =========================================================
-   3. LOCAL STORAGE
+   HELPERS
 ========================================================= */
 
-const REGISTERED_KEY =
-    "shop_now_registered_v2";
+function setMsg(text, kind = "info") {
 
+    msgEl.textContent = text;
 
-/* =========================================================
-   4. MESSAGE
-========================================================= */
-
-function showMessage(text, type = "info") {
-
-    message.textContent = text;
-
-    message.className =
-        "message show " + type;
-
-}
-
-function clearMessage() {
-
-    message.textContent = "";
-
-    message.className =
-        "message";
+    msgEl.className =
+        "msg show " + kind;
 
 }
 
 
-/* =========================================================
-   5. LOADING
-========================================================= */
+function clearMsg() {
+
+    msgEl.textContent = "";
+
+    msgEl.className = "msg";
+
+}
+
 
 function setLoading(
-    show,
-    text = "Please wait..."
+    on,
+    text = "Please wait…"
 ) {
 
     loadingText.textContent = text;
 
-    if (show) {
-
-        loading.classList.add("show");
-
-    } else {
-
-        loading.classList.remove("show");
-
-    }
+    loading.classList.toggle(
+        "active",
+        on
+    );
 
 }
 
 
 /* =========================================================
-   6. PASSWORD SHOW/HIDE
+   PASSWORD EYE
 ========================================================= */
 
-function togglePassword(
-    inputId,
-    button
-) {
+function togglePw(inputId, btn) {
 
     const input =
         document.getElementById(inputId);
 
-    if (input.type === "password") {
+    const show =
+        input.type === "password";
 
-        input.type = "text";
+    input.type =
+        show ? "text" : "password";
 
-        button.textContent = "🙈";
 
-    } else {
+    btn.innerHTML = show
 
-        input.type = "password";
+        ? `
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
 
-        button.textContent = "👁";
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+
+            </svg>
+        `
+
+        : `
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="3"/>
+
+            </svg>
+        `;
+
+}
+
+
+document
+    .querySelectorAll(".eye-btn")
+    .forEach(btn => {
+
+        const input =
+            btn.previousElementSibling;
+
+        btn.innerHTML = `
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="3"/>
+
+            </svg>
+        `;
+
+    });
+
+
+/* =========================================================
+   VIEW SWITCHING
+========================================================= */
+
+function showView(name) {
+
+    clearMsg();
+
+    document
+        .querySelectorAll(".view")
+        .forEach(view => {
+
+            view.classList.remove("active");
+
+        });
+
+
+    const target =
+        document.getElementById(
+            "view-" + name
+        );
+
+
+    if (target) {
+
+        target.classList.add("active");
+
+    }
+
+
+    const tabs =
+        document.getElementById("mainTabs");
+
+
+    tabs.style.display =
+        (
+            name === "signup" ||
+            name === "login"
+        )
+            ? ""
+            : "none";
+
+
+    if (
+        name === "signup" ||
+        name === "login"
+    ) {
+
+        document
+            .querySelectorAll(
+                "#mainTabs .tab"
+            )
+            .forEach(tab => {
+
+                tab.classList.toggle(
+                    "active",
+                    tab.dataset.mode === name
+                );
+
+            });
 
     }
 
 }
 
 
+function switchMainTab(mode) {
+
+    shell.style.display = "flex";
+
+    dash.classList.remove("active");
+
+    showView(mode);
+
+}
+
+
 /* =========================================================
-   7. USERNAME VALIDATION
+   RETURN-TO
 ========================================================= */
 
-function validateUsername(username) {
+(function captureReturn() {
 
-    username =
-        username.trim();
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    if (username.length < 3) {
+
+    const redirect =
+        params.get("redirect");
+
+
+    if (redirect) {
+
+        sessionStorage.setItem(
+            RETURN_KEY,
+            redirect
+        );
+
+        return;
+
+    }
+
+
+    if (document.referrer) {
+
+        try {
+
+            const ref =
+                new URL(
+                    document.referrer
+                );
+
+
+            if (
+                ref.origin ===
+                    window.location.origin &&
+                ref.pathname !==
+                    window.location.pathname
+            ) {
+
+                sessionStorage.setItem(
+                    RETURN_KEY,
+                    ref.href
+                );
+
+            }
+
+        } catch (_) {}
+
+    }
+
+})();
+
+
+function getReturnTo() {
+
+    return sessionStorage.getItem(
+        RETURN_KEY
+    );
+
+}
+
+
+function clearReturnTo() {
+
+    sessionStorage.removeItem(
+        RETURN_KEY
+    );
+
+}
+
+
+/* =========================================================
+   USERNAME VALIDATION
+========================================================= */
+
+function validateUsername(name) {
+
+    name =
+        (name || "")
+            .trim();
+
+
+    if (name.length < 3) {
 
         throw new Error(
-            "Username must contain at least 3 characters."
+            "Username must be at least 3 characters."
         );
 
     }
 
+
     if (
-        !/^[a-zA-Z0-9_]+$/.test(username)
+        !/^[a-zA-Z0-9_]+$/.test(name)
     ) {
 
         throw new Error(
-            "Username can only contain letters, numbers and underscores."
+            "Username can only use letters, numbers and underscores."
         );
 
     }
 
-    return username;
+
+    return name;
 
 }
 
 
 /* =========================================================
-   8. SHOW SIGNUP
+   PHONE VALIDATION
 ========================================================= */
 
-function showSignup() {
+function normalizePhone(phone) {
 
-    clearMessage();
-
-    signupSection.classList.remove("hidden");
-    loginSection.classList.add("hidden");
-    completeGoogle.classList.remove("show");
-
-    signupTab.classList.add("active");
-    loginTab.classList.remove("active");
-
-}
+    phone =
+        (phone || "")
+            .replace(/\s+/g, "")
+            .replace(/-/g, "")
+            .trim();
 
 
-/* =========================================================
-   9. SHOW LOGIN
-========================================================= */
+    if (
+        !/^\+\d{6,15}$/.test(phone)
+    ) {
 
-function showLogin() {
+        throw new Error(
+            "Enter your phone in international format, e.g. +256700000000."
+        );
 
-    clearMessage();
+    }
 
-    signupSection.classList.add("hidden");
-    loginSection.classList.remove("hidden");
-    completeGoogle.classList.remove("show");
 
-    signupTab.classList.remove("active");
-    loginTab.classList.add("active");
+    return phone;
 
 }
 
 
 /* =========================================================
-   10. GET PROFILE
+   PROFILE
 ========================================================= */
 
 async function getProfile(userId) {
 
-    const { data, error } =
-        await supabaseClient
-            .from("profiles")
-            .select(
-                "id, username, email, created_at"
-            )
-            .eq("id", userId)
-            .maybeSingle();
+    const {
+        data,
+        error
+    } = await sb
+        .from("profiles")
+        .select(
+            "id, username, email, phone, created_at"
+        )
+        .eq("id", userId)
+        .maybeSingle();
+
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "Profile fetch error:",
+            error
+        );
 
         return null;
 
     }
+
 
     return data;
 
 }
 
 
-/* =========================================================
-   11. SAVE PROFILE
-========================================================= */
-
 async function saveProfile(
     user,
-    username
+    username,
+    phone = null
 ) {
 
-    const email =
-        user.email || null;
+    const row = {
 
-    const { error } =
-        await supabaseClient
-            .from("profiles")
-            .upsert(
-                {
-                    id: user.id,
-                    username: username,
-                    email: email
-                },
-                {
-                    onConflict: "id"
-                }
-            );
+        id: user.id,
+
+        username: username,
+
+        email:
+            user.email ||
+            null,
+
+        phone:
+            phone ||
+            user.phone ||
+            null
+
+    };
+
+
+    const {
+        error
+    } = await sb
+        .from("profiles")
+        .upsert(
+            row,
+            {
+                onConflict: "id"
+            }
+        );
+
 
     if (error) {
 
@@ -1587,80 +2001,153 @@ async function saveProfile(
 
 
 /* =========================================================
-   12. SIGN UP
+   REMEMBER ME
+========================================================= */
+
+function applyRememberPreference(
+    remember
+) {
+
+    localStorage.setItem(
+        REMEMBER_KEY,
+        remember
+            ? "true"
+            : "false"
+    );
+
+}
+
+
+if (
+    localStorage.getItem(
+        REMEMBER_KEY
+    ) === null
+) {
+
+    applyRememberPreference(true);
+
+}
+
+
+document
+    .getElementById("li-remember")
+    .addEventListener(
+        "change",
+        event => {
+
+            applyRememberPreference(
+                event.target.checked
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   SIGN UP
+   EMAIL + PHONE + PASSWORD
+   NO OTP
 ========================================================= */
 
 document
-    .getElementById("signupForm")
+    .getElementById("form-signup")
     .addEventListener(
         "submit",
-        async function(event) {
+        async event => {
 
             event.preventDefault();
 
-            clearMessage();
+            clearMsg();
 
-            const button =
-                document.getElementById("signupBtn");
+
+            const btn =
+                document.getElementById(
+                    "su-btn"
+                );
+
+
+            btn.disabled = true;
+
 
             try {
 
                 const username =
                     validateUsername(
-                        document
-                            .getElementById(
-                                "signupUsername"
-                            )
-                            .value
+                        document.getElementById(
+                            "su-username"
+                        ).value
                     );
 
 
                 const email =
-                    document
-                        .getElementById(
-                            "signupEmail"
-                        )
-                        .value
-                        .trim()
-                        .toLowerCase();
+                    document.getElementById(
+                        "su-email"
+                    )
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+
+                const phone =
+                    normalizePhone(
+                        document.getElementById(
+                            "su-phone"
+                        ).value
+                    );
 
 
                 const password =
-                    document
-                        .getElementById(
-                            "signupPassword"
-                        )
-                        .value;
+                    document.getElementById(
+                        "su-password"
+                    ).value;
 
 
-                if (password.length < 6) {
+                if (
+                    password.length < 6
+                ) {
 
                     throw new Error(
-                        "Password must contain at least 6 characters."
+                        "Password must be at least 6 characters."
                     );
 
                 }
 
 
-                button.disabled = true;
-
                 setLoading(
                     true,
-                    "Creating your account..."
+                    "Creating your account…"
                 );
 
 
-                const { data, error } =
-                    await supabaseClient.auth.signUp({
+                /*
+                 * IMPORTANT:
+                 *
+                 * Phone is NOT sent to Supabase
+                 * Auth as an authentication phone.
+                 *
+                 * It is simply stored in profiles.
+                 *
+                 * Therefore there is NO PHONE OTP.
+                 */
 
-                        email: email,
+                const {
+                    data,
+                    error
+                } =
+                    await sb.auth.signUp({
 
-                        password: password,
+                        email,
+
+                        password,
 
                         options: {
 
                             data: {
-                                username: username
+
+                                username,
+
+                                phone
+
                             }
 
                         }
@@ -1675,65 +2162,74 @@ document
                 }
 
 
-                /*
-                   Remember successful signup
-                   on this browser.
-                */
-
-                localStorage.setItem(
-                    REGISTERED_KEY,
-                    "1"
-                );
-
-
-                /*
-                   If Supabase immediately creates
-                   a session, save profile.
-                */
-
                 if (
                     data.user &&
                     data.session
                 ) {
 
+                    /*
+                     * Email confirmation is OFF.
+                     * User is immediately logged in.
+                     */
+
                     await saveProfile(
+                        data.user,
+                        username,
+                        phone
+                    );
+
+
+                    localStorage.setItem(
+                        REGISTERED_KEY,
+                        "1"
+                    );
+
+
+                    await goToDashboard(
                         data.user,
                         username
                     );
 
 
-                    await showDashboard(
-                        data.user,
-                        username
+                } else if (
+                    data.user &&
+                    !data.session
+                ) {
+
+                    /*
+                     * This normally means
+                     * Supabase email confirmation
+                     * is still enabled.
+                     */
+
+                    setMsg(
+                        "Account created, but email confirmation is still enabled in Supabase. Disable Confirm email in Supabase Authentication settings.",
+                        "error"
                     );
 
                 } else {
 
-                    /*
-                       Email confirmation is probably ON.
-                    */
-
-                    showLogin();
-
-                    showMessage(
-                        "Account created. Check your email to confirm your account, then log in.",
-                        "success"
+                    throw new Error(
+                        "Account could not be created."
                     );
 
                 }
 
-            } catch (error) {
 
-                console.error(error);
+            } catch (err) {
 
-                showMessage(
-                    friendlyError(error),
+                console.error(
+                    err
+                );
+
+                setMsg(
+                    friendlyError(err),
                     "error"
                 );
 
             } finally {
 
-                button.disabled = false;
+                btn.disabled = false;
 
                 setLoading(false);
 
@@ -1744,59 +2240,75 @@ document
 
 
 /* =========================================================
-   13. LOGIN
+   EMAIL LOGIN
 ========================================================= */
 
 document
-    .getElementById("loginForm")
+    .getElementById("form-login")
     .addEventListener(
         "submit",
-        async function(event) {
+        async event => {
 
             event.preventDefault();
 
-            clearMessage();
+            clearMsg();
 
-            const button =
-                document.getElementById("loginBtn");
+
+            const btn =
+                document.getElementById(
+                    "li-btn"
+                );
+
+
+            btn.disabled = true;
+
 
             try {
 
                 const email =
-                    document
-                        .getElementById(
-                            "loginEmail"
-                        )
-                        .value
-                        .trim()
-                        .toLowerCase();
+                    document.getElementById(
+                        "li-email"
+                    )
+                    .value
+                    .trim()
+                    .toLowerCase();
 
 
                 const password =
-                    document
-                        .getElementById(
-                            "loginPassword"
-                        )
-                        .value;
+                    document.getElementById(
+                        "li-password"
+                    )
+                    .value;
 
 
-                button.disabled = true;
+                const remember =
+                    document.getElementById(
+                        "li-remember"
+                    ).checked;
 
-                setLoading(
-                    true,
-                    "Logging you in..."
+
+                applyRememberPreference(
+                    remember
                 );
 
 
-                const { data, error } =
-                    await supabaseClient.auth
-                        .signInWithPassword({
+                setLoading(
+                    true,
+                    "Signing you in…"
+                );
 
-                            email: email,
 
-                            password: password
+                const {
+                    data,
+                    error
+                } =
+                    await sb.auth.signInWithPassword({
 
-                        });
+                        email,
+
+                        password
+
+                    });
 
 
                 if (error) {
@@ -1806,22 +2318,25 @@ document
                 }
 
 
-                await showDashboard(
+                await goToDashboard(
                     data.user
                 );
 
-            } catch (error) {
 
-                console.error(error);
+            } catch (err) {
 
-                showMessage(
-                    friendlyError(error),
+                console.error(
+                    err
+                );
+
+                setMsg(
+                    friendlyError(err),
                     "error"
                 );
 
             } finally {
 
-                button.disabled = false;
+                btn.disabled = false;
 
                 setLoading(false);
 
@@ -1832,36 +2347,41 @@ document
 
 
 /* =========================================================
-   14. GOOGLE LOGIN / SIGNUP
+   GOOGLE
 ========================================================= */
 
- 
 async function googleAuth() {
-    clearMessage();
+
+    clearMsg();
+
 
     try {
-        setLoading(true, "Connecting to Google...");
 
-        // Remember the page the user came from
-        const returnTo = sessionStorage.getItem("shopNowReturnTo")
-            || "index.html";
+        setLoading(
+            true,
+            "Connecting to Google…"
+        );
 
-        const { error } = await supabaseClient.auth.signInWithOAuth({
-            provider: "google",
-            options: {
-                redirectTo: window.location.origin + "/" + returnTo
-            }
-        });
 
-        if (error) throw error;
+        const redirectTo =
+            window.location.origin +
+            window.location.pathname;
 
-    } catch (error) {
-        console.error(error);
-        showMessage(friendlyError(error), "error");
-        setLoading(false);
-    }
-}
 
+        const {
+            error
+        } =
+            await sb.auth.signInWithOAuth({
+
+                provider: "google",
+
+                options: {
+
+                    redirectTo
+
+                }
+
+            });
 
 
         if (error) {
@@ -1870,12 +2390,15 @@ async function googleAuth() {
 
         }
 
-    } catch (error) {
 
-        console.error(error);
+    } catch (err) {
 
-        showMessage(
-            friendlyError(error),
+        console.error(
+            err
+        );
+
+        setMsg(
+            friendlyError(err),
             "error"
         );
 
@@ -1887,23 +2410,30 @@ async function googleAuth() {
 
 
 /* =========================================================
-   15. GOOGLE PROFILE
+   GOOGLE PROFILE COMPLETION
 ========================================================= */
 
 document
-    .getElementById("googleProfileForm")
+    .getElementById(
+        "form-google-profile"
+    )
     .addEventListener(
         "submit",
-        async function(event) {
+        async event => {
 
             event.preventDefault();
 
-            clearMessage();
+            clearMsg();
 
-            const button =
+
+            const btn =
                 document.getElementById(
-                    "googleProfileBtn"
+                    "gp-btn"
                 );
+
+
+            btn.disabled = true;
+
 
             try {
 
@@ -1912,14 +2442,13 @@ document
                         user
                     }
                 } =
-                    await supabaseClient.auth
-                        .getUser();
+                    await sb.auth.getUser();
 
 
                 if (!user) {
 
                     throw new Error(
-                        "Google account session was not found."
+                        "Session not found. Please sign in again."
                     );
 
                 }
@@ -1927,39 +2456,40 @@ document
 
                 const username =
                     validateUsername(
-                        document
-                            .getElementById(
-                                "googleUsername"
-                            )
-                            .value
+                        document.getElementById(
+                            "gp-username"
+                        ).value
                     );
 
 
-                button.disabled = true;
+                const phone =
+                    normalizePhone(
+                        document.getElementById(
+                            "gp-phone"
+                        ).value
+                    );
+
 
                 setLoading(
                     true,
-                    "Saving your account..."
+                    "Saving your account…"
                 );
 
 
-                /*
-                   Save username into auth metadata
-                */
-
                 const {
-                    error:
-                        updateError
+                    error: updateError
                 } =
-                    await supabaseClient.auth
-                        .updateUser({
+                    await sb.auth.updateUser({
 
-                            data: {
-                                username:
-                                    username
-                            }
+                        data: {
 
-                        });
+                            username,
+
+                            phone
+
+                        }
+
+                    });
 
 
                 if (updateError) {
@@ -1969,13 +2499,10 @@ document
                 }
 
 
-                /*
-                   Save profile in database
-                */
-
                 await saveProfile(
                     user,
-                    username
+                    username,
+                    phone
                 );
 
 
@@ -1985,23 +2512,26 @@ document
                 );
 
 
-                await showDashboard(
+                await goToDashboard(
                     user,
                     username
                 );
 
-            } catch (error) {
 
-                console.error(error);
+            } catch (err) {
 
-                showMessage(
-                    friendlyError(error),
+                console.error(
+                    err
+                );
+
+                setMsg(
+                    friendlyError(err),
                     "error"
                 );
 
             } finally {
 
-                button.disabled = false;
+                btn.disabled = false;
 
                 setLoading(false);
 
@@ -2012,34 +2542,267 @@ document
 
 
 /* =========================================================
-   16. HANDLE SESSION
+   FORGOT PASSWORD
+========================================================= */
+
+document
+    .getElementById("form-forgot")
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+            clearMsg();
+
+
+            const btn =
+                document.getElementById(
+                    "fp-btn"
+                );
+
+
+            btn.disabled = true;
+
+
+            try {
+
+                const email =
+                    document.getElementById(
+                        "fp-email"
+                    )
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+
+                setLoading(
+                    true,
+                    "Sending reset link…"
+                );
+
+
+                const {
+                    error
+                } =
+                    await sb.auth.resetPasswordForEmail(
+                        email,
+                        {
+
+                            redirectTo:
+                                window.location.origin +
+                                window.location.pathname +
+                                "?mode=recovery"
+
+                        }
+                    );
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                showView("login");
+
+
+                setMsg(
+                    "If that email is registered, a reset link is on its way.",
+                    "ok"
+                );
+
+
+            } catch (err) {
+
+                console.error(
+                    err
+                );
+
+                setMsg(
+                    friendlyError(err),
+                    "error"
+                );
+
+            } finally {
+
+                btn.disabled = false;
+
+                setLoading(false);
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   RESET PASSWORD
+========================================================= */
+
+document
+    .getElementById("form-reset")
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+            clearMsg();
+
+
+            const btn =
+                document.getElementById(
+                    "rp-btn"
+                );
+
+
+            btn.disabled = true;
+
+
+            try {
+
+                const password =
+                    document.getElementById(
+                        "rp-password"
+                    ).value;
+
+
+                const confirm =
+                    document.getElementById(
+                        "rp-confirm"
+                    ).value;
+
+
+                if (
+                    password.length < 6
+                ) {
+
+                    throw new Error(
+                        "Password must be at least 6 characters."
+                    );
+
+                }
+
+
+                if (
+                    password !== confirm
+                ) {
+
+                    throw new Error(
+                        "Passwords don't match."
+                    );
+
+                }
+
+
+                setLoading(
+                    true,
+                    "Updating password…"
+                );
+
+
+                const {
+                    error
+                } =
+                    await sb.auth.updateUser({
+
+                        password
+
+                    });
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                await sb.auth.signOut();
+
+
+                showView("login");
+
+
+                setMsg(
+                    "Password updated. Please log in with your new password.",
+                    "ok"
+                );
+
+
+            } catch (err) {
+
+                console.error(
+                    err
+                );
+
+                setMsg(
+                    friendlyError(err),
+                    "error"
+                );
+
+            } finally {
+
+                btn.disabled = false;
+
+                setLoading(false);
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   SESSION HANDLING
 ========================================================= */
 
 async function handleSession(
     session
 ) {
 
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const isRecovery =
+        params.get("mode") === "recovery";
+
+
+    if (
+        isRecovery &&
+        session &&
+        session.user
+    ) {
+
+        shell.style.display = "flex";
+
+        dash.classList.remove("active");
+
+        showView("reset");
+
+        return;
+
+    }
+
+
     /*
-       No active user
-    */
+     * NO SESSION
+     */
 
     if (
         !session ||
         !session.user
     ) {
 
-        authPage.style.display =
-            "flex";
+        shell.style.display = "flex";
 
-        dashboard.classList.remove(
-            "show"
-        );
+        dash.classList.remove("active");
 
-
-        /*
-           If this browser has already
-           registered, don't show signup.
-        */
 
         if (
             localStorage.getItem(
@@ -2047,21 +2810,14 @@ async function handleSession(
             ) === "1"
         ) {
 
-            signupTab.classList.add(
-                "hidden"
-            );
-
-            showLogin();
+            showView("login");
 
         } else {
 
-            signupTab.classList.remove(
-                "hidden"
-            );
-
-            showSignup();
+            showView("signup");
 
         }
+
 
         return;
 
@@ -2072,109 +2828,74 @@ async function handleSession(
         session.user;
 
 
-    /*
-       Get profile
-    */
-
-    let profile =
+    const profile =
         await getProfile(
             user.id
         );
 
 
     /*
-       Google account without
-       username
-    */
+     * GOOGLE ACCOUNT
+     *
+     * If Google account has no profile,
+     * ask for username + phone.
+     */
+
+    const provider =
+        user.app_metadata?.provider;
+
 
     if (
-        user.app_metadata?.provider === "google" &&
+        provider === "google" &&
         (
             !profile ||
-            !profile.username
+            !profile.username ||
+            !profile.phone
         )
     ) {
 
-        authPage.style.display =
-            "flex";
+        shell.style.display = "flex";
 
-        dashboard.classList.remove(
-            "show"
+        dash.classList.remove("active");
+
+        showView(
+            "google-profile"
         );
 
 
-        signupSection.classList.add(
-            "hidden"
-        );
-
-        loginSection.classList.add(
-            "hidden"
-        );
-
-        completeGoogle.classList.add(
-            "show"
-        );
-
-
-        signupTab.classList.add(
-            "hidden"
-        );
-
-        loginTab.classList.add(
-            "hidden"
-        );
-
-
-        /*
-           Suggest username from Google.
-        */
-
-        const metadata =
+        const meta =
             user.user_metadata || {};
 
-        let suggested =
-            metadata.full_name ||
-            metadata.name ||
-            user.email?.split("@")[0] ||
-            "";
 
-
-        suggested =
-            suggested
-                .replace(
-                    /\s+/g,
-                    "_"
-                )
-                .replace(
-                    /[^a-zA-Z0-9_]/g,
-                    ""
-                )
-                .substring(
-                    0,
-                    30
-                );
-
-
-        document
-            .getElementById(
-                "googleUsername"
+        const suggested =
+            (
+                meta.full_name ||
+                meta.name ||
+                user.email?.split("@")[0] ||
+                ""
             )
-            .value =
-                suggested;
+            .replace(/\s+/g, "_")
+            .replace(
+                /[^a-zA-Z0-9_]/g,
+                ""
+            )
+            .substring(
+                0,
+                30
+            );
 
 
-        setLoading(false);
+        document.getElementById(
+            "gp-username"
+        ).value = suggested;
+
 
         return;
 
     }
 
 
-    /*
-       Already complete
-    */
-
-    await showDashboard(
+    await goToDashboard(
         user,
         profile?.username
     );
@@ -2183,10 +2904,10 @@ async function handleSession(
 
 
 /* =========================================================
-   17. DASHBOARD
+   DASHBOARD
 ========================================================= */
 
-async function showDashboard(
+async function goToDashboard(
     user,
     suppliedUsername = null
 ) {
@@ -2210,34 +2931,111 @@ async function showDashboard(
         "—";
 
 
-    document
-        .getElementById(
-            "dashboardUsername"
-        )
-        .textContent =
-            username;
+    const phone =
+        profile?.phone ||
+        user.user_metadata?.phone ||
+        user.phone ||
+        "—";
 
 
-    document
-        .getElementById(
-            "dashboardEmail"
-        )
-        .textContent =
-            email;
+    document.getElementById(
+        "dash-username"
+    ).textContent =
+        username;
 
 
-    authPage.style.display =
+    document.getElementById(
+        "dash-email"
+    ).textContent =
+        email;
+
+
+    document.getElementById(
+        "dash-phone"
+    ).textContent =
+        phone;
+
+
+    const initial =
+        username
+            .trim()
+            .charAt(0)
+            .toUpperCase();
+
+
+    document.getElementById(
+        "dash-avatar"
+    ).textContent =
+        initial;
+
+
+    shell.style.display =
         "none";
 
-    dashboard.classList.add(
-        "show"
+
+    dash.classList.add(
+        "active"
     );
+
+
+    localStorage.setItem(
+        REGISTERED_KEY,
+        "1"
+    );
+
+
+    /*
+     * RETURN TO ORIGINAL PAGE
+     */
+
+    const returnTo =
+        getReturnTo();
+
+
+    if (returnTo) {
+
+        clearReturnTo();
+
+
+        const cont =
+            document.getElementById(
+                "dash-continue"
+            );
+
+
+        cont.href =
+            returnTo;
+
+
+        redirectNote.style.display =
+            "block";
+
+
+        setTimeout(
+            () => {
+
+                window.location.href =
+                    returnTo;
+
+            },
+            1600
+        );
+
+
+    } else {
+
+        document.getElementById(
+            "dash-continue"
+        ).href =
+            "fashion.html";
+
+    }
 
 }
 
 
 /* =========================================================
-   18. LOGOUT
+   LOGOUT
 ========================================================= */
 
 async function logout() {
@@ -2246,13 +3044,14 @@ async function logout() {
 
         setLoading(
             true,
-            "Logging out..."
+            "Signing out…"
         );
 
 
-        const { error } =
-            await supabaseClient.auth
-                .signOut();
+        const {
+            error
+        } =
+            await sb.auth.signOut();
 
 
         if (error) {
@@ -2262,47 +3061,35 @@ async function logout() {
         }
 
 
-        dashboard.classList.remove(
-            "show"
+        dash.classList.remove(
+            "active"
         );
 
-        authPage.style.display =
+
+        shell.style.display =
             "flex";
 
 
-        /*
-           User has registered before,
-           so keep signup hidden.
-        */
+        showView("login");
 
-        signupTab.classList.add(
-            "hidden"
+
+        setMsg(
+            "You've been signed out.",
+            "ok"
         );
 
 
-        showLogin();
+    } catch (err) {
 
-
-        document
-            .getElementById(
-                "loginForm"
-            )
-            .reset();
-
-
-        showMessage(
-            "You have been logged out.",
-            "success"
+        console.error(
+            err
         );
 
-    } catch (error) {
-
-        console.error(error);
-
-        showMessage(
-            friendlyError(error),
+        setMsg(
+            friendlyError(err),
             "error"
         );
+
 
     } finally {
 
@@ -2314,92 +3101,127 @@ async function logout() {
 
 
 /* =========================================================
-   19. ERROR MESSAGES
+   FRIENDLY ERRORS
 ========================================================= */
 
-function friendlyError(
-    error
-) {
+function friendlyError(err) {
 
     const raw =
         String(
-            error?.message ||
-            error ||
+            err?.message ||
+            err ||
             ""
         );
 
 
-    const lower =
+    const low =
         raw.toLowerCase();
 
 
     if (
-        lower.includes(
+        low.includes(
             "invalid login credentials"
         )
     ) {
 
-        return (
-            "Incorrect email or password."
-        );
+        return "Incorrect email or password.";
 
     }
 
 
     if (
-        lower.includes(
-            "user already registered"
-        ) ||
-        lower.includes(
-            "already registered"
-        )
-    ) {
-
-        return (
-            "This email is already registered. Please log in."
-        );
-
-    }
-
-
-    if (
-        lower.includes(
-            "duplicate"
-        ) &&
-        lower.includes(
-            "username"
-        )
-    ) {
-
-        return (
-            "That username is already taken."
-        );
-
-    }
-
-
-    if (
-        lower.includes(
-            "redirect"
-        )
-    ) {
-
-        return (
-            "Google sign-in needs the correct redirect URL in Supabase."
-        );
-
-    }
-
-
-    if (
-        lower.includes(
+        low.includes(
             "email not confirmed"
         )
     ) {
 
-        return (
-            "Please confirm your email before logging in."
-        );
+        return "Email confirmation is enabled in Supabase. Disable Confirm email in Authentication settings.";
+
+    }
+
+
+    if (
+        low.includes(
+            "user already registered"
+        )
+    ) {
+
+        return "This email is already registered. Log in instead.";
+
+    }
+
+
+    if (
+        low.includes(
+            "duplicate"
+        ) &&
+        low.includes(
+            "username"
+        )
+    ) {
+
+        return "That username is already taken.";
+
+    }
+
+
+    if (
+        low.includes(
+            "duplicate"
+        ) &&
+        low.includes(
+            "phone"
+        )
+    ) {
+
+        return "That phone number is already registered.";
+
+    }
+
+
+    if (
+        low.includes(
+            "redirect"
+        )
+    ) {
+
+        return "Google sign-in needs the correct redirect URL in Supabase.";
+
+    }
+
+
+    if (
+        low.includes(
+            "rate limit"
+        )
+    ) {
+
+        return "Too many attempts. Wait a moment and try again.";
+
+    }
+
+
+    if (
+        low.includes(
+            "password should"
+        )
+    ) {
+
+        return "Password is too weak.";
+
+    }
+
+
+    if (
+        low.includes(
+            "row-level security"
+        ) ||
+        low.includes(
+            "permission denied"
+        )
+    ) {
+
+        return "Your account was created, but the profile could not be saved. Check the profiles table permissions in Supabase.";
 
     }
 
@@ -2413,39 +3235,57 @@ function friendlyError(
 
 
 /* =========================================================
-   20. AUTH STATE LISTENER
+   AUTH EVENTS
 ========================================================= */
 
-supabaseClient.auth
-    .onAuthStateChange(
-        (event, session) => {
+sb.auth.onAuthStateChange(
+    (event, session) => {
 
-            setTimeout(
-                () => {
+        if (
+            event ===
+            "PASSWORD_RECOVERY"
+        ) {
 
-                    handleSession(
-                        session
-                    );
+            shell.style.display =
+                "flex";
 
-                },
-                0
+            dash.classList.remove(
+                "active"
             );
 
+            showView("reset");
+
+            return;
+
         }
-    );
+
+
+        setTimeout(
+            () => {
+
+                handleSession(
+                    session
+                );
+
+            },
+            0
+        );
+
+    }
+);
 
 
 /* =========================================================
-   21. INITIAL LOAD
+   BOOT
 ========================================================= */
 
-async function initialise() {
+async function boot() {
 
     try {
 
         setLoading(
             true,
-            "Loading SHOP NOW..."
+            "Loading SHOP NOW…"
         );
 
 
@@ -2453,8 +3293,7 @@ async function initialise() {
             data,
             error
         } =
-            await supabaseClient.auth
-                .getSession();
+            await sb.auth.getSession();
 
 
         if (error) {
@@ -2468,14 +3307,18 @@ async function initialise() {
             data.session
         );
 
-    } catch (error) {
 
-        console.error(error);
+    } catch (err) {
 
-        showMessage(
-            "Could not load your account.",
+        console.error(
+            err
+        );
+
+        setMsg(
+            "Couldn't load your account.",
             "error"
         );
+
 
     } finally {
 
@@ -2486,9 +3329,7 @@ async function initialise() {
 }
 
 
-/* START */
-
-initialise();
+boot();
 
 </script>
 
