@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,6 +19,7 @@
 
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth-state.js"></script>
 
 </head>
 
@@ -99,8 +100,8 @@
                         sessionStorage.setItem(
                             'shopNowReturnTo',
                             window.location.pathname
-                            .split('/')
-                            .pop() || 'index.html'
+                                .split('/')
+                                .pop() || 'index.html'
                         )
                     "
                 >
@@ -129,19 +130,16 @@
             SHOP NOW / FASHION
         </span>
 
-
         <h1>
             STYLE<br>
             STARTS HERE.
         </h1>
-
 
         <p>
             Discover trendy fashion,
             stylish outfits and
             everyday essentials.
         </p>
-
 
         <a
             href="#products"
@@ -181,7 +179,6 @@
             ALL FASHION
         </button>
 
-
         <button
             type="button"
             class="category-btn"
@@ -189,7 +186,6 @@
         >
             DRESSES
         </button>
-
 
         <button
             type="button"
@@ -199,7 +195,6 @@
             TROUSERS
         </button>
 
-
         <button
             type="button"
             class="category-btn"
@@ -207,7 +202,6 @@
         >
             SUITS
         </button>
-
 
         <button
             type="button"
@@ -217,7 +211,6 @@
             JACKETS
         </button>
 
-
         <button
             type="button"
             class="category-btn"
@@ -225,7 +218,6 @@
         >
             SHOES
         </button>
-
 
         <button
             type="button"
@@ -1356,45 +1348,11 @@
 
 <script>
 
-
-/* =====================================================
-   SUPABASE CONNECTION
-===================================================== */
-
-const SUPABASE_URL =
-    "https://dawbweoeilojcrnbvnjz.supabase.co";
-
-
-/*
- IMPORTANT:
-
- Replace the value below with the SAME
- Supabase publishable/anon key that was
- already in your old Fashion HTML.
-
- DO NOT use your Google Client Secret.
-
- DO NOT use a Supabase service_role key.
-*/
-
-const SUPABASE_PUBLISHABLE_KEY =
-    "PASTE-YOUR-EXISTING-SUPABASE-PUBLISHABLE-KEY-HERE";
-
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
-
-
-
 /* =====================================================
    CART
 ===================================================== */
 
 let cart = [];
-
 
 
 /* =====================================================
@@ -1406,7 +1364,6 @@ function addCartFromProduct(button){
     const product =
         button.closest(".product");
 
-
     if(!product){
 
         toast(
@@ -1416,18 +1373,15 @@ function addCartFromProduct(button){
         return;
     }
 
-
     const nameElement =
         product.querySelector(
             ".product-name"
         );
 
-
     const priceElement =
         product.querySelector(
             ".price"
         );
-
 
     if(
         !nameElement ||
@@ -1441,12 +1395,10 @@ function addCartFromProduct(button){
         return;
     }
 
-
     const name =
         nameElement
             .textContent
             .trim();
-
 
     const price =
         Number(
@@ -1457,7 +1409,6 @@ function addCartFromProduct(button){
                     ""
                 )
         );
-
 
     if(
         !name ||
@@ -1471,14 +1422,12 @@ function addCartFromProduct(button){
         return;
     }
 
-
     addCart(
         name,
         price
     );
 
 }
-
 
 
 /* =====================================================
@@ -1495,7 +1444,6 @@ function addCart(
             item =>
                 item.name === name
         );
-
 
     if(existing){
 
@@ -1518,9 +1466,7 @@ function addCart(
 
     }
 
-
     updateCart();
-
 
     toast(
         name +
@@ -1528,7 +1474,6 @@ function addCart(
     );
 
 }
-
 
 
 /* =====================================================
@@ -1548,12 +1493,10 @@ function updateCart(){
             0
         );
 
-
     const cartCount =
         document.getElementById(
             "cartCount"
         );
-
 
     if(cartCount){
 
@@ -1562,11 +1505,9 @@ function updateCart(){
 
     }
 
-
     renderCart();
 
 }
-
 
 
 /* =====================================================
@@ -1580,12 +1521,10 @@ function renderCart(){
             "cartItems"
         );
 
-
     const totalElement =
         document.getElementById(
             "cartTotal"
         );
-
 
     if(
         !container ||
@@ -1595,7 +1534,6 @@ function renderCart(){
         return;
 
     }
-
 
     if(
         cart.length === 0
@@ -1611,21 +1549,16 @@ function renderCart(){
 
         `;
 
-
         totalElement.textContent =
             "UGX 0";
-
 
         return;
 
     }
 
-
     let total = 0;
 
-
     container.innerHTML = "";
-
 
     cart.forEach(
         (
@@ -1633,15 +1566,12 @@ function renderCart(){
             index
         ) => {
 
-
             const subtotal =
                 item.price *
                 item.quantity;
 
-
             total +=
                 subtotal;
-
 
             container.innerHTML += `
 
@@ -1672,11 +1602,9 @@ function renderCart(){
                             −
                         </button>
 
-
                         <span>
                             ${item.quantity}
                         </span>
-
 
                         <button
                             type="button"
@@ -1684,7 +1612,6 @@ function renderCart(){
                         >
                             +
                         </button>
-
 
                         <button
                             type="button"
@@ -1703,13 +1630,11 @@ function renderCart(){
         }
     );
 
-
     totalElement.textContent =
         "UGX " +
         total.toLocaleString();
 
 }
-
 
 
 /* =====================================================
@@ -1724,14 +1649,11 @@ function increaseQuantity(index){
 
     }
 
-
     cart[index].quantity++;
-
 
     updateCart();
 
 }
-
 
 
 /* =====================================================
@@ -1746,9 +1668,7 @@ function decreaseQuantity(index){
 
     }
 
-
     cart[index].quantity--;
-
 
     if(
         cart[index].quantity <= 0
@@ -1761,11 +1681,9 @@ function decreaseQuantity(index){
 
     }
 
-
     updateCart();
 
 }
-
 
 
 /* =====================================================
@@ -1780,19 +1698,15 @@ function removeItem(index){
 
     }
 
-
     const removed =
         cart[index].name;
-
 
     cart.splice(
         index,
         1
     );
 
-
     updateCart();
-
 
     toast(
         removed +
@@ -1800,7 +1714,6 @@ function removeItem(index){
     );
 
 }
-
 
 
 /* =====================================================
@@ -1814,7 +1727,6 @@ function openCart(){
             "cart"
         );
 
-
     if(cartElement){
 
         cartElement.classList.add(
@@ -1824,7 +1736,6 @@ function openCart(){
     }
 
 }
-
 
 
 /* =====================================================
@@ -1838,7 +1749,6 @@ function closeCart(){
             "cart"
         );
 
-
     if(cartElement){
 
         cartElement.classList.remove(
@@ -1848,63 +1758,6 @@ function closeCart(){
     }
 
 }
-
-
-
-/* =====================================================
-   CHECK USER LOGIN
-===================================================== */
-
-async function checkUserLogin(){
-
-    try{
-
-        const {
-            data: {
-                session
-            }
-        } =
-        await supabaseClient
-            .auth
-            .getSession();
-
-
-        const authButton =
-            document.getElementById(
-                "authButton"
-            );
-
-
-        if(!authButton){
-
-            return;
-
-        }
-
-
-        if(session){
-
-            authButton.style.display =
-                "none";
-
-        }else{
-
-            authButton.style.display =
-                "inline-block";
-
-        }
-
-    }catch(error){
-
-        console.error(
-            "Login check error:",
-            error
-        );
-
-    }
-
-}
-
 
 
 /* =====================================================
@@ -1940,7 +1793,7 @@ async function placeOrder(){
         },
         error: sessionError
     } =
-    await supabaseClient
+    await shopNowSupabase
         .auth
         .getSession();
 
@@ -1951,11 +1804,9 @@ async function placeOrder(){
             sessionError
         );
 
-
         toast(
             "Could not check login status ❌"
         );
-
 
         return;
 
@@ -1972,7 +1823,6 @@ async function placeOrder(){
             "Please login before ordering 🔐"
         );
 
-
         sessionStorage.setItem(
             "shopNowReturnTo",
             window.location.pathname
@@ -1980,7 +1830,6 @@ async function placeOrder(){
                 .pop() ||
             "index.html"
         );
-
 
         setTimeout(
             () => {
@@ -1991,7 +1840,6 @@ async function placeOrder(){
             },
             1000
         );
-
 
         return;
 
@@ -2047,7 +1895,6 @@ async function placeOrder(){
             .trim();
 
 
-
     /*
      Validate information
     */
@@ -2085,13 +1932,11 @@ async function placeOrder(){
     }
 
 
-
     /*
      Calculate total
     */
 
     let total = 0;
-
 
     cart.forEach(
         item => {
@@ -2104,7 +1949,6 @@ async function placeOrder(){
     );
 
 
-
     /*
      Disable button
     */
@@ -2114,18 +1958,15 @@ async function placeOrder(){
             "placeOrderButton"
         );
 
-
     if(orderButton){
 
         orderButton.disabled =
             true;
 
-
         orderButton.textContent =
             "Placing Order...";
 
     }
-
 
 
     /*
@@ -2153,7 +1994,6 @@ async function placeOrder(){
         );
 
 
-
     /*
      SEND ORDER TO SUPABASE
     */
@@ -2162,7 +2002,7 @@ async function placeOrder(){
         data,
         error
     } =
-    await supabaseClient
+    await shopNowSupabase
         .from("orders")
         .insert([
 
@@ -2201,7 +2041,6 @@ async function placeOrder(){
         .single();
 
 
-
     /*
      Error
     */
@@ -2213,28 +2052,23 @@ async function placeOrder(){
             error
         );
 
-
         toast(
             "Order failed. Please try again ❌"
         );
-
 
         if(orderButton){
 
             orderButton.disabled =
                 false;
 
-
             orderButton.textContent =
                 "Place Order →";
 
         }
 
-
         return;
 
     }
-
 
 
     /*
@@ -2245,16 +2079,13 @@ async function placeOrder(){
         data.order_number;
 
 
-
     /*
      Clear cart
     */
 
     cart = [];
 
-
     updateCart();
-
 
 
     /*
@@ -2296,7 +2127,6 @@ async function placeOrder(){
         .value = "";
 
 
-
     /*
      Restore button
     */
@@ -2306,12 +2136,10 @@ async function placeOrder(){
         orderButton.disabled =
             false;
 
-
         orderButton.textContent =
             "Place Order →";
 
     }
-
 
 
     /*
@@ -2319,7 +2147,6 @@ async function placeOrder(){
     */
 
     closeCart();
-
 
 
     /*
@@ -2349,7 +2176,6 @@ async function placeOrder(){
 }
 
 
-
 /* =====================================================
    FIX PRODUCT BUTTONS
 ===================================================== */
@@ -2361,7 +2187,6 @@ function fixProductButtons(){
             ".product"
         );
 
-
     products.forEach(
         product => {
 
@@ -2370,13 +2195,11 @@ function fixProductButtons(){
                     ".add-cart"
                 );
 
-
             if(!button){
 
                 return;
 
             }
-
 
             button.addEventListener(
                 "click",
@@ -2395,7 +2218,6 @@ function fixProductButtons(){
 }
 
 
-
 /* =====================================================
    SEARCH
 ===================================================== */
@@ -2407,25 +2229,21 @@ function searchProducts(){
             "search"
         );
 
-
     if(!searchInput){
 
         return;
 
     }
 
-
     const searchTerm =
         searchInput.value
             .toLowerCase()
             .trim();
 
-
     const products =
         document.querySelectorAll(
             ".product"
         );
-
 
     products.forEach(
         product => {
@@ -2435,12 +2253,10 @@ function searchProducts(){
                     ".product-name"
                 );
 
-
             const categoryElement =
                 product.querySelector(
                     ".product-category"
                 );
-
 
             const name =
                 nameElement
@@ -2449,14 +2265,12 @@ function searchProducts(){
                         .toLowerCase()
                     : "";
 
-
             const category =
                 categoryElement
                     ? categoryElement
                         .textContent
                         .toLowerCase()
                     : "";
-
 
             if(
 
@@ -2488,7 +2302,6 @@ function searchProducts(){
 }
 
 
-
 /* =====================================================
    CATEGORY FILTER
 ===================================================== */
@@ -2503,11 +2316,9 @@ function filterProducts(
             ".product"
         );
 
-
     const selected =
         category
             .toLowerCase();
-
 
     products.forEach(
         product => {
@@ -2515,7 +2326,6 @@ function filterProducts(
             const productCategory =
                 product.dataset.category ||
                 "";
-
 
             if(
 
@@ -2572,7 +2382,6 @@ function filterProducts(
 }
 
 
-
 /* =====================================================
    TOAST
 ===================================================== */
@@ -2584,7 +2393,6 @@ function toast(message){
             "shopNowToast"
         );
 
-
     if(!toastElement){
 
         toastElement =
@@ -2592,14 +2400,11 @@ function toast(message){
                 "div"
             );
 
-
         toastElement.id =
             "shopNowToast";
 
-
         toastElement.className =
             "toast";
-
 
         document.body.appendChild(
             toastElement
@@ -2607,20 +2412,16 @@ function toast(message){
 
     }
 
-
     toastElement.textContent =
         message;
-
 
     toastElement.classList.add(
         "show"
     );
 
-
     clearTimeout(
         window.shopNowToastTimer
     );
-
 
     window.shopNowToastTimer =
         setTimeout(
@@ -2635,7 +2436,6 @@ function toast(message){
         );
 
 }
-
 
 
 /* =====================================================
@@ -2674,7 +2474,6 @@ function escapeHTML(value){
 }
 
 
-
 /* =====================================================
    START SHOP NOW
 ===================================================== */
@@ -2687,8 +2486,6 @@ document.addEventListener(
 
         updateCart();
 
-        checkUserLogin();
-
 
         /*
          Search while typing
@@ -2698,7 +2495,6 @@ document.addEventListener(
             document.getElementById(
                 "search"
             );
-
 
         if(searchInput){
 
@@ -2711,23 +2507,6 @@ document.addEventListener(
 
     }
 );
-
-
-
-/* =====================================================
-   AUTH STATE LISTENER
-===================================================== */
-
-supabaseClient
-    .auth
-    .onAuthStateChange(
-        () => {
-
-            checkUserLogin();
-
-        }
-    );
-
 
 </script>
 
