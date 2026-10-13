@@ -1,7 +1,6 @@
 /* =====================================================
    SHOP NOW — auth-state.js
    Shared Supabase client + header account dropdown
-   Bulletproof session reading (matches any storage key)
 ===================================================== */
 
 const SUPABASE_URL =
@@ -106,19 +105,29 @@ async function updateAuthButton() {
         user.email?.split("@")[0] ||
         "My Account";
 
-    let phone = user.user_metadata?.phone || "";
     let email = user.email || "";
 
+    /*
+       Fetch profile row. Your profiles table has:
+       id, username, email, created_at, updated_at
+       (no phone column — so we don't query it)
+    */
     try {
-        const { data: profile } = await shopNowSupabase
+        const { data: profile, error } = await shopNowSupabase
             .from("profiles")
-            .select("username, phone, email")
+            .select("username, email")
             .eq("id", user.id)
             .maybeSingle();
 
-        if (profile?.username) username = profile.username;
-        if (profile?.phone)    phone    = profile.phone;
-        if (profile?.email)    email    = profile.email;
+        if (error) {
+            console.warn(
+                "[SHOP NOW] Profile fetch error:",
+                error.message
+            );
+        } else if (profile) {
+            if (profile.username) username = profile.username;
+            if (profile.email)    email    = profile.email;
+        }
     } catch (err) {
         console.warn("[SHOP NOW] Profile fetch failed:", err);
     }
@@ -136,10 +145,7 @@ async function updateAuthButton() {
     };
 
     if (displayName) displayName.textContent = username;
-    if (accountEmail) {
-        accountEmail.textContent =
-            email + (phone ? "\nPhone: " + phone : "");
-    }
+    if (accountEmail) accountEmail.textContent = email;
 }
 
 /* -----------------------------------------------------
@@ -185,7 +191,11 @@ if (document.readyState === "loading") {
 ----------------------------------------------------- */
 
 shopNowSupabase.auth.onAuthStateChange((event, session) => {
-    console.log("[SHOP NOW] auth event:", event, session?.user?.email);
+    console.log(
+        "[SHOP NOW] auth event:",
+        event,
+        session?.user?.email
+    );
     setTimeout(updateAuthButton, 0);
 });
 
