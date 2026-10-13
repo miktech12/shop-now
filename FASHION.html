@@ -88,27 +88,40 @@
             </button>
 
 
-            <!-- LOGIN -->
+            <!-- ACCOUNT MENU -->
 
-            <article class="sign-in">
+            <div class="account-menu" id="accountMenu">
 
                 <a
                     href="auth.html"
                     id="authButton"
                     class="auth-btn"
-                    onclick="
-                        sessionStorage.setItem(
-                            'shopNowReturnTo',
-                            window.location.pathname
-                                .split('/')
-                                .pop() || 'index.html'
-                        )
-                    "
+                    aria-expanded="false"
+                    aria-controls="accountDropdown"
                 >
                     👤 Login / Sign Up
                 </a>
 
-            </article>
+                <div
+                    class="account-dropdown"
+                    id="accountDropdown"
+                    hidden
+                >
+
+                    <div class="account-dropdown-header">
+                        <strong id="accountDisplayName">
+                            My Account
+                        </strong>
+                        <small id="accountEmail"></small>
+                    </div>
+
+                    <button type="button" id="accountLogout">
+                        ↪ Log Out
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -1349,10 +1362,57 @@
 <script>
 
 /* =====================================================
-   CART
+   SHARED SUPABASE CLIENT
+   (created inside auth-state.js)
 ===================================================== */
 
-let cart = [];
+const supabaseClient = window.shopNowSupabase;
+
+
+/* =====================================================
+   CART (persistent across pages)
+===================================================== */
+
+const CART_STORAGE_KEY = "shopNowCart";
+
+let cart = loadCart();
+
+function loadCart() {
+    try {
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+
+        /* Sanitize so a corrupted entry can't break the site */
+        return parsed
+            .filter(item =>
+                item &&
+                typeof item.name === "string" &&
+                typeof item.price === "number" &&
+                typeof item.quantity === "number"
+            )
+            .map(item => ({
+                name: item.name,
+                price: item.price,
+                quantity: Math.max(1, Math.floor(item.quantity))
+            }));
+    } catch (err) {
+        console.warn("[SHOP NOW] Could not load cart:", err);
+        return [];
+    }
+}
+
+function saveCart() {
+    try {
+        localStorage.setItem(
+            CART_STORAGE_KEY,
+            JSON.stringify(cart)
+        );
+    } catch (err) {
+        console.warn("[SHOP NOW] Could not save cart:", err);
+    }
+}
 
 
 /* =====================================================
@@ -1504,6 +1564,9 @@ function updateCart(){
             count;
 
     }
+
+    /* SAVE TO LOCALSTORAGE — cart persists across pages */
+    saveCart();
 
     renderCart();
 
@@ -2080,10 +2143,12 @@ async function placeOrder(){
 
 
     /*
-     Clear cart
+     Clear cart from memory AND localStorage
     */
 
     cart = [];
+
+    localStorage.removeItem(CART_STORAGE_KEY);
 
     updateCart();
 
