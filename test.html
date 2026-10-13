@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,7 +10,10 @@
     content="width=device-width, initial-scale=1.0"
 >
 
-<title>SHOP NOW | Electronics</title>
+<!-- FAVICON -->
+<link rel="icon" type="image/png" href="/pumekalogo.png">
+
+<title>PUMEKA | Electronics</title>
 
 <link
     rel="stylesheet"
@@ -39,7 +42,7 @@
             href="index.html"
             class="logo"
         >
-            <span>S</span> SHOP NOW
+            <span>P</span> PUMEKA
         </a>
 
 
@@ -139,7 +142,7 @@
     <div class="hero-content">
 
         <span class="hero-tag">
-            SHOP NOW / ELECTRONICS
+            PUMEKA / ELECTRONICS
         </span>
 
 
@@ -269,7 +272,7 @@
         <div>
 
             <span class="section-tag">
-                SHOP NOW
+                PUMEKA
             </span>
 
             <h2>
@@ -1202,7 +1205,7 @@ function loadCart() {
                 quantity: Math.max(1, Math.floor(item.quantity))
             }));
     } catch (err) {
-        console.warn("[SHOP NOW] Could not load cart:", err);
+        console.warn("[PUMEKA] Could not load cart:", err);
         return [];
     }
 }
@@ -1214,7 +1217,7 @@ function saveCart() {
             JSON.stringify(cart)
         );
     } catch (err) {
-        console.warn("[SHOP NOW] Could not save cart:", err);
+        console.warn("[PUMEKA] Could not save cart:", err);
     }
 }
 
@@ -1909,7 +1912,7 @@ async function placeOrder(){
 
                 "\n\n" +
 
-                "Thank you for shopping with SHOP NOW."
+                "Thank you for shopping with PUMEKA."
 
             );
 
