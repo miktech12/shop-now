@@ -1174,10 +1174,49 @@ const supabaseClient = window.shopNowSupabase;
 
 
 /* =====================================================
-   CART
+   CART (persistent across pages)
 ===================================================== */
 
-let cart = [];
+const CART_STORAGE_KEY = "shopNowCart";
+
+let cart = loadCart();
+
+function loadCart() {
+    try {
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+
+        /* Sanitize so a corrupted entry can't break the site */
+        return parsed
+            .filter(item =>
+                item &&
+                typeof item.name === "string" &&
+                typeof item.price === "number" &&
+                typeof item.quantity === "number"
+            )
+            .map(item => ({
+                name: item.name,
+                price: item.price,
+                quantity: Math.max(1, Math.floor(item.quantity))
+            }));
+    } catch (err) {
+        console.warn("[SHOP NOW] Could not load cart:", err);
+        return [];
+    }
+}
+
+function saveCart() {
+    try {
+        localStorage.setItem(
+            CART_STORAGE_KEY,
+            JSON.stringify(cart)
+        );
+    } catch (err) {
+        console.warn("[SHOP NOW] Could not save cart:", err);
+    }
+}
 
 
 
@@ -1314,6 +1353,10 @@ function updateCart(){
             count;
 
     }
+
+
+    /* SAVE TO LOCALSTORAGE — persists across pages */
+    saveCart();
 
 
     renderCart();
@@ -1807,8 +1850,10 @@ async function placeOrder(){
         data.order_number;
 
 
+    /* CLEAR CART from memory AND localStorage */
     cart = [];
 
+    localStorage.removeItem(CART_STORAGE_KEY);
 
     updateCart();
 
