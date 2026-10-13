@@ -1149,11 +1149,94 @@
 <script>
 
 /* =========================
-   CART
+   CART (persistent across pages)
 ========================= */
 
-let cart = [];
+const CART_STORAGE_KEY = "shopNowCart";
 
+let cart = loadCart();
+
+
+function loadCart(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                CART_STORAGE_KEY
+            );
+
+        if(!raw) return [];
+
+        const parsed =
+            JSON.parse(raw);
+
+        if(!Array.isArray(parsed)) return [];
+
+        return parsed
+            .filter(item =>
+
+                item &&
+                typeof item.name === "string" &&
+                typeof item.price === "number" &&
+                typeof item.quantity === "number"
+
+            )
+            .map(item => ({
+
+                name: item.name,
+
+                price: item.price,
+
+                quantity: Math.max(
+                    1,
+                    Math.floor(item.quantity)
+                )
+
+            }));
+
+    }catch(err){
+
+        console.warn(
+            "[SHOP NOW] Could not load cart:",
+            err
+        );
+
+        return [];
+
+    }
+
+}
+
+
+function saveCart(){
+
+    try{
+
+        localStorage.setItem(
+
+            CART_STORAGE_KEY,
+
+            JSON.stringify(cart)
+
+        );
+
+    }catch(err){
+
+        console.warn(
+            "[SHOP NOW] Could not save cart:",
+            err
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   ADD CART
+========================= */
 
 function addCart(name, price){
 
@@ -1184,6 +1267,11 @@ function addCart(name, price){
 }
 
 
+
+/* =========================
+   UPDATE CART
+========================= */
+
 function updateCart(){
 
     const count =
@@ -1196,12 +1284,24 @@ function updateCart(){
             0
         );
 
-    count.textContent = items;
+    if(count){
+
+        count.textContent = items;
+
+    }
+
+    /* SAVE TO LOCALSTORAGE */
+    saveCart();
 
     renderCart();
 
 }
 
+
+
+/* =========================
+   RENDER CART
+========================= */
 
 function renderCart(){
 
@@ -1291,6 +1391,11 @@ function renderCart(){
 }
 
 
+
+/* =========================
+   REMOVE ITEM
+========================= */
+
 function removeItem(index){
 
     cart.splice(index,1);
@@ -1298,6 +1403,7 @@ function removeItem(index){
     updateCart();
 
 }
+
 
 
 /* =========================
@@ -1334,6 +1440,7 @@ function closeCart(){
 }
 
 
+
 /* =========================
    WISHLIST
 ========================= */
@@ -1350,6 +1457,7 @@ function wishlist(button){
 }
 
 
+
 /* =========================
    SEARCH
 ========================= */
@@ -1358,51 +1466,56 @@ const search =
     document.getElementById("search");
 
 
-search.addEventListener(
-    "input",
-    function(){
+if(search){
 
-        const value =
-            this.value
-            .toLowerCase()
-            .trim();
+    search.addEventListener(
+        "input",
+        function(){
 
-
-        const products =
-            document.querySelectorAll(".product");
+            const value =
+                this.value
+                .toLowerCase()
+                .trim();
 
 
-        products.forEach(product=>{
-
-            const name =
-                product.dataset.name
-                .toLowerCase();
+            const products =
+                document.querySelectorAll(".product");
 
 
-            const category =
-                product.dataset.category
-                .toLowerCase();
+            products.forEach(product=>{
+
+                const name =
+                    (product.dataset.name || "")
+                    .toLowerCase();
 
 
-            if(
-                name.includes(value) ||
-                category.includes(value)
-            ){
+                const category =
+                    (product.dataset.category || "")
+                    .toLowerCase();
 
-                product.style.display =
-                    "";
 
-            }else{
+                if(
+                    name.includes(value) ||
+                    category.includes(value)
+                ){
 
-                product.style.display =
-                    "none";
+                    product.style.display =
+                        "";
 
-            }
+                }else{
 
-        });
+                    product.style.display =
+                        "none";
 
-    }
-);
+                }
+
+            });
+
+        }
+    );
+
+}
+
 
 
 /* =========================
@@ -1418,6 +1531,7 @@ function showComingSoon(event, category){
     );
 
 }
+
 
 
 /* =========================
@@ -1456,6 +1570,7 @@ function toast(message){
 }
 
 
+
 /* =========================
    ESCAPE HTML
 ========================= */
@@ -1470,6 +1585,7 @@ function escapeHTML(value){
         .replace(/'/g,"&#039;");
 
 }
+
 
 
 /* =========================
@@ -1541,6 +1657,7 @@ function checkout(){
 }
 
 
+
 /* =========================
    ESC KEY
 ========================= */
@@ -1557,6 +1674,7 @@ document.addEventListener(
 
     }
 );
+
 
 
 /* =========================
