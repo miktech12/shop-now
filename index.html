@@ -1106,6 +1106,54 @@
 </div>
 
 
+<!-- DELIVERY DETAILS FORM -->
+
+<div
+    class="checkout-form"
+    id="checkoutForm"
+>
+
+    <h3>
+        Delivery Details 📦
+    </h3>
+
+    <input
+        type="text"
+        id="customerName"
+        placeholder="Full Name *"
+        autocomplete="name"
+    >
+
+    <input
+        type="tel"
+        id="customerPhone"
+        placeholder="Phone Number *"
+        autocomplete="tel"
+    >
+
+    <input
+        type="tel"
+        id="customerWhatsapp"
+        placeholder="WhatsApp Number"
+        autocomplete="tel"
+    >
+
+    <input
+        type="text"
+        id="deliveryLocation"
+        placeholder="Delivery Location *"
+        autocomplete="street-address"
+    >
+
+    <textarea
+        id="orderNotes"
+        placeholder="Additional instructions (optional)"
+        rows="3"
+    ></textarea>
+
+</div>
+
+
 <div class="cart-footer">
 
     <div class="total">
@@ -1121,10 +1169,20 @@
     </div>
 
     <button
-        class="checkout"
-        onclick="checkout()"
+        type="button"
+        class="checkout checkout-supabase"
+        id="placeOrderButton"
+        onclick="placeOrderSupabase()"
     >
-        ORDER VIA WHATSAPP →
+        🛒 PLACE ORDER
+    </button>
+
+    <button
+        type="button"
+        class="checkout checkout-whatsapp"
+        onclick="placeOrderWhatsApp()"
+    >
+        📱 ORDER VIA WHATSAPP
     </button>
 
 </div>
@@ -1178,9 +1236,16 @@
 
 <script>
 
-/* =========================
+/* =====================================================
+   SHARED SUPABASE CLIENT
+===================================================== */
+
+const supabaseClient = window.shopNowSupabase;
+
+
+/* =====================================================
    CART (persistent across pages)
-========================= */
+===================================================== */
 
 const CART_STORAGE_KEY = "shopNowCart";
 
@@ -1264,9 +1329,9 @@ function saveCart(){
 
 
 
-/* =========================
+/* =====================================================
    ADD CART
-========================= */
+===================================================== */
 
 function addCart(name, price){
 
@@ -1298,9 +1363,9 @@ function addCart(name, price){
 
 
 
-/* =========================
+/* =====================================================
    UPDATE CART
-========================= */
+===================================================== */
 
 function updateCart(){
 
@@ -1320,7 +1385,6 @@ function updateCart(){
 
     }
 
-    /* SAVE TO LOCALSTORAGE */
     saveCart();
 
     renderCart();
@@ -1329,9 +1393,9 @@ function updateCart(){
 
 
 
-/* =========================
+/* =====================================================
    RENDER CART
-========================= */
+===================================================== */
 
 function renderCart(){
 
@@ -1422,9 +1486,9 @@ function renderCart(){
 
 
 
-/* =========================
+/* =====================================================
    REMOVE ITEM
-========================= */
+===================================================== */
 
 function removeItem(index){
 
@@ -1436,9 +1500,9 @@ function removeItem(index){
 
 
 
-/* =========================
+/* =====================================================
    CART OPEN / CLOSE
-========================= */
+===================================================== */
 
 function openCart(){
 
@@ -1471,9 +1535,9 @@ function closeCart(){
 
 
 
-/* =========================
+/* =====================================================
    WISHLIST
-========================= */
+===================================================== */
 
 function wishlist(button){
 
@@ -1488,9 +1552,9 @@ function wishlist(button){
 
 
 
-/* =========================
+/* =====================================================
    SEARCH
-========================= */
+===================================================== */
 
 const search =
     document.getElementById("search");
@@ -1548,9 +1612,9 @@ if(search){
 
 
 
-/* =========================
+/* =====================================================
    COMING SOON
-========================= */
+===================================================== */
 
 function showComingSoon(event, category){
 
@@ -1564,9 +1628,9 @@ function showComingSoon(event, category){
 
 
 
-/* =========================
+/* =====================================================
    TOAST
-========================= */
+===================================================== */
 
 function toast(message){
 
@@ -1601,9 +1665,9 @@ function toast(message){
 
 
 
-/* =========================
+/* =====================================================
    ESCAPE HTML
-========================= */
+===================================================== */
 
 function escapeHTML(value){
 
@@ -1618,26 +1682,276 @@ function escapeHTML(value){
 
 
 
-/* =========================
-   WHATSAPP CHECKOUT
-========================= */
+/* =====================================================
+   CLEAR CART + FORM (shared by both checkout methods)
+===================================================== */
 
-function checkout(){
+function clearCartAndForm(){
+
+    cart = [];
+
+    localStorage.removeItem(CART_STORAGE_KEY);
+
+    updateCart();
+
+    ["customerName","customerPhone","customerWhatsapp",
+     "deliveryLocation","orderNotes"].forEach(id => {
+
+        const el = document.getElementById(id);
+
+        if(el) el.value = "";
+
+    });
+
+}
+
+
+
+/* =====================================================
+   CHECKOUT OPTION 1 — SUPABASE
+===================================================== */
+
+async function placeOrderSupabase(){
 
     if(cart.length === 0){
 
-        toast(
-            "Your cart is empty 🛒"
-        );
+        toast("Your cart is empty 🛒");
 
         return;
 
     }
 
 
-    const phone =
-        "256709568326";
+    /* Login check */
 
+    const {
+        data: { session },
+        error: sessionError
+    } =
+    await supabaseClient.auth.getSession();
+
+
+    if(sessionError){
+
+        console.error(sessionError);
+
+        toast("Could not check login status ❌");
+
+        return;
+
+    }
+
+
+    if(!session){
+
+        toast("Please login before ordering 🔐");
+
+        sessionStorage.setItem(
+            "shopNowReturnTo",
+            window.location.pathname
+                .split("/").pop() || "index.html"
+        );
+
+        setTimeout(() => {
+
+            window.location.href = "auth.html";
+
+        }, 1000);
+
+        return;
+
+    }
+
+
+    /* Read form */
+
+    const customerName =
+        (document.getElementById("customerName")?.value || "").trim();
+
+    const customerPhone =
+        (document.getElementById("customerPhone")?.value || "").trim();
+
+    const customerWhatsapp =
+        (document.getElementById("customerWhatsapp")?.value || "").trim();
+
+    const deliveryLocation =
+        (document.getElementById("deliveryLocation")?.value || "").trim();
+
+    const orderNotes =
+        (document.getElementById("orderNotes")?.value || "").trim();
+
+
+    /* Validate */
+
+    if(!customerName){
+
+        toast("Enter your full name 👤");
+
+        return;
+
+    }
+
+    if(!customerPhone){
+
+        toast("Enter your phone number 📞");
+
+        return;
+
+    }
+
+    if(!deliveryLocation){
+
+        toast("Enter your delivery location 📍");
+
+        return;
+
+    }
+
+
+    /* Total */
+
+    let total = 0;
+
+    cart.forEach(item => {
+
+        total += item.price * item.quantity;
+
+    });
+
+
+    /* Button state */
+
+    const orderButton =
+        document.getElementById("placeOrderButton");
+
+    if(orderButton){
+
+        orderButton.disabled = true;
+
+        orderButton.textContent = "Placing Order...";
+
+    }
+
+
+    /* Build items */
+
+    const orderItems =
+        cart.map(item => ({
+
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            subtotal: item.price * item.quantity
+
+        }));
+
+
+    /* Insert */
+
+    const { data, error } =
+        await supabaseClient
+            .from("orders")
+            .insert([{
+
+                user_id: session.user.id,
+                customer_name: customerName,
+                phone: customerPhone,
+                whatsapp: customerWhatsapp || null,
+                delivery_location: deliveryLocation,
+                notes: orderNotes || null,
+                items: orderItems,
+                total: total
+
+            }])
+            .select()
+            .single();
+
+
+    if(error){
+
+        console.error("ORDER ERROR:", error);
+
+        toast("Order failed. Please try again ❌");
+
+        if(orderButton){
+
+            orderButton.disabled = false;
+
+            orderButton.textContent = "🛒 PLACE ORDER";
+
+        }
+
+        return;
+
+    }
+
+
+    const orderNumber = data.order_number;
+
+
+    /* Success */
+
+    clearCartAndForm();
+
+    if(orderButton){
+
+        orderButton.disabled = false;
+
+        orderButton.textContent = "🛒 PLACE ORDER";
+
+    }
+
+    closeCart();
+
+
+    setTimeout(() => {
+
+        alert(
+            "ORDER PLACED SUCCESSFULLY 🎉\n\n" +
+            "Order Number: #" + orderNumber +
+            "\n\nThank you for shopping with PUMEKA."
+        );
+
+    }, 200);
+
+}
+
+
+
+/* =====================================================
+   CHECKOUT OPTION 2 — WHATSAPP
+===================================================== */
+
+function placeOrderWhatsApp(){
+
+    if(cart.length === 0){
+
+        toast("Your cart is empty 🛒");
+
+        return;
+
+    }
+
+
+    const phone = "256709568326";
+
+
+    /* Optional form data */
+
+    const name =
+        (document.getElementById("customerName")?.value || "").trim();
+
+    const customerPhone =
+        (document.getElementById("customerPhone")?.value || "").trim();
+
+    const location =
+        (document.getElementById("deliveryLocation")?.value || "").trim();
+
+    const notes =
+        (document.getElementById("orderNotes")?.value || "").trim();
+
+
+    /* Build message */
 
     let message =
         "Hello PUMEKA 👋\n\n" +
@@ -1647,29 +1961,36 @@ function checkout(){
     let total = 0;
 
 
-    cart.forEach(item=>{
+    cart.forEach(item => {
 
-        const subtotal =
-            item.price *
-            item.quantity;
+        const subtotal = item.price * item.quantity;
 
         total += subtotal;
 
-
         message +=
-            "\n• " +
-            item.name +
-            " × " +
-            item.quantity +
-            " — UGX " +
-            subtotal.toLocaleString();
+            "\n• " + item.name +
+            " × " + item.quantity +
+            " — UGX " + subtotal.toLocaleString();
 
     });
 
 
-    message +=
-        "\n\nTotal: UGX " +
-        total.toLocaleString();
+    message += "\n\nTotal: UGX " + total.toLocaleString();
+
+
+    if(name || customerPhone || location || notes){
+
+        message += "\n\n--- Delivery Details ---";
+
+        if(name) message += "\nName: " + name;
+
+        if(customerPhone) message += "\nPhone: " + customerPhone;
+
+        if(location) message += "\nLocation: " + location;
+
+        if(notes) message += "\nNotes: " + notes;
+
+    }
 
 
     const whatsapp =
@@ -1679,18 +2000,24 @@ function checkout(){
         encodeURIComponent(message);
 
 
-    window.open(
-        whatsapp,
-        "_blank"
-    );
+    window.open(whatsapp, "_blank");
+
+
+    /* Clear cart + form after handing off to WhatsApp */
+
+    clearCartAndForm();
+
+    toast("WhatsApp opened 📱");
+
+    closeCart();
 
 }
 
 
 
-/* =========================
+/* =====================================================
    ESC KEY
-========================= */
+===================================================== */
 
 document.addEventListener(
     "keydown",
@@ -1707,9 +2034,9 @@ document.addEventListener(
 
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
 
 updateCart();
 
