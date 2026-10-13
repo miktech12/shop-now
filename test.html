@@ -17,8 +17,9 @@
     href="ELECTRONICCSS.css"
 >
 
-<!-- SUPABASE -->
+<!-- SUPABASE + SHARED AUTH -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth-state.js"></script>
 
 </head>
 
@@ -87,32 +88,44 @@
             </button>
 
 
-            <!-- LOGIN -->
+            <!-- ACCOUNT MENU -->
 
-            <article class="sign-in">
+            <div class="account-menu" id="accountMenu">
 
                 <a
                     href="auth.html"
                     id="authButton"
                     class="auth-btn"
-                    onclick="
-                        sessionStorage.setItem(
-                            'shopNowReturnTo',
-                            window.location.pathname
-                            .split('/')
-                            .pop() || 'index.html'
-                        )
-                    "
+                    aria-expanded="false"
+                    aria-controls="accountDropdown"
                 >
                     👤 Login / Sign Up
                 </a>
 
-            </article>
+                <div
+                    class="account-dropdown"
+                    id="accountDropdown"
+                    hidden
+                >
+
+                    <div class="account-dropdown-header">
+                        <strong id="accountDisplayName">
+                            My Account
+                        </strong>
+                        <small id="accountEmail"></small>
+                    </div>
+
+                    <button type="button" id="accountLogout">
+                        ↪ Log Out
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
-
 </header>
 
 
@@ -1152,22 +1165,11 @@
 <script>
 
 /* =====================================================
-   SUPABASE
+   SHARED SUPABASE CLIENT
+   (created inside auth-state.js)
 ===================================================== */
 
-const SUPABASE_URL =
-    "https://dawbweoeilojcrnbvnjz.supabase.co";
-
-
-const SUPABASE_PUBLISHABLE_KEY =
-    "PASTE-YOUR-EXISTING-SUPABASE-PUBLISHABLE-KEY-HERE";
-
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
+const supabaseClient = window.shopNowSupabase;
 
 
 
@@ -1539,50 +1541,6 @@ function closeCart(){
     if(cartElement){
 
         cartElement.classList.remove("open");
-
-    }
-
-}
-
-
-
-/* =====================================================
-   LOGIN CHECK
-===================================================== */
-
-async function checkUserLogin(){
-
-    try{
-
-        const {
-            data: { session }
-        } =
-        await supabaseClient
-            .auth
-            .getSession();
-
-
-        const authButton =
-            document.getElementById(
-                "authButton"
-            );
-
-
-        if(!authButton) return;
-
-
-        authButton.style.display =
-            session
-                ? "none"
-                : "inline-block";
-
-
-    }catch(error){
-
-        console.error(
-            "Login check error:",
-            error
-        );
 
     }
 
@@ -2199,8 +2157,6 @@ document.addEventListener(
 
         updateCart();
 
-        checkUserLogin();
-
 
         const searchInput =
             document.getElementById(
@@ -2220,26 +2176,10 @@ document.addEventListener(
     }
 );
 
-
-
-/* =====================================================
-   AUTH STATE
-===================================================== */
-
-supabaseClient
-    .auth
-    .onAuthStateChange(
-        () => {
-
-            checkUserLogin();
-
-        }
-    );
-
-
 </script>
 
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"e2c107eadc6e41499302b0ff665a0dfc","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 
 </html>
