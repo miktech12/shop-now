@@ -1495,4 +1495,66 @@ body{
         font-size:45px;
     }
 
+
+    /* =====================================================
+   ACCOUNT MENU (shared across pages)
+===================================================== */
+
+.account-menu {
+    position: relative;
+}
+
+.account-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 260px;
+    padding: 10px;
+    background: #fff;
+    color: #222;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    z-index: 99999;
+}
+
+.account-dropdown[hidden] {
+    display: none !important;
+}
+
+.account-dropdown-header {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
+}
+
+.account-dropdown-header strong,
+.account-dropdown-header small {
+    display: block;
+}
+
+.account-dropdown-header small {
+    margin-top: 6px;
+    color: #666;
+    white-space: pre-line;
+}
+
+.account-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #222;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.account-dropdown button:hover {
+    background: #f3f3f3;
+}
+
 }
