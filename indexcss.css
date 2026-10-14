@@ -1,5 +1,5 @@
 /* =========================================================
-   SHOP NOW — HOME PAGE
+   PUMEKA — HOME PAGE
    PREMIUM DESIGN SYSTEM
 ========================================================= */
 
@@ -215,6 +215,89 @@ a{
 .auth-btn:hover{
     background:#111;
     color:#dfff00;
+}
+
+
+/* =========================
+   ACCOUNT DROPDOWN
+========================= */
+
+.account-menu{
+    position:relative;
+}
+
+.account-dropdown{
+    position:absolute;
+    top:calc(100% + 10px);
+    right:0;
+
+    width:260px;
+
+    padding:10px;
+
+    background:#fff;
+    color:#222;
+
+    border:1px solid #e5e5e5;
+    border-radius:12px;
+
+    box-shadow:
+        0 12px 35px
+        rgba(0,0,0,.15);
+
+    z-index:99999;
+}
+
+.account-dropdown[hidden]{
+    display:none !important;
+}
+
+.account-dropdown-header{
+    padding:12px;
+
+    border-bottom:1px solid #eee;
+
+    margin-bottom:6px;
+
+    overflow-wrap:anywhere;
+}
+
+.account-dropdown-header strong,
+.account-dropdown-header small{
+    display:block;
+}
+
+.account-dropdown-header small{
+    margin-top:6px;
+
+    color:#666;
+
+    white-space:pre-line;
+}
+
+.account-dropdown a,
+.account-dropdown button{
+    display:block;
+    width:100%;
+
+    padding:12px;
+
+    border:0;
+    border-radius:7px;
+
+    background:transparent;
+    color:#222;
+
+    text-align:left;
+
+    font:inherit;
+
+    cursor:pointer;
+}
+
+.account-dropdown a:hover,
+.account-dropdown button:hover{
+    background:#f3f3f3;
 }
 
 
@@ -569,6 +652,10 @@ a{
 
 .category-icon.home{
     background:#fff0d8;
+}
+
+.category-icon.preorder{
+    background:linear-gradient(135deg, #ff6b00, #ff9500);
 }
 
 
@@ -1216,6 +1303,67 @@ footer{
 }
 
 
+/* CHECKOUT FORM (delivery details) */
+
+.checkout-form{
+    padding:18px 20px;
+
+    border-top:1px solid #eee;
+
+    background:#fff;
+}
+
+.checkout-form h3{
+    margin-bottom:14px;
+
+    font-size:15px;
+    font-weight:900;
+}
+
+.checkout-form input,
+.checkout-form textarea{
+    display:block;
+    width:100%;
+
+    padding:11px 13px;
+
+    margin-bottom:10px;
+
+    border:1px solid #ddd;
+    border-radius:8px;
+
+    background:#fff;
+    color:#111;
+
+    font-family:inherit;
+    font-size:13px;
+
+    outline:none;
+
+    transition:.2s;
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus{
+    border-color:#111;
+
+    box-shadow:
+        0 0 0 2px
+        rgba(223,255,0,.35);
+}
+
+.checkout-form input::placeholder,
+.checkout-form textarea::placeholder{
+    color:#888;
+}
+
+.checkout-form textarea{
+    resize:vertical;
+
+    min-height:60px;
+}
+
+
 /* CART FOOTER */
 
 .cart-footer{
@@ -1241,6 +1389,11 @@ footer{
     font-size:17px;
 }
 
+
+/* =====================================================
+   DUAL CHECKOUT BUTTONS
+===================================================== */
+
 .checkout{
     width:100%;
 
@@ -1262,6 +1415,30 @@ footer{
 .checkout:hover{
     background:#dfff00;
     color:#111;
+}
+
+.checkout-supabase{
+    margin-bottom:8px;
+}
+
+.checkout-whatsapp{
+    background:#25D366;
+    color:#ffffff;
+}
+
+.checkout-whatsapp:hover{
+    background:#1ebe5d;
+    color:#ffffff;
+
+    transform:translateY(-1px);
+}
+
+.checkout-whatsapp:disabled{
+    opacity:0.55;
+
+    cursor:not-allowed;
+
+    transform:none;
 }
 
 
@@ -1374,9 +1551,6 @@ footer{
         position:sticky;
     }
 
-
-    /* HERO */
-
     .hero{
         min-height:420px;
 
@@ -1406,16 +1580,10 @@ footer{
         font-size:90px;
     }
 
-
-    /* PRODUCTS */
-
     .product-grid{
         grid-template-columns:
             repeat(2,1fr);
     }
-
-
-    /* FEATURES */
 
     .feature-grid{
         grid-template-columns:
@@ -1434,9 +1602,6 @@ footer{
     body{
         padding-bottom:70px;
     }
-
-
-    /* HEADER */
 
     .header-inner{
         min-height:65px;
@@ -1468,9 +1633,6 @@ footer{
 
         font-size:16px;
     }
-
-
-    /* HERO */
 
     .hero{
         width:calc(100% - 28px);
@@ -1521,9 +1683,6 @@ footer{
         font-size:12px;
     }
 
-
-    /* HERO VISUAL */
-
     .hero-visual{
         width:210px;
         height:210px;
@@ -1562,9 +1721,6 @@ footer{
         bottom:0;
     }
 
-
-    /* SECTIONS */
-
     .categories-section,
     .products-section{
         padding-left:14px;
@@ -1578,9 +1734,6 @@ footer{
     .section-heading h2{
         font-size:25px;
     }
-
-
-    /* CATEGORIES */
 
     .category-grid{
         grid-template-columns:
@@ -1605,9 +1758,6 @@ footer{
         font-size:13px;
     }
 
-
-    /* DEAL */
-
     .deal{
         width:calc(100% - 28px);
 
@@ -1625,9 +1775,6 @@ footer{
     .deal h2{
         font-size:30px;
     }
-
-
-    /* PRODUCTS */
 
     .product-grid{
         grid-template-columns:
@@ -1678,9 +1825,6 @@ footer{
         height:32px;
     }
 
-
-    /* FEATURES */
-
     .feature-grid{
         padding:45px 14px;
 
@@ -1702,9 +1846,6 @@ footer{
         font-size:10px;
     }
 
-
-    /* FOOTER */
-
     footer{
         padding:40px 0 20px;
     }
@@ -1722,15 +1863,9 @@ footer{
         grid-column:1/-1;
     }
 
-
-    /* CART */
-
     .cart{
         width:100%;
     }
-
-
-    /* MOBILE NAV */
 
     .bottom-nav{
         position:fixed;
@@ -1828,163 +1963,5 @@ footer{
     .category-grid{
         gap:9px;
     }
-
-
-
-
-
-    
-/* ACCOUNT DROPDOWN */
-
-.account-menu {
-    position: relative;
-}
-
-.account-toggle {
-    cursor: pointer;
-}
-
-.account-dropdown {
-    position: absolute;
-    top: calc(100% + 12px);
-    right: 0;
-    width: 260px;
-    background: #fff;
-    color: #222;
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.14);
-    padding: 10px;
-    z-index: 9999;
-}
-
-.account-dropdown[hidden] {
-    display: none !important;
-}
-
-.account-dropdown-header {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 6px;
-    overflow-wrap: anywhere;
-}
-
-.account-dropdown-header strong,
-.account-dropdown-header small {
-    display: block;
-}
-
-.account-dropdown-header small {
-    margin-top: 5px;
-    color: #666;
-}
-
-.account-dropdown a,
-.account-dropdown button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    border: 0;
-    border-radius: 7px;
-    background: transparent;
-    color: #222;
-    text-decoration: none;
-    text-align: left;
-    font: inherit;
-    cursor: pointer;
-}
-
-.account-dropdown a:hover,
-.account-dropdown button:hover {
-    background: #f3f3f3;
-}
-
-
-
-
-
-
-
-```css
-.account-menu {
-    position: relative;
-}
-
-.account-dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    width: 260px;
-    padding: 10px;
-    background: #fff;
-    color: #222;
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-    z-index: 99999;
-}
-
-.account-dropdown[hidden] {
-    display: none !important;
-}
-
-.account-dropdown-header {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 6px;
-    overflow-wrap: anywhere;
-}
-
-.account-dropdown-header strong,
-.account-dropdown-header small {
-    display: block;
-}
-
-.account-dropdown-header small {
-    margin-top: 6px;
-    color: #666;
-    white-space: pre-line;
-}
-
-.account-dropdown button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    border: 0;
-    border-radius: 7px;
-    background: transparent;
-    color: #222;
-    text-align: left;
-    font: inherit;
-    cursor: pointer;
-}
-
-.account-dropdown button:hover {
-    background: #f3f3f3;
-}
-/* =====================================================
-   DUAL CHECKOUT BUTTONS
-===================================================== */
-
-.checkout-supabase {
-    margin-bottom: 8px;
-}
-
-.checkout-whatsapp {
-    background: #25D366;
-    color: #ffffff;
-}
-
-.checkout-whatsapp:hover {
-    background: #1ebe5d;
-    color: #ffffff;
-    transform: translateY(-1px);
-}
-
-.checkout-whatsapp:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-    transform: none;
-}
 
 }
