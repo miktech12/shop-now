@@ -1557,4 +1557,20 @@ body{
     background: #f3f3f3;
 }
 
+
+    /* Dual checkout buttons */
+.checkout-supabase {
+    margin-bottom: 8px;
+}
+
+.checkout-whatsapp {
+    background: #25D366;
+    color: #ffffff;
+}
+
+.checkout-whatsapp:hover {
+    background: #1ebe5d;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
 }
