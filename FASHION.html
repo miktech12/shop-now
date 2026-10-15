@@ -1309,11 +1309,20 @@
 
         <button
             type="button"
-            class="checkout"
+            class="checkout checkout-supabase"
             id="placeOrderButton"
-            onclick="placeOrder()"
+            onclick="placeOrderSupabase()"
         >
-            Place Order →
+            🛒 PLACE ORDER
+        </button>
+
+
+        <button
+            type="button"
+            class="checkout checkout-whatsapp"
+            onclick="placeOrderWhatsApp()"
+        >
+            📱 ORDER VIA WHATSAPP
         </button>
 
     </div>
@@ -1366,19 +1375,32 @@
 
 /* =====================================================
    SHARED SUPABASE CLIENT
-   (created inside auth-state.js)
 ===================================================== */
 
 const supabaseClient = window.shopNowSupabase;
 
 
 /* =====================================================
-   CART (persistent across pages)
+   CART STORAGE
 ===================================================== */
 
 const CART_STORAGE_KEY = "shopNowCart";
 
 let cart = loadCart();
+
+
+/* =====================================================
+   CART SYNC STATE
+===================================================== */
+
+let cartSyncEnabled = false;
+let currentCartUserId = null;
+let cartSyncTimer = null;
+
+
+/* =====================================================
+   LOAD / SAVE (LOCAL)
+===================================================== */
 
 function loadCart() {
     try {
@@ -1387,7 +1409,6 @@ function loadCart() {
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed)) return [];
 
-        /* Sanitize so a corrupted entry can't break the site */
         return parsed
             .filter(item =>
                 item &&
@@ -1419,76 +1440,190 @@ function saveCart() {
 
 
 /* =====================================================
+   CART SYNC — SUPABASE
+===================================================== */
+
+function mergeCarts(a, b){
+
+    const map = new Map();
+
+    [...a, ...b].forEach(item => {
+
+        if(!item || !item.name) return;
+
+        const existing = map.get(item.name);
+
+        if(existing){
+            existing.quantity += item.quantity || 1;
+        }else{
+            map.set(item.name, {
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity || 1
+            });
+        }
+
+    });
+
+    return Array.from(map.values());
+
+}
+
+
+async function loadRemoteCart(){
+
+    if(!currentCartUserId) return [];
+
+    const { data, error } = await supabaseClient
+        .from("carts")
+        .select("items")
+        .eq("user_id", currentCartUserId)
+        .maybeSingle();
+
+    if(error){
+        console.warn("[PUMEKA] Could not load remote cart:", error);
+        return [];
+    }
+
+    return Array.isArray(data?.items) ? data.items : [];
+
+}
+
+
+function saveCartToSupabase(){
+
+    if(!cartSyncEnabled || !currentCartUserId) return;
+
+    clearTimeout(cartSyncTimer);
+
+    cartSyncTimer = setTimeout(async () => {
+
+        const { error } = await supabaseClient
+            .from("carts")
+            .upsert(
+                {
+                    user_id: currentCartUserId,
+                    items: cart,
+                    updated_at: new Date().toISOString()
+                },
+                { onConflict: "user_id" }
+            );
+
+        if(error){
+            console.warn("[PUMEKA] Cart sync failed:", error);
+        }
+
+    }, 500);
+
+}
+
+
+async function clearRemoteCart(){
+
+    if(!currentCartUserId) return;
+
+    const { error } = await supabaseClient
+        .from("carts")
+        .delete()
+        .eq("user_id", currentCartUserId);
+
+    if(error){
+        console.warn("[PUMEKA] Could not clear remote cart:", error);
+    }
+
+}
+
+
+async function syncCartOnLogin(){
+
+    const localCart  = [...cart];
+    const remoteCart = await loadRemoteCart();
+
+    cart = mergeCarts(localCart, remoteCart);
+
+    updateCart();
+
+}
+
+
+function setupCartSync(){
+
+    supabaseClient.auth.onAuthStateChange(
+        async (event, session) => {
+
+            if(session?.user){
+
+                const userId = session.user.id;
+
+                if(userId !== currentCartUserId){
+
+                    currentCartUserId = userId;
+                    cartSyncEnabled    = true;
+
+                    await syncCartOnLogin();
+
+                }else{
+
+                    cartSyncEnabled = true;
+
+                }
+
+                return;
+
+            }
+
+            cartSyncEnabled   = false;
+            currentCartUserId = null;
+
+            if(event === "SIGNED_OUT"){
+
+                cart = [];
+
+                localStorage.removeItem(CART_STORAGE_KEY);
+
+                updateCart();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
    ADD PRODUCT TO CART
 ===================================================== */
 
 function addCartFromProduct(button){
 
-    const product =
-        button.closest(".product");
+    const product = button.closest(".product");
 
     if(!product){
-
-        toast(
-            "Product could not be added ❌"
-        );
-
+        toast("Product could not be added ❌");
         return;
     }
 
-    const nameElement =
-        product.querySelector(
-            ".product-name"
-        );
+    const nameElement = product.querySelector(".product-name");
+    const priceElement = product.querySelector(".price");
 
-    const priceElement =
-        product.querySelector(
-            ".price"
-        );
-
-    if(
-        !nameElement ||
-        !priceElement
-    ){
-
-        toast(
-            "Product information missing ❌"
-        );
-
+    if(!nameElement || !priceElement){
+        toast("Product information missing ❌");
         return;
     }
 
-    const name =
-        nameElement
-            .textContent
-            .trim();
+    const name = nameElement.textContent.trim();
 
-    const price =
-        Number(
-            priceElement
-                .textContent
-                .replace(
-                    /[^0-9]/g,
-                    ""
-                )
-        );
-
-    if(
-        !name ||
-        !price
-    ){
-
-        toast(
-            "Invalid product information ❌"
-        );
-
-        return;
-    }
-
-    addCart(
-        name,
-        price
+    const price = Number(
+        priceElement.textContent.replace(/[^0-9]/g, "")
     );
+
+    if(!name || !price){
+        toast("Invalid product information ❌");
+        return;
+    }
+
+    addCart(name, price);
 
 }
 
@@ -1497,44 +1632,19 @@ function addCartFromProduct(button){
    ADD CART
 ===================================================== */
 
-function addCart(
-    name,
-    price
-){
+function addCart(name, price){
 
-    const existing =
-        cart.find(
-            item =>
-                item.name === name
-        );
+    const existing = cart.find(item => item.name === name);
 
     if(existing){
-
         existing.quantity++;
-
     }else{
-
-        cart.push({
-
-            name:
-                name,
-
-            price:
-                price,
-
-            quantity:
-                1
-
-        });
-
+        cart.push({ name, price, quantity: 1 });
     }
 
     updateCart();
 
-    toast(
-        name +
-        " added to cart 🛒"
-    );
+    toast(name + " added to cart 🛒");
 
 }
 
@@ -1546,30 +1656,17 @@ function addCart(
 function updateCart(){
 
     const count =
-        cart.reduce(
-            (
-                total,
-                item
-            ) =>
-                total +
-                item.quantity,
-            0
-        );
+        cart.reduce((total, item) => total + item.quantity, 0);
 
-    const cartCount =
-        document.getElementById(
-            "cartCount"
-        );
+    const cartCount = document.getElementById("cartCount");
 
     if(cartCount){
-
-        cartCount.textContent =
-            count;
-
+        cartCount.textContent = count;
     }
 
-    /* SAVE TO LOCALSTORAGE — cart persists across pages */
+    /* Save locally + sync to Supabase */
     saveCart();
+    saveCartToSupabase();
 
     renderCart();
 
@@ -1582,138 +1679,101 @@ function updateCart(){
 
 function renderCart(){
 
-    const container =
-        document.getElementById(
-            "cartItems"
-        );
+    const container = document.getElementById("cartItems");
+    const totalElement = document.getElementById("cartTotal");
 
-    const totalElement =
-        document.getElementById(
-            "cartTotal"
-        );
+    if(!container || !totalElement) return;
 
-    if(
-        !container ||
-        !totalElement
-    ){
-
-        return;
-
-    }
-
-    if(
-        cart.length === 0
-    ){
+    if(cart.length === 0){
 
         container.innerHTML = `
 
             <div class="empty-cart">
-
                 Your cart is empty 🛒
-
             </div>
 
         `;
 
-        totalElement.textContent =
-            "UGX 0";
-
+        totalElement.textContent = "UGX 0";
         return;
 
     }
 
     let total = 0;
-
     container.innerHTML = "";
 
-    cart.forEach(
-        (
-            item,
-            index
-        ) => {
+    cart.forEach((item, index) => {
 
-            const subtotal =
-                item.price *
-                item.quantity;
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
 
-            total +=
-                subtotal;
+        container.innerHTML += `
 
-            container.innerHTML += `
+            <div class="cart-item">
 
-                <div class="cart-item">
+                <div class="cart-item-info">
 
-                    <div class="cart-item-info">
+                    <strong>
+                        ${escapeHTML(item.name)}
+                    </strong>
 
-                        <strong>
-                            ${escapeHTML(item.name)}
-                        </strong>
-
-                        <small>
-                            ${item.quantity}
-                            ×
-                            UGX
-                            ${item.price.toLocaleString()}
-                        </small>
-
-                    </div>
-
-
-                    <div class="cart-item-actions">
-
-                        <button
-                            type="button"
-                            onclick="decreaseQuantity(${index})"
-                        >
-                            −
-                        </button>
-
-                        <span>
-                            ${item.quantity}
-                        </span>
-
-                        <button
-                            type="button"
-                            onclick="increaseQuantity(${index})"
-                        >
-                            +
-                        </button>
-
-                        <button
-                            type="button"
-                            class="remove"
-                            onclick="removeItem(${index})"
-                        >
-                            Remove
-                        </button>
-
-                    </div>
+                    <small>
+                        ${item.quantity}
+                        × UGX
+                        ${item.price.toLocaleString()}
+                    </small>
 
                 </div>
 
-            `;
 
-        }
-    );
+                <div class="cart-item-actions">
 
-    totalElement.textContent =
-        "UGX " +
-        total.toLocaleString();
+                    <button
+                        type="button"
+                        onclick="decreaseQuantity(${index})"
+                    >
+                        −
+                    </button>
+
+                    <span>
+                        ${item.quantity}
+                    </span>
+
+                    <button
+                        type="button"
+                        onclick="increaseQuantity(${index})"
+                    >
+                        +
+                    </button>
+
+                    <button
+                        type="button"
+                        class="remove"
+                        onclick="removeItem(${index})"
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+    totalElement.textContent = "UGX " + total.toLocaleString();
 
 }
 
 
 /* =====================================================
-   INCREASE QUANTITY
+   QUANTITY
 ===================================================== */
 
 function increaseQuantity(index){
 
-    if(!cart[index]){
-
-        return;
-
-    }
+    if(!cart[index]) return;
 
     cart[index].quantity++;
 
@@ -1722,432 +1782,67 @@ function increaseQuantity(index){
 }
 
 
-/* =====================================================
-   DECREASE QUANTITY
-===================================================== */
-
 function decreaseQuantity(index){
 
-    if(!cart[index]){
-
-        return;
-
-    }
+    if(!cart[index]) return;
 
     cart[index].quantity--;
 
-    if(
-        cart[index].quantity <= 0
-    ){
-
-        cart.splice(
-            index,
-            1
-        );
-
+    if(cart[index].quantity <= 0){
+        cart.splice(index, 1);
     }
 
     updateCart();
 
 }
 
-
-/* =====================================================
-   REMOVE ITEM
-===================================================== */
 
 function removeItem(index){
 
-    if(!cart[index]){
+    if(!cart[index]) return;
 
-        return;
+    const removed = cart[index].name;
 
-    }
-
-    const removed =
-        cart[index].name;
-
-    cart.splice(
-        index,
-        1
-    );
+    cart.splice(index, 1);
 
     updateCart();
 
-    toast(
-        removed +
-        " removed"
-    );
+    toast(removed + " removed");
 
 }
 
 
 /* =====================================================
-   OPEN CART
+   CART OPEN / CLOSE
 ===================================================== */
 
 function openCart(){
 
-    const cartElement =
-        document.getElementById(
-            "cart"
-        );
+    const cartElement = document.getElementById("cart");
 
     if(cartElement){
-
-        cartElement.classList.add(
-            "open"
-        );
-
+        cartElement.classList.add("open");
     }
 
 }
 
-
-/* =====================================================
-   CLOSE CART
-===================================================== */
 
 function closeCart(){
 
-    const cartElement =
-        document.getElementById(
-            "cart"
-        );
+    const cartElement = document.getElementById("cart");
 
     if(cartElement){
-
-        cartElement.classList.remove(
-            "open"
-        );
-
+        cartElement.classList.remove("open");
     }
 
 }
 
 
 /* =====================================================
-   PLACE ORDER
+   CLEAR CART + FORM (shared)
 ===================================================== */
 
-async function placeOrder(){
-
-    /*
-     Cart empty check
-    */
-
-    if(
-        cart.length === 0
-    ){
-
-        toast(
-            "Your cart is empty 🛒"
-        );
-
-        return;
-
-    }
-
-
-    /*
-     Check login
-    */
-
-    const {
-        data: {
-            session
-        },
-        error: sessionError
-    } =
-    await shopNowSupabase
-        .auth
-        .getSession();
-
-
-    if(sessionError){
-
-        console.error(
-            sessionError
-        );
-
-        toast(
-            "Could not check login status ❌"
-        );
-
-        return;
-
-    }
-
-
-    /*
-     Customer must login
-    */
-
-    if(!session){
-
-        toast(
-            "Please login before ordering 🔐"
-        );
-
-        sessionStorage.setItem(
-            "shopNowReturnTo",
-            window.location.pathname
-                .split("/")
-                .pop() ||
-            "index.html"
-        );
-
-        setTimeout(
-            () => {
-
-                window.location.href =
-                    "auth.html";
-
-            },
-            1000
-        );
-
-        return;
-
-    }
-
-
-    /*
-     Get customer details
-    */
-
-    const customerName =
-        document
-            .getElementById(
-                "customerName"
-            )
-            .value
-            .trim();
-
-
-    const customerPhone =
-        document
-            .getElementById(
-                "customerPhone"
-            )
-            .value
-            .trim();
-
-
-    const customerWhatsapp =
-        document
-            .getElementById(
-                "customerWhatsapp"
-            )
-            .value
-            .trim();
-
-
-    const deliveryLocation =
-        document
-            .getElementById(
-                "deliveryLocation"
-            )
-            .value
-            .trim();
-
-
-    const orderNotes =
-        document
-            .getElementById(
-                "orderNotes"
-            )
-            .value
-            .trim();
-
-
-    /*
-     Validate information
-    */
-
-    if(!customerName){
-
-        toast(
-            "Enter your full name 👤"
-        );
-
-        return;
-
-    }
-
-
-    if(!customerPhone){
-
-        toast(
-            "Enter your phone number 📞"
-        );
-
-        return;
-
-    }
-
-
-    if(!deliveryLocation){
-
-        toast(
-            "Enter your delivery location 📍"
-        );
-
-        return;
-
-    }
-
-
-    /*
-     Calculate total
-    */
-
-    let total = 0;
-
-    cart.forEach(
-        item => {
-
-            total +=
-                item.price *
-                item.quantity;
-
-        }
-    );
-
-
-    /*
-     Disable button
-    */
-
-    const orderButton =
-        document.getElementById(
-            "placeOrderButton"
-        );
-
-    if(orderButton){
-
-        orderButton.disabled =
-            true;
-
-        orderButton.textContent =
-            "Placing Order...";
-
-    }
-
-
-    /*
-     Prepare order items
-    */
-
-    const orderItems =
-        cart.map(
-            item => ({
-
-                name:
-                    item.name,
-
-                price:
-                    item.price,
-
-                quantity:
-                    item.quantity,
-
-                subtotal:
-                    item.price *
-                    item.quantity
-
-            })
-        );
-
-
-    /*
-     SEND ORDER TO SUPABASE
-    */
-
-    const {
-        data,
-        error
-    } =
-    await shopNowSupabase
-        .from("orders")
-        .insert([
-
-            {
-
-                user_id:
-                    session.user.id,
-
-                customer_name:
-                    customerName,
-
-                phone:
-                    customerPhone,
-
-                whatsapp:
-                    customerWhatsapp ||
-                    null,
-
-                delivery_location:
-                    deliveryLocation,
-
-                notes:
-                    orderNotes ||
-                    null,
-
-                items:
-                    orderItems,
-
-                total:
-                    total
-
-            }
-
-        ])
-        .select()
-        .single();
-
-
-    /*
-     Error
-    */
-
-    if(error){
-
-        console.error(
-            "ORDER ERROR:",
-            error
-        );
-
-        toast(
-            "Order failed. Please try again ❌"
-        );
-
-        if(orderButton){
-
-            orderButton.disabled =
-                false;
-
-            orderButton.textContent =
-                "Place Order →";
-
-        }
-
-        return;
-
-    }
-
-
-    /*
-     ORDER SUCCESS
-    */
-
-    const orderNumber =
-        data.order_number;
-
-
-    /*
-     Clear cart from memory AND localStorage
-    */
+function clearCartAndForm(){
 
     cart = [];
 
@@ -2155,91 +1850,222 @@ async function placeOrder(){
 
     updateCart();
 
+    ["customerName","customerPhone","customerWhatsapp",
+     "deliveryLocation","orderNotes"].forEach(id => {
 
-    /*
-     Clear form
-    */
+        const el = document.getElementById(id);
 
-    document
-        .getElementById(
-            "customerName"
-        )
-        .value = "";
+        if(el) el.value = "";
 
+    });
 
-    document
-        .getElementById(
-            "customerPhone"
-        )
-        .value = "";
+    /* Also clear remote cart */
+    clearRemoteCart();
+
+}
 
 
-    document
-        .getElementById(
-            "customerWhatsapp"
-        )
-        .value = "";
+/* =====================================================
+   CHECKOUT OPTION 1 — SUPABASE
+===================================================== */
 
+async function placeOrderSupabase(){
 
-    document
-        .getElementById(
-            "deliveryLocation"
-        )
-        .value = "";
+    if(cart.length === 0){
+        toast("Your cart is empty 🛒");
+        return;
+    }
 
+    const {
+        data: { session },
+        error: sessionError
+    } = await supabaseClient.auth.getSession();
 
-    document
-        .getElementById(
-            "orderNotes"
-        )
-        .value = "";
+    if(sessionError){
+        console.error(sessionError);
+        toast("Could not check login status ❌");
+        return;
+    }
 
+    if(!session){
 
-    /*
-     Restore button
-    */
+        toast("Please login before ordering 🔐");
 
-    if(orderButton){
+        sessionStorage.setItem(
+            "shopNowReturnTo",
+            window.location.pathname.split("/").pop() || "index.html"
+        );
 
-        orderButton.disabled =
-            false;
+        setTimeout(() => {
+            window.location.href = "auth.html";
+        }, 1000);
 
-        orderButton.textContent =
-            "Place Order →";
+        return;
 
     }
 
+    const customerName =
+        (document.getElementById("customerName")?.value || "").trim();
 
-    /*
-     Close cart
-    */
+    const customerPhone =
+        (document.getElementById("customerPhone")?.value || "").trim();
+
+    const customerWhatsapp =
+        (document.getElementById("customerWhatsapp")?.value || "").trim();
+
+    const deliveryLocation =
+        (document.getElementById("deliveryLocation")?.value || "").trim();
+
+    const orderNotes =
+        (document.getElementById("orderNotes")?.value || "").trim();
+
+    if(!customerName){ toast("Enter your full name 👤"); return; }
+    if(!customerPhone){ toast("Enter your phone number 📞"); return; }
+    if(!deliveryLocation){ toast("Enter your delivery location 📍"); return; }
+
+    let total = 0;
+    cart.forEach(item => {
+        total += item.price * item.quantity;
+    });
+
+    const orderButton = document.getElementById("placeOrderButton");
+
+    if(orderButton){
+        orderButton.disabled = true;
+        orderButton.textContent = "Placing Order...";
+    }
+
+    const orderItems = cart.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        subtotal: item.price * item.quantity
+    }));
+
+    const { data, error } =
+        await supabaseClient
+            .from("orders")
+            .insert([{
+                user_id: session.user.id,
+                customer_name: customerName,
+                phone: customerPhone,
+                whatsapp: customerWhatsapp || null,
+                delivery_location: deliveryLocation,
+                notes: orderNotes || null,
+                items: orderItems,
+                total: total
+            }])
+            .select()
+            .single();
+
+    if(error){
+
+        console.error("ORDER ERROR:", error);
+        toast("Order failed. Please try again ❌");
+
+        if(orderButton){
+            orderButton.disabled = false;
+            orderButton.textContent = "🛒 PLACE ORDER";
+        }
+
+        return;
+
+    }
+
+    const orderNumber = data.order_number;
+
+    clearCartAndForm();
+
+    if(orderButton){
+        orderButton.disabled = false;
+        orderButton.textContent = "🛒 PLACE ORDER";
+    }
 
     closeCart();
 
+    setTimeout(() => {
 
-    /*
-     Show success
-    */
+        alert(
+            "ORDER PLACED SUCCESSFULLY 🎉\n\n" +
+            "Order Number: #" + orderNumber +
+            "\n\nThank you for shopping with PUMEKA."
+        );
 
-    setTimeout(
-        () => {
+    }, 200);
 
-            alert(
+}
 
-                "ORDER PLACED SUCCESSFULLY 🎉\n\n" +
 
-                "Order Number: #" +
-                orderNumber +
+/* =====================================================
+   CHECKOUT OPTION 2 — WHATSAPP
+===================================================== */
 
-                "\n\n" +
+function placeOrderWhatsApp(){
 
-                "Thank you for shopping with PUMEKA."
+    if(cart.length === 0){
+        toast("Your cart is empty 🛒");
+        return;
+    }
 
-            );
+    const phone = "256709568326";
 
-        },
-        200
-    );
+    const name =
+        (document.getElementById("customerName")?.value || "").trim();
+
+    const customerPhone =
+        (document.getElementById("customerPhone")?.value || "").trim();
+
+    const location =
+        (document.getElementById("deliveryLocation")?.value || "").trim();
+
+    const notes =
+        (document.getElementById("orderNotes")?.value || "").trim();
+
+    let message =
+        "Hello PUMEKA 👋\n\n" +
+        "I would like to order:\n";
+
+    let total = 0;
+
+    cart.forEach(item => {
+
+        const subtotal = item.price * item.quantity;
+
+        total += subtotal;
+
+        message +=
+            "\n• " + item.name +
+            " × " + item.quantity +
+            " — UGX " + subtotal.toLocaleString();
+
+    });
+
+    message += "\n\nTotal: UGX " + total.toLocaleString();
+
+    if(name || customerPhone || location || notes){
+
+        message += "\n\n--- Delivery Details ---";
+
+        if(name) message += "\nName: " + name;
+        if(customerPhone) message += "\nPhone: " + customerPhone;
+        if(location) message += "\nLocation: " + location;
+        if(notes) message += "\nNotes: " + notes;
+
+    }
+
+    const whatsapp =
+        "https://wa.me/" +
+        phone +
+        "?text=" +
+        encodeURIComponent(message);
+
+    window.open(whatsapp, "_blank");
+
+    clearCartAndForm();
+
+    toast("WhatsApp opened 📱");
+
+    closeCart();
 
 }
 
@@ -2250,38 +2076,21 @@ async function placeOrder(){
 
 function fixProductButtons(){
 
-    const products =
-        document.querySelectorAll(
-            ".product"
-        );
+    const products = document.querySelectorAll(".product");
 
-    products.forEach(
-        product => {
+    products.forEach(product => {
 
-            const button =
-                product.querySelector(
-                    ".add-cart"
-                );
+        const button = product.querySelector(".add-cart");
 
-            if(!button){
+        if(!button) return;
 
-                return;
+        button.addEventListener("click", function(){
 
-            }
+            addCartFromProduct(this);
 
-            button.addEventListener(
-                "click",
-                function(){
+        });
 
-                    addCartFromProduct(
-                        this
-                    );
-
-                }
-            );
-
-        }
-    );
+    });
 
 }
 
@@ -2292,80 +2101,32 @@ function fixProductButtons(){
 
 function searchProducts(){
 
-    const searchInput =
-        document.getElementById(
-            "search"
-        );
+    const searchInput = document.getElementById("search");
 
-    if(!searchInput){
-
-        return;
-
-    }
+    if(!searchInput) return;
 
     const searchTerm =
-        searchInput.value
-            .toLowerCase()
-            .trim();
+        searchInput.value.toLowerCase().trim();
 
-    const products =
-        document.querySelectorAll(
-            ".product"
-        );
+    const products = document.querySelectorAll(".product");
 
-    products.forEach(
-        product => {
+    products.forEach(product => {
 
-            const nameElement =
-                product.querySelector(
-                    ".product-name"
-                );
+        const name =
+            product.querySelector(".product-name")
+                ?.textContent.toLowerCase() || "";
 
-            const categoryElement =
-                product.querySelector(
-                    ".product-category"
-                );
+        const category =
+            product.querySelector(".product-category")
+                ?.textContent.toLowerCase() || "";
 
-            const name =
-                nameElement
-                    ? nameElement
-                        .textContent
-                        .toLowerCase()
-                    : "";
+        const matches =
+            name.includes(searchTerm) ||
+            category.includes(searchTerm);
 
-            const category =
-                categoryElement
-                    ? categoryElement
-                        .textContent
-                        .toLowerCase()
-                    : "";
+        product.style.display = matches ? "" : "none";
 
-            if(
-
-                name.includes(
-                    searchTerm
-                )
-
-                ||
-
-                category.includes(
-                    searchTerm
-                )
-
-            ){
-
-                product.style.display =
-                    "";
-
-            }else{
-
-                product.style.display =
-                    "none";
-
-            }
-
-        }
-    );
+    });
 
 }
 
@@ -2374,77 +2135,30 @@ function searchProducts(){
    CATEGORY FILTER
 ===================================================== */
 
-function filterProducts(
-    category,
-    button
-){
+function filterProducts(category, button){
 
-    const products =
-        document.querySelectorAll(
-            ".product"
-        );
+    const products = document.querySelectorAll(".product");
 
-    const selected =
-        category
-            .toLowerCase();
+    const selected = category.toLowerCase();
 
-    products.forEach(
-        product => {
+    products.forEach(product => {
 
-            const productCategory =
-                product.dataset.category ||
-                "";
+        const productCategory = product.dataset.category || "";
 
-            if(
-
-                selected === "all"
-
-                ||
-
-                productCategory ===
-                selected
-
-            ){
-
-                product.style.display =
-                    "";
-
-            }else{
-
-                product.style.display =
-                    "none";
-
-            }
-
+        if(selected === "all" || productCategory === selected){
+            product.style.display = "";
+        }else{
+            product.style.display = "none";
         }
-    );
 
+    });
 
-    /*
-     Active button
-    */
-
-    document
-        .querySelectorAll(
-            ".category-btn"
-        )
-        .forEach(
-            btn => {
-
-                btn.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
+    document.querySelectorAll(".category-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
 
     if(button){
-
-        button.classList.add(
-            "active"
-        );
-
+        button.classList.add("active");
     }
 
 }
@@ -2456,52 +2170,28 @@ function filterProducts(
 
 function toast(message){
 
-    let toastElement =
-        document.getElementById(
-            "shopNowToast"
-        );
+    let toastElement = document.getElementById("shopNowToast");
 
     if(!toastElement){
 
-        toastElement =
-            document.createElement(
-                "div"
-            );
+        toastElement = document.createElement("div");
+        toastElement.id = "shopNowToast";
+        toastElement.className = "toast";
 
-        toastElement.id =
-            "shopNowToast";
-
-        toastElement.className =
-            "toast";
-
-        document.body.appendChild(
-            toastElement
-        );
+        document.body.appendChild(toastElement);
 
     }
 
-    toastElement.textContent =
-        message;
+    toastElement.textContent = message;
+    toastElement.classList.add("show");
 
-    toastElement.classList.add(
-        "show"
-    );
+    clearTimeout(window.shopNowToastTimer);
 
-    clearTimeout(
-        window.shopNowToastTimer
-    );
+    window.shopNowToastTimer = setTimeout(() => {
 
-    window.shopNowToastTimer =
-        setTimeout(
-            () => {
+        toastElement.classList.remove("show");
 
-                toastElement.classList.remove(
-                    "show"
-                );
-
-            },
-            2500
-        );
+    }, 2500);
 
 }
 
@@ -2513,31 +2203,11 @@ function toast(message){
 function escapeHTML(value){
 
     return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
@@ -2554,15 +2224,9 @@ document.addEventListener(
 
         updateCart();
 
+        setupCartSync();
 
-        /*
-         Search while typing
-        */
-
-        const searchInput =
-            document.getElementById(
-                "search"
-            );
+        const searchInput = document.getElementById("search");
 
         if(searchInput){
 
@@ -2579,6 +2243,7 @@ document.addEventListener(
 </script>
 
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"e2c107eadc6e41499302b0ff665a0dfc","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 
 </html>
