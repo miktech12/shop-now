@@ -1417,10 +1417,27 @@ async function clearRemoteCart(){
 
 async function syncCartOnLogin(){
 
+    /* User just clicked "Login" during this page visit.
+       Merge their guest cart with their remote cart. */
     const localCart  = [...cart];
     const remoteCart = await loadRemoteCart();
 
     cart = mergeCarts(localCart, remoteCart);
+
+    updateCart();
+
+}
+
+
+async function loadCartFromRemote(){
+
+    /* Page reloaded with an existing session.
+       Remote is the source of truth — do NOT merge. */
+    const remoteCart = await loadRemoteCart();
+
+    if(remoteCart.length > 0){
+        cart = remoteCart;
+    }
 
     updateCart();
 
@@ -1441,7 +1458,18 @@ function setupCartSync(){
                     currentCartUserId = userId;
                     cartSyncEnabled    = true;
 
-                    await syncCartOnLogin();
+                    if(event === "SIGNED_IN"){
+
+                        /* User actively logged in — merge guest + remote */
+                        await syncCartOnLogin();
+
+                    }else{
+
+                        /* INITIAL_SESSION / TOKEN_REFRESHED —
+                           just use the remote cart, no merge */
+                        await loadCartFromRemote();
+
+                    }
 
                 }else{
 
@@ -1788,7 +1816,6 @@ function clearCartAndForm(){
 
     });
 
-    /* Also clear remote cart */
     clearRemoteCart();
 
 }
