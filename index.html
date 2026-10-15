@@ -1244,67 +1244,56 @@ const supabaseClient = window.shopNowSupabase;
 
 
 /* =====================================================
-   CART (persistent across pages)
+   CART STORAGE
 ===================================================== */
 
 const CART_STORAGE_KEY = "shopNowCart";
 
 let cart = loadCart();
 
-    /* =====================================================
-   CART SYNC (across devices, tied to logged-in user)
-===================================================== */
 
-const CART_OWNER_KEY = "shopNowCartOwner";
+/* =====================================================
+   CART SYNC STATE
+===================================================== */
 
 let cartSyncEnabled = false;
 let currentCartUserId = null;
 let cartSyncTimer = null;
+
+
+/* =====================================================
+   LOAD / SAVE (LOCAL)
+===================================================== */
 
 function loadCart(){
 
     try{
 
         const raw =
-            localStorage.getItem(
-                CART_STORAGE_KEY
-            );
+            localStorage.getItem(CART_STORAGE_KEY);
 
         if(!raw) return [];
 
-        const parsed =
-            JSON.parse(raw);
+        const parsed = JSON.parse(raw);
 
         if(!Array.isArray(parsed)) return [];
 
         return parsed
             .filter(item =>
-
                 item &&
                 typeof item.name === "string" &&
                 typeof item.price === "number" &&
                 typeof item.quantity === "number"
-
             )
             .map(item => ({
-
                 name: item.name,
-
                 price: item.price,
-
-                quantity: Math.max(
-                    1,
-                    Math.floor(item.quantity)
-                )
-
+                quantity: Math.max(1, Math.floor(item.quantity))
             }));
 
     }catch(err){
 
-        console.warn(
-            "[PUMEKA] Could not load cart:",
-            err
-        );
+        console.warn("[PUMEKA] Could not load cart:", err);
 
         return [];
 
@@ -1318,37 +1307,170 @@ function saveCart(){
     try{
 
         localStorage.setItem(
-
             CART_STORAGE_KEY,
-
             JSON.stringify(cart)
-
         );
 
     }catch(err){
 
-        console.warn(
-            "[PUMEKA] Could not save cart:",
-            err
-        );
+        console.warn("[PUMEKA] Could not save cart:", err);
 
     }
 
 }
 
-function saveCart(){
-    try{
-        localStorage.setItem(
-            CART_STORAGE_KEY,
-            JSON.stringify(cart)
-        );
-    }catch(err){
-        console.warn(
-            "[PUMEKA] Could not save cart:",
-            err
-        );
-    }
+
+/* =====================================================
+   CART SYNC — SUPABASE
+===================================================== */
+
+function mergeCarts(a, b){
+
+    const map = new Map();
+
+    [...a, ...b].forEach(item => {
+
+        if(!item || !item.name) return;
+
+        const existing = map.get(item.name);
+
+        if(existing){
+            existing.quantity += item.quantity || 1;
+        }else{
+            map.set(item.name, {
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity || 1
+            });
+        }
+
+    });
+
+    return Array.from(map.values());
+
 }
+
+
+async function loadRemoteCart(){
+
+    if(!currentCartUserId) return [];
+
+    const { data, error } = await supabaseClient
+        .from("carts")
+        .select("items")
+        .eq("user_id", currentCartUserId)
+        .maybeSingle();
+
+    if(error){
+        console.warn("[PUMEKA] Could not load remote cart:", error);
+        return [];
+    }
+
+    return Array.isArray(data?.items) ? data.items : [];
+
+}
+
+
+function saveCartToSupabase(){
+
+    if(!cartSyncEnabled || !currentCartUserId) return;
+
+    clearTimeout(cartSyncTimer);
+
+    cartSyncTimer = setTimeout(async () => {
+
+        const { error } = await supabaseClient
+            .from("carts")
+            .upsert(
+                {
+                    user_id: currentCartUserId,
+                    items: cart,
+                    updated_at: new Date().toISOString()
+                },
+                { onConflict: "user_id" }
+            );
+
+        if(error){
+            console.warn("[PUMEKA] Cart sync failed:", error);
+        }
+
+    }, 500);
+
+}
+
+
+async function clearRemoteCart(){
+
+    if(!currentCartUserId) return;
+
+    const { error } = await supabaseClient
+        .from("carts")
+        .delete()
+        .eq("user_id", currentCartUserId);
+
+    if(error){
+        console.warn("[PUMEKA] Could not clear remote cart:", error);
+    }
+
+}
+
+
+async function syncCartOnLogin(){
+
+    const localCart  = [...cart];
+    const remoteCart = await loadRemoteCart();
+
+    cart = mergeCarts(localCart, remoteCart);
+
+    updateCart();
+
+}
+
+
+function setupCartSync(){
+
+    supabaseClient.auth.onAuthStateChange(
+        async (event, session) => {
+
+            if(session?.user){
+
+                const userId = session.user.id;
+
+                if(userId !== currentCartUserId){
+
+                    currentCartUserId = userId;
+                    cartSyncEnabled    = true;
+
+                    await syncCartOnLogin();
+
+                }else{
+
+                    cartSyncEnabled = true;
+
+                }
+
+                return;
+
+            }
+
+            cartSyncEnabled   = false;
+            currentCartUserId = null;
+
+            if(event === "SIGNED_OUT"){
+
+                cart = [];
+
+                localStorage.removeItem(CART_STORAGE_KEY);
+
+                updateCart();
+
+            }
+
+        }
+    );
+
+}
+
 
 /* =====================================================
    ADD CART
@@ -1376,12 +1498,9 @@ function addCart(name, price){
 
     updateCart();
 
-    toast(
-        name + " added to cart 🛒"
-    );
+    toast(name + " added to cart 🛒");
 
 }
-
 
 
 /* =====================================================
@@ -1395,23 +1514,20 @@ function updateCart(){
 
     const items =
         cart.reduce(
-            (sum, item) =>
-            sum + item.quantity,
+            (sum, item) => sum + item.quantity,
             0
         );
 
     if(count){
-
         count.textContent = items;
-
     }
 
     saveCart();
-saveCartToSupabase();
+    saveCartToSupabase();
+
     renderCart();
 
 }
-
 
 
 /* =====================================================
@@ -1426,6 +1542,7 @@ function renderCart(){
     const totalElement =
         document.getElementById("cartTotal");
 
+    if(!container || !totalElement) return;
 
     if(cart.length === 0){
 
@@ -1435,38 +1552,29 @@ function renderCart(){
 
             <div>🛒</div>
 
-            <h3>
-                Your cart is empty
-            </h3>
+            <h3>Your cart is empty</h3>
 
-            <p>
-                Add something you love.
-            </p>
+            <p>Add something you love.</p>
 
         </div>
 
         `;
 
-        totalElement.textContent =
-            "UGX 0";
+        totalElement.textContent = "UGX 0";
 
         return;
 
     }
 
-
     let total = 0;
 
     container.innerHTML = "";
 
-
     cart.forEach((item,index)=>{
 
-        const subtotal =
-            item.price * item.quantity;
+        const subtotal = item.price * item.quantity;
 
         total += subtotal;
-
 
         container.innerHTML += `
 
@@ -1498,13 +1606,10 @@ function renderCart(){
 
     });
 
-
     totalElement.textContent =
-        "UGX " +
-        total.toLocaleString();
+        "UGX " + total.toLocaleString();
 
 }
-
 
 
 /* =====================================================
@@ -1520,40 +1625,30 @@ function removeItem(index){
 }
 
 
-
 /* =====================================================
    CART OPEN / CLOSE
 ===================================================== */
 
 function openCart(){
 
-    document
-        .getElementById("cart")
-        .classList
-        .add("open");
+    document.getElementById("cart")
+        .classList.add("open");
 
-    document
-        .getElementById("overlay")
-        .classList
-        .add("show");
+    document.getElementById("overlay")
+        .classList.add("show");
 
 }
 
 
 function closeCart(){
 
-    document
-        .getElementById("cart")
-        .classList
-        .remove("open");
+    document.getElementById("cart")
+        .classList.remove("open");
 
-    document
-        .getElementById("overlay")
-        .classList
-        .remove("show");
+    document.getElementById("overlay")
+        .classList.remove("show");
 
 }
-
 
 
 /* =====================================================
@@ -1572,7 +1667,6 @@ function wishlist(button){
 }
 
 
-
 /* =====================================================
    SEARCH
 ===================================================== */
@@ -1588,40 +1682,26 @@ if(search){
         function(){
 
             const value =
-                this.value
-                .toLowerCase()
-                .trim();
-
+                this.value.toLowerCase().trim();
 
             const products =
                 document.querySelectorAll(".product");
 
-
             products.forEach(product=>{
 
                 const name =
-                    (product.dataset.name || "")
-                    .toLowerCase();
-
+                    (product.dataset.name || "").toLowerCase();
 
                 const category =
-                    (product.dataset.category || "")
-                    .toLowerCase();
-
+                    (product.dataset.category || "").toLowerCase();
 
                 if(
                     name.includes(value) ||
                     category.includes(value)
                 ){
-
-                    product.style.display =
-                        "";
-
+                    product.style.display = "";
                 }else{
-
-                    product.style.display =
-                        "none";
-
+                    product.style.display = "none";
                 }
 
             });
@@ -1632,7 +1712,6 @@ if(search){
 }
 
 
-
 /* =====================================================
    COMING SOON
 ===================================================== */
@@ -1641,12 +1720,9 @@ function showComingSoon(event, category){
 
     event.preventDefault();
 
-    toast(
-        category + " is coming soon 🚀"
-    );
+    toast(category + " is coming soon 🚀");
 
 }
-
 
 
 /* =====================================================
@@ -1658,32 +1734,21 @@ function toast(message){
     const old =
         document.querySelector(".toast");
 
-    if(old){
-        old.remove();
-    }
-
+    if(old) old.remove();
 
     const element =
         document.createElement("div");
 
-    element.className =
-        "toast";
-
-    element.textContent =
-        message;
-
+    element.className = "toast";
+    element.textContent = message;
 
     document.body.appendChild(element);
 
-
     setTimeout(()=>{
-
         element.remove();
-
     },2500);
 
 }
-
 
 
 /* =====================================================
@@ -1702,9 +1767,8 @@ function escapeHTML(value){
 }
 
 
-
 /* =====================================================
-   CLEAR CART + FORM (shared by both checkout methods)
+   CLEAR CART + FORM (shared)
 ===================================================== */
 
 function clearCartAndForm(){
@@ -1724,8 +1788,10 @@ function clearCartAndForm(){
 
     });
 
-}
+    /* Also clear remote cart */
+    clearRemoteCart();
 
+}
 
 
 /* =====================================================
@@ -1735,33 +1801,20 @@ function clearCartAndForm(){
 async function placeOrderSupabase(){
 
     if(cart.length === 0){
-
         toast("Your cart is empty 🛒");
-
         return;
-
     }
-
-
-    /* Login check */
 
     const {
         data: { session },
         error: sessionError
-    } =
-    await supabaseClient.auth.getSession();
-
+    } = await supabaseClient.auth.getSession();
 
     if(sessionError){
-
         console.error(sessionError);
-
         toast("Could not check login status ❌");
-
         return;
-
     }
-
 
     if(!session){
 
@@ -1774,17 +1827,12 @@ async function placeOrderSupabase(){
         );
 
         setTimeout(() => {
-
             window.location.href = "auth.html";
-
         }, 1000);
 
         return;
 
     }
-
-
-    /* Read form */
 
     const customerName =
         (document.getElementById("customerName")?.value || "").trim();
@@ -1801,79 +1849,35 @@ async function placeOrderSupabase(){
     const orderNotes =
         (document.getElementById("orderNotes")?.value || "").trim();
 
-
-    /* Validate */
-
-    if(!customerName){
-
-        toast("Enter your full name 👤");
-
-        return;
-
-    }
-
-    if(!customerPhone){
-
-        toast("Enter your phone number 📞");
-
-        return;
-
-    }
-
-    if(!deliveryLocation){
-
-        toast("Enter your delivery location 📍");
-
-        return;
-
-    }
-
-
-    /* Total */
+    if(!customerName){ toast("Enter your full name 👤"); return; }
+    if(!customerPhone){ toast("Enter your phone number 📞"); return; }
+    if(!deliveryLocation){ toast("Enter your delivery location 📍"); return; }
 
     let total = 0;
-
     cart.forEach(item => {
-
         total += item.price * item.quantity;
-
     });
-
-
-    /* Button state */
 
     const orderButton =
         document.getElementById("placeOrderButton");
 
     if(orderButton){
-
         orderButton.disabled = true;
-
         orderButton.textContent = "Placing Order...";
-
     }
-
-
-    /* Build items */
 
     const orderItems =
         cart.map(item => ({
-
             name: item.name,
             price: item.price,
             quantity: item.quantity,
             subtotal: item.price * item.quantity
-
         }));
-
-
-    /* Insert */
 
     const { data, error } =
         await supabaseClient
             .from("orders")
             .insert([{
-
                 user_id: session.user.id,
                 customer_name: customerName,
                 phone: customerPhone,
@@ -1882,48 +1886,34 @@ async function placeOrderSupabase(){
                 notes: orderNotes || null,
                 items: orderItems,
                 total: total
-
             }])
             .select()
             .single();
 
-
     if(error){
 
         console.error("ORDER ERROR:", error);
-
         toast("Order failed. Please try again ❌");
 
         if(orderButton){
-
             orderButton.disabled = false;
-
             orderButton.textContent = "🛒 PLACE ORDER";
-
         }
 
         return;
 
     }
 
-
     const orderNumber = data.order_number;
-
-
-    /* Success */
 
     clearCartAndForm();
 
     if(orderButton){
-
         orderButton.disabled = false;
-
         orderButton.textContent = "🛒 PLACE ORDER";
-
     }
 
     closeCart();
-
 
     setTimeout(() => {
 
@@ -1938,7 +1928,6 @@ async function placeOrderSupabase(){
 }
 
 
-
 /* =====================================================
    CHECKOUT OPTION 2 — WHATSAPP
 ===================================================== */
@@ -1946,18 +1935,11 @@ async function placeOrderSupabase(){
 function placeOrderWhatsApp(){
 
     if(cart.length === 0){
-
         toast("Your cart is empty 🛒");
-
         return;
-
     }
 
-
     const phone = "256709568326";
-
-
-    /* Optional form data */
 
     const name =
         (document.getElementById("customerName")?.value || "").trim();
@@ -1971,16 +1953,11 @@ function placeOrderWhatsApp(){
     const notes =
         (document.getElementById("orderNotes")?.value || "").trim();
 
-
-    /* Build message */
-
     let message =
         "Hello PUMEKA 👋\n\n" +
         "I would like to order:\n";
 
-
     let total = 0;
-
 
     cart.forEach(item => {
 
@@ -1995,24 +1972,18 @@ function placeOrderWhatsApp(){
 
     });
 
-
     message += "\n\nTotal: UGX " + total.toLocaleString();
-
 
     if(name || customerPhone || location || notes){
 
         message += "\n\n--- Delivery Details ---";
 
         if(name) message += "\nName: " + name;
-
         if(customerPhone) message += "\nPhone: " + customerPhone;
-
         if(location) message += "\nLocation: " + location;
-
         if(notes) message += "\nNotes: " + notes;
 
     }
-
 
     const whatsapp =
         "https://wa.me/" +
@@ -2020,11 +1991,7 @@ function placeOrderWhatsApp(){
         "?text=" +
         encodeURIComponent(message);
 
-
     window.open(whatsapp, "_blank");
-
-
-    /* Clear cart + form after handing off to WhatsApp */
 
     clearCartAndForm();
 
@@ -2033,7 +2000,6 @@ function placeOrderWhatsApp(){
     closeCart();
 
 }
-
 
 
 /* =====================================================
@@ -2045,14 +2011,11 @@ document.addEventListener(
     function(event){
 
         if(event.key === "Escape"){
-
             closeCart();
-
         }
 
     }
 );
-
 
 
 /* =====================================================
@@ -2061,7 +2024,10 @@ document.addEventListener(
 
 updateCart();
 
+setupCartSync();
+
 </script>
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"e2c107eadc6e41499302b0ff665a0dfc","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
