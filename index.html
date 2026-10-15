@@ -1251,6 +1251,15 @@ const CART_STORAGE_KEY = "shopNowCart";
 
 let cart = loadCart();
 
+    /* =====================================================
+   CART SYNC (across devices, tied to logged-in user)
+===================================================== */
+
+const CART_OWNER_KEY = "shopNowCartOwner";
+
+let cartSyncEnabled = false;
+let currentCartUserId = null;
+let cartSyncTimer = null;
 
 function loadCart(){
 
@@ -1327,7 +1336,19 @@ function saveCart(){
 
 }
 
-
+function saveCart(){
+    try{
+        localStorage.setItem(
+            CART_STORAGE_KEY,
+            JSON.stringify(cart)
+        );
+    }catch(err){
+        console.warn(
+            "[PUMEKA] Could not save cart:",
+            err
+        );
+    }
+}
 
 /* =====================================================
    ADD CART
@@ -1386,7 +1407,7 @@ function updateCart(){
     }
 
     saveCart();
-
+saveCartToSupabase();
     renderCart();
 
 }
