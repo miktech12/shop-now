@@ -4,651 +4,716 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SHOP NOW | Pre-Order</title>
+<!-- FAVICON -->
+<link rel="icon" type="image/png" href="/pumekalogo.png">
+
+<title>Pumeka | Pre-Order</title>
 
 <link rel="stylesheet" href="pre order css.css">
+
+<!-- SUPABASE + SHARED AUTH -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth-state.js"></script>
 
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header class="header">
 
     <div class="header-inner">
 
         <a href="index.html" class="logo">
-            <span>S</span> SHOP NOW
+            <span>P</span> PUMEKA
         </a>
 
-        <div class="header-links">
-            <a href="index.html">Home</a>
-            <a href="electronics.html">Electronics</a>
-            <a href="FASHION.html">Fashion</a>
+        <!-- SEARCH -->
+        <div class="search-box">
+            <input
+                type="text"
+                id="search"
+                placeholder="Search products..."
+                autocomplete="off"
+            >
         </div>
 
-        <a href="file:///C:/Users/USER/Desktop/melivar/sign%20up%20form/auth.html" class="account-btn">
-            👤 Account
-        </a>
+        <!-- HEADER ACTIONS -->
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="wishlist-btn"
+                onclick="toast('Wishlist coming soon ❤️')"
+            >
+                ❤️
+            </button>
+
+            <button
+                type="button"
+                class="cart-btn"
+                onclick="openCart()"
+            >
+                🛒
+                <span id="cartCount" class="cart-badge">0</span>
+            </button>
+
+            <!-- ACCOUNT MENU -->
+            <div class="account-menu" id="accountMenu">
+                <a
+                    href="auth.html"
+                    id="authButton"
+                    class="auth-btn"
+                    aria-expanded="false"
+                    aria-controls="accountDropdown"
+                >
+                    👤 Login / Sign Up
+                </a>
+
+                <div
+                    class="account-dropdown"
+                    id="accountDropdown"
+                    hidden
+                >
+                    <div class="account-dropdown-header">
+                        <strong id="accountDisplayName">My Account</strong>
+                        <small id="accountEmail"></small>
+                    </div>
+
+                    <button type="button" id="accountLogout">
+                        ↪ Log Out
+                    </button>
+                </div>
+            </div>
+
+        </div>
 
     </div>
-
 </header>
 
+<!-- =====================================================
+     HERO
+===================================================== -->
 
-<!-- HERO -->
-<section class="hero">
+<section class="hero" style="background: #111; color: white; border-radius: 20px; margin: 25px auto; max-width: 1200px; padding: 50px;">
 
     <div class="hero-content">
 
-        <span class="hero-tag">
-            📦 SHOP NOW PRE-ORDER
+        <span class="hero-tag" style="color: #dfff00; font-weight: 800; letter-spacing: 1.5px;">
+            📦 PUMEKA PRE-ORDER
         </span>
 
-        <h1>
+        <h1 style="font-size: clamp(40px, 5vw, 60px); font-weight: 900; line-height: 1; margin: 20px 0;">
             CAN'T FIND IT?<br>
-            <span>PRE-ORDER IT.</span>
+            <span style="color: #dfff00;">PRE-ORDER IT.</span>
         </h1>
 
-        <p>
+        <p style="color: #ccc; max-width: 500px; line-height: 1.6; margin-bottom: 30px;">
             Found something you want but it's not available in our store?
             Send us a picture and tell us what you need. We'll try to source it for you.
         </p>
 
-        <div class="hero-points">
-
+        <div class="hero-points" style="display: flex; gap: 30px;">
             <div>
-                <strong>01</strong>
-                <span>Upload a picture</span>
+                <strong style="color: #dfff00; display: block; font-size: 20px;">01</strong>
+                <span style="font-size: 13px; color: #aaa;">Upload a picture</span>
             </div>
-
             <div>
-                <strong>02</strong>
-                <span>Tell us what you need</span>
+                <strong style="color: #dfff00; display: block; font-size: 20px;">02</strong>
+                <span style="font-size: 13px; color: #aaa;">Tell us what you need</span>
             </div>
-
             <div>
-                <strong>03</strong>
-                <span>We'll contact you</span>
+                <strong style="color: #dfff00; display: block; font-size: 20px;">03</strong>
+                <span style="font-size: 13px; color: #aaa;">We'll contact you</span>
             </div>
-
         </div>
 
     </div>
 
 </section>
 
+<!-- =====================================================
+     PREORDER FORM
+===================================================== -->
 
-<!-- PREORDER FORM -->
-<section class="preorder-section">
+<section class="preorder-section" style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
 
-    <div class="section-heading">
-
-        <span>PRE-ORDER REQUEST</span>
-
-        <h2>
-            Tell us what you're looking for.
-        </h2>
-
-        <p>
-            Upload a clear picture of the product and provide a few details.
-        </p>
-
+    <div class="section-heading" style="text-align: center; margin-bottom: 30px;">
+        <span style="color: #777; font-size: 11px; font-weight: 800; letter-spacing: 1.5px;">PRE-ORDER REQUEST</span>
+        <h2 style="font-size: 32px; font-weight: 900; letter-spacing: -1px; margin: 10px 0;">Tell us what you're looking for.</h2>
+        <p style="color: #666; font-size: 14px;">Upload a clear picture of the product and provide a few details.</p>
     </div>
-
 
     <form id="preorderForm" class="preorder-form">
 
-
         <!-- IMAGE UPLOAD -->
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 14px;">Product Image <span>*</span></label>
 
-            <label>
-                Product Image <span>*</span>
+            <label for="productImage" class="upload-box" id="uploadBox" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed #ddd; border-radius: 12px; padding: 30px; cursor: pointer; background: #fff; position: relative; overflow: hidden;">
+                <div class="upload-icon" style="font-size: 30px; margin-bottom: 10px;">📷</div>
+                <strong style="font-size: 14px; margin-bottom: 5px;">Upload Product Image</strong>
+                <small style="color: #888; font-size: 12px;">JPG, PNG or WEBP • Max 5MB</small>
+                <img id="imagePreview" alt="Product preview" style="display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
             </label>
 
-            <label for="productImage" class="upload-box" id="uploadBox">
-
-                <div class="upload-icon">
-                    📷
-                </div>
-
-                <strong>
-                    Upload Product Image
-                </strong>
-
-                <small>
-                    JPG, PNG or WEBP • Max 5MB
-                </small>
-
-                <img id="imagePreview" alt="Product preview">
-
-            </label>
-
-            <input
-                type="file"
-                id="productImage"
-                accept="image/jpeg,image/png,image/webp"
-                required
-            >
-
+            <input type="file" id="productImage" accept="image/jpeg,image/png,image/webp" required style="display: none;">
         </div>
-
 
         <!-- PRODUCT DESCRIPTION -->
-        <div class="form-group">
-
-            <label for="description">
-                What are you looking for?
-            </label>
-
-            <textarea
-                id="description"
-                placeholder="Example: Black Nike Air Force 1, size 42..."
-                maxlength="500"
-            ></textarea>
-
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="description" style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 14px;">What are you looking for?</label>
+            <textarea id="description" placeholder="Example: Black Nike Air Force 1, size 42..." maxlength="500" style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 12px; background: #fff; font-family: inherit; font-size: 14px; outline: none; resize: vertical; min-height: 100px;"></textarea>
         </div>
-
 
         <!-- TWO COLUMNS -->
-        <div class="form-row">
-
-
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div class="form-group">
-
-                <label for="quantity">
-                    Quantity <span>*</span>
-                </label>
-
-                <input
-                    type="number"
-                    id="quantity"
-                    min="1"
-                    value="1"
-                    required
-                >
-
+                <label for="quantity" style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 14px;">Quantity <span>*</span></label>
+                <input type="number" id="quantity" min="1" value="1" required style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 12px; background: #fff; font-family: inherit; font-size: 14px; outline: none;">
             </div>
 
-
             <div class="form-group">
-
-                <label for="budget">
-                    Your Budget <small>(Optional)</small>
-                </label>
-
-                <input
-                    type="number"
-                    id="budget"
-                    min="0"
-                    placeholder="UGX"
-                >
-
+                <label for="budget" style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 14px;">Your Budget <small style="font-weight: 400; color: #888;">(Optional)</small></label>
+                <input type="number" id="budget" min="0" placeholder="UGX" style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 12px; background: #fff; font-family: inherit; font-size: 14px; outline: none;">
             </div>
-
         </div>
-
 
         <!-- LOCATION -->
-        <div class="form-group">
-
-            <label for="location">
-                Delivery Location <span>*</span>
-            </label>
-
-            <input
-                type="text"
-                id="location"
-                placeholder="Example: Kampala, Ntinda"
-                required
-            >
-
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="location" style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 14px;">Delivery Location <span>*</span></label>
+            <input type="text" id="location" placeholder="Example: Kampala, Ntinda" required style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 12px; background: #fff; font-family: inherit; font-size: 14px; outline: none;">
         </div>
-
 
         <!-- PHONE -->
-        <div class="form-group">
-
-            <label for="phone">
-                WhatsApp / Phone Number <span>*</span>
-            </label>
-
-            <input
-                type="tel"
-                id="phone"
-                placeholder="07XXXXXXXX"
-                required
-            >
-
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="phone" style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 14px;">WhatsApp / Phone Number <span>*</span></label>
+            <input type="tel" id="phone" placeholder="07XXXXXXXX" required style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 12px; background: #fff; font-family: inherit; font-size: 14px; outline: none;">
         </div>
 
-
         <!-- TERMS -->
-        <label class="check-row">
-
-            <input type="checkbox" id="agree" required>
-
-            <span>
-                I understand that submitting a pre-order is a request.
-                SHOP NOW will confirm availability, price and delivery before
-                the order is finalized.
-            </span>
-
+        <label class="check-row" style="display: flex; gap: 10px; align-items: flex-start; margin-bottom: Products30px; font-size: 13px; color: #555;</ line-height: a1.4>
+; cursor: pointer;">
+                       <input type="checkbox" id="agree" required style="margin-top: 3px;">
+            <span>I understand that submitting a pre-order is a request. PUMEKA will confirm availability, price and delivery before the order is finalized.</span>
         </label>
 
-
         <!-- SUBMIT -->
-        <button type="submit" class="submit-btn" id="submitBtn">
-
-            <span id="submitText">
-                SEND PRE-ORDER REQUEST →
-            </span>
-
+        <button type="submit" class="submit-btn" id="submitBtn" style="width: 100%; padding: 16px; background: #dfff00; color: #111; border: none; border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer; transition: 0.2s; display: flex; justify-content: center;">
+            <span id="submitText">SEND PRE-ORDER REQUEST →</span>
         </button>
 
-
-        <p class="secure-note">
-            🔒 Your information is used only to process your request.
-        </p>
+        <p class="secure-note" style="text-align: center; font-size: 12px; color: #888; margin-top: 15px;">🔒 Your information is used only to process your request.</p>
 
     </form>
 
 </section>
 
+<!-- =====================================================
+     SUCCESS MODAL
+===================================================== -->
 
-<!-- SUCCESS -->
-<div class="success-overlay" id="successOverlay">
-
-    <div class="success-card">
-
-        <div class="success-icon">
-            ✓
+<div class="success-overlay" id="successOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px);">
+    <div class="success-card" style="background: #fff; padding: 40px; border-radius: 20px; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+        <div class="success-icon" style="width: 60px; height: 60px; background: #dfff00; color: #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 900; margin: 0 auto 20px;">✓</div>
+        <span class="success-tag" style="color: #888; font-size: 11px; font-weight: 800; letter-spacing: 1.5px;">REQUEST RECEIVED</span>
+        <h2 style="font-size: 24px; font-weight: 900; margin: 10px 0;">Pre-order submitted!</h2>
+        <p style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 20px;">We've received your request. We'll check for the product and contact you with the details.</p>
+        <div class="reference" style="background: #f4f4f2; padding: 12px; border-radius: 8px; font-size: 14px; margin-bottom: 25px;">
+            Reference: <strong id="referenceNumber" style="color: #111;"></strong>
         </div>
-
-        <span class="success-tag">
-            REQUEST RECEIVED
-        </span>
-
-        <h2>
-            Pre-order submitted!
-        </h2>
-
-        <p>
-            We've received your request. We'll check for the product
-            and contact you with the details.
-        </p>
-
-        <div class="reference">
-            Reference:
-            <strong id="referenceNumber"></strong>
-        </div>
-
-        <a href="index.html" class="success-btn">
-            BACK TO SHOP NOW
-        </a>
-
+        <a href="index.html" class="success-btn" style="display: block; width: 100%; padding: 14px; background: #111; color: #fff; text-decoration: none; border-radius: 10px; font-weight: 900; font-size: 13px;">BACK TO PUMEKA</a>
     </div>
-
 </div>
 
+<!-- =====================================================
+     CART
+===================================================== -->
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+<aside class="cart" id="cart">
+    <div class="cart-header">
+        <h2>Your Cart 🛒</h2>
+        <button type="button" onclick="closeCart()">×</button>
+    </div>
 
+    <div class="cart-items" id="cartItems">
+        <div class="empty-cart">Your cart is empty 🛒</div>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <div class="checkout-form" id="checkoutForm">
+        <h3>Delivery Details 📦</h3>
+        <input type="text" id="customerName" placeholder="Full Name *" autocomplete="name">
+        <input type="tel" id="customerPhone" placeholder="Phone Number *" autocomplete="tel">
+        <input type="tel" id="customerWhatsapp" placeholder="WhatsApp Number" autocomplete="tel">
+        <input type="text" id="deliveryLocation" placeholder="Delivery Location *" autocomplete="street-address">
+        <textarea id="orderNotes" placeholder="Additional instructions (optional)" rows="3"></textarea>
+    </div>
+
+    <div class="cart-footer">
+        <div class="total">
+            <span>Total</span>
+            <strong id="cartTotal">UGX 0</strong>
+        </div>
+        <button type="button" class="checkout checkout-supabase" id="placeOrderButton" onclick="placeOrderSupabase()">
+            🛒 PLACE ORDER
+        </button>
+        <button type="button" class="checkout checkout-whatsapp" onclick="placeOrderWhatsApp()">
+            📱 ORDER VIA WHATSAPP
+        </button>
+    </div>
+</aside>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+    <div class="footer">
+        <div class="footer-brand">
+            <a href="index.html" class="logo"><span>P</span> PUMEKA</a>
+            <p>Your online destination for electronics, fashion, perfumes, medical supplies and more.</p>
+        </div>
+
+        <div>
+            <h4>Shop</h4>
+            <a href="index.html#categories">Categories</a>
+            <a href="index.html#products"> <a href="preorder.html">Pre-Order</a>
+            <a href="index.html#products">Deals</a>
+        </div>
+
+        <div>
+            <h4>Help</h4>
+            <a href="https://wa.me/256709568326" target="_blank">Delivery</a>
+            <a href="https://wa.me/256709568326" target="_blank">Contact</a>
+            <a href="https://wa.me/256709568326" target="_blank">WhatsApp</a>
+        </div>
+    </div>
+
+    <div class="copyright">
+        <p><b>MELIVAR</b></p>
+        <p><b><i>GULA KATI BEEY LAYISI</i></b></p>
+        <p>© 2026 PUMEKA Uganda. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- =====================================================
+     MOBILE BOTTOM NAV
+===================================================== -->
+
+<nav class="bottom-nav">
+    <a href="index.html">
+        🏠
+        <span>Home</span>
+    </a>
+    <a href="index.html#products">
+        💻
+        <span>Tech</span>
+    </a>
+    <button type="button" onclick="openCart()">
+        🛒
+        <span>Cart</span>
+    </button>
+    <a href="auth.html">
+        👤
+        <span>Account</span>
+    </a>
+</nav>
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script>
+/* =====================================================
+   SHARED SUPABASE CLIENT
+===================================================== */
+const supabaseClient = window.shopNowSupabase;
 
-const SUPABASE_URL =
-    "https://dawbweoeilojcrnbvnjz.supabase.co";
+/* =====================================================
+   CART STORAGE & SYNC STATE
+===================================================== */
+const CART_STORAGE_KEY = "shopNowCart";
+let cart = loadCart();
+let cartSyncEnabled = false;
+let currentCartUserId = null;
+let cartSyncTimer = null;
 
-const SUPABASE_PUBLISHABLE_KEY =
-    "PASTE-YOUR-EXISTING-SUPABASE-PUBLISHABLE-KEY-HERE";
+function loadCart() {
+    try {
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed.filter(item => item && typeof item.name === "string" && typeof item.price === "number" && typeof item.quantity === "number")
+            .map(item => ({ name: item.name, price: item.price, quantity: Math.max(1, Math.floor(item.quantity)) }));
+    } catch (err) {
+        console.warn("[PUMEKA] Could not load cart:", err);
+        return [];
+    }
+}
 
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
+function saveCart() {
+    try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch (err) {
+        console.warn("[PUMEKA] Could not save cart:", err);
+    }
+}
 
+function mergeCarts(a, b){
+    const map = new Map();
+    [...a, ...b].forEach(item => {
+        if(!item || !item.name) return;
+        const existing = map.get(item.name);
+        if(existing){ existing.quantity += item.quantity || 1; } 
+        else { map.set(item.name, { name: item.name, price: item.price, quantity: item.quantity || 1 }); }
+    });
+    return Array.from(map.values());
+}
 
-/* ELEMENTS */
+async function loadRemoteCart(){
+    if(!currentCartUserId) return [];
+    const { data, error } = await supabaseClient.from("carts").select("items").eq("user_id", currentCartUserId).maybeSingle();
+    if(error){ console.warn("[PUMEKA] Could not load remote cart:", error); return []; }
+    return Array.isArray(data?.items) ? data.items : [];
+}
 
+function saveCartToSupabase(){
+    if(!cartSyncEnabled || !currentCartUserId) return;
+    clearTimeout(cartSyncTimer);
+    cartSyncTimer = setTimeout(async () => {
+        const { error } = await supabaseClient.from("carts").upsert(
+            { user_id: currentCartUserId, items: cart, updated_at: new Date().toISOString() },
+            { onConflict: "user_id" }
+        );
+        if(error){ console.warn("[PUMEKA] Cart sync failed:", error); }
+    }, 500);
+}
+
+async function clearRemoteCart(){
+    if(!currentCartUserId) return;
+    const { error } = await supabaseClient.from("carts").delete().eq("user_id", currentCartUserId);
+    if(error){ console.warn("[PUMEKA] Could not clear remote cart:", error); }
+}
+
+async function syncCartOnLogin(){
+    const localCart  = [...cart];
+    const remoteCart = await loadRemoteCart();
+    cart = mergeCarts(localCart, remoteCart);
+    updateCart();
+}
+
+async function loadCartFromRemote(){
+    const remoteCart = await loadRemoteCart();
+    if(remoteCart.length > 0){ cart = remoteCart; }
+    updateCart();
+}
+
+function setupCartSync(){
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if(session?.user){
+            const userId = session.user.id;
+            if(userId !== currentCartUserId){
+                currentCartUserId = userId;
+                cartSyncEnabled    = true;
+                if(event === "SIGNED_IN"){ await syncCartOnLogin(); } 
+                else { await loadCartFromRemote(); }
+            } else { cartSyncEnabled = true; }
+            return;
+        }
+        cartSyncEnabled   = false;
+        currentCartUserId = null;
+        if(event === "SIGNED_OUT"){
+            cart = [];
+            localStorage.removeItem(CART_STORAGE_KEY);
+            updateCart();
+        }
+    });
+}
+
+function updateCart(){
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
+    const cartCount = document.getElementById("cartCount");
+    if(cartCount){ cartCount.textContent = count; }
+    saveCart();
+    saveCartToSupabase();
+    renderCart();
+}
+
+function renderCart(){
+    const container = document.getElementById("cartItems");
+    const totalElement = document.getElementById("cartTotal");
+    if(!container || !totalElement) return;
+
+    if(cart.length === 0){
+        container.innerHTML = `<div class="empty-cart">Your cart is empty 🛒</div>`;
+        totalElement.textContent = "UGX 0";
+        return;
+    }
+
+    let total = 0;
+    container.innerHTML = "";
+    cart.forEach((item, index) => {
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+        container.innerHTML += `
+            <div class="cart-item">
+                <div class="cart-item-info">
+                    <strong>${escapeHTML(item.name)}</strong>
+                    <small>${item.quantity} × UGX ${item.price.toLocaleString()}</small>
+                </div>
+                <div class="cart-item-actions">
+                    <button type="button" onclick="decreaseQuantity(${index})">−</button>
+                    <span>${item.quantity}</span>
+                    <button type="button" onclick="increaseQuantity(${index})">+</button>
+                    <button type="button" class="remove" onclick="removeItem(${index})">Remove</button>
+                </div>
+            </div>
+        `;
+    });
+    totalElement.textContent = "UGX " + total.toLocaleString();
+}
+
+function increaseQuantity(index){
+    if(!cart[index]) return;
+    cart[index].quantity++;
+    updateCart();
+}
+
+function decreaseQuantity(index){
+    if(!cart[index]) return;
+    cart[index].quantity--;
+    if(cart[index].quantity <= 0){ cart.splice(index, 1); }
+    updateCart();
+}
+
+function removeItem(index){
+    if(!cart[index]) return;
+    const removed = cart[index].name;
+    cart.splice(index, 1);
+    updateCart();
+    toast(removed + " removed");
+}
+
+function openCart(){
+    const cartElement = document.getElementById("cart");
+    if(cartElement){ cartElement.classList.add("open"); }
+}
+
+function closeCart(){
+    const cartElement = document.getElementById("cart");
+    if(cartElement){ cartElement.classList.remove("open"); }
+}
+
+function clearCartAndForm(){
+    cart = [];
+    localStorage.removeItem(CART_STORAGE_KEY);
+    updateCart();
+    ["customerName","customerPhone","customerWhatsapp","deliveryLocation","orderNotes"].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.value = "";
+    });
+    clearRemoteCart();
+}
+
+async function placeOrderSupabase(){
+    if(cart.length === 0){ toast("Your cart is empty 🛒"); return; }
+
+    const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+    if(sessionError){ console.error(sessionError); toast("Could not check login status ❌"); return; }
+
+    if(!session){
+        toast("Please login before ordering 🔐");
+        sessionStorage.setItem("shopNowReturnTo", window.location.pathname.split("/").pop() || "index.html");
+        setTimeout(() => { window.location.href = "auth.html"; }, 1000);
+        return;
+    }
+
+    const customerName = (document.getElementById("customerName")?.value || "").trim();
+    const customerPhone = (document.getElementById("customerPhone")?.value || "").trim();
+    const customerWhatsapp = (document.getElementById("customerWhatsapp")?.value || "").trim();
+    const deliveryLocation = (document.getElementById("deliveryLocation")?.value || "").trim();
+    const orderNotes = (document.getElementById("orderNotes")?.value || "").trim();
+
+    if(!customerName){ toast("Enter your full name 👤"); return; }
+    if(!customerPhone){ toast("Enter your phone number 📞"); return; }
+    if(!deliveryLocation){ toast("Enter your delivery location 📍"); return; }
+
+    let total = 0;
+    cart.forEach(item => { total += item.price * item.quantity; });
+
+    const orderButton = document.getElementById("placeOrderButton");
+    if(orderButton){ orderButton.disabled = true; orderButton.textContent = "Placing Order..."; }
+
+    const orderItems = cart.map(item => ({ name: item.name, price: item.price, quantity: item.quantity, subtotal: item.price * item.quantity }));
+
+    const { data, error } = await supabaseClient.from("orders").insert([{
+        user_id: session.user.id, customer_name: customerName, phone: customerPhone, whatsapp: customerWhatsapp || null,
+        delivery_location: deliveryLocation, notes: orderNotes || null, items: orderItems, total: total
+    }]).select().single();
+
+    if(error){
+        console.error("ORDER ERROR:", error);
+        toast("Order failed. Please try again ❌");
+        if(orderButton){ orderButton.disabled = false; orderButton.textContent = "🛒 PLACE ORDER"; }
+        return;
+    }
+
+    const orderNumber = data.order_number;
+    clearCartAndForm();
+    if(orderButton){ orderButton.disabled = false; orderButton.textContent = "🛒 PLACE ORDER"; }
+    closeCart();
+
+    setTimeout(() => { alert("ORDER PLACED SUCCESSFULLY 🎉\n\nOrder Number: #" + orderNumber + "\n\nThank you for shopping with PUMEKA."); }, 200);
+}
+
+function placeOrderWhatsApp(){
+    if(cart.length === 0){ toast("Your cart is empty 🛒"); return; }
+    const phone = "256709568326";
+    const name = (document.getElementById("customerName")?.value || "").trim();
+    const customerPhone = (document.getElementById("customerPhone")?.value || "").trim();
+    const location = (document.getElementById("deliveryLocation")?.value || "").trim();
+    const notes = (document.getElementById("orderNotes")?.value || "").trim();
+
+    let message = "Hello PUMEKA 👋\n\nI would like to order:\n";
+    let total = 0;
+    cart.forEach(item => {
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+        message += "\n• " + item.name + " × " + item.quantity + " — UGX " + subtotal.toLocaleString();
+    });
+    message += "\n\nTotal: UGX " + total.toLocaleString();
+
+    if(name || customerPhone || location || notes){
+        message += "\n\n--- Delivery Details ---";
+        if(name) message += "\nName: " + name;
+        if(customerPhone) message += "\nPhone: " + customerPhone;
+        if(location) message += "\nLocation: " + location;
+        if(notes) message += "\nNotes: " + notes;
+    }
+
+    window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(message), "_blank");
+    clearCartAndForm();
+    toast("WhatsApp opened 📱");
+    closeCart();
+}
+
+function toast(message){
+    let toastElement = document.getElementById("shopNowToast");
+    if(!toastElement){
+        toastElement = document.createElement("div");
+        toastElement.id = "shopNowToast";
+        toastElement.className = "toast";
+        document.body.appendChild(toastElement);
+    }
+    toastElement.textContent = message;
+    toastElement.classList.add("show");
+    clearTimeout(window.shopNowToastTimer);
+    window.shopNowToastTimer = setTimeout(() => { toastElement.classList.remove("show"); }, 2500);
+}
+
+function escapeHTML(value){
+    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+/* =====================================================
+   PRE-ORDER FORM LOGIC
+===================================================== */
 const form = document.getElementById("preorderForm");
 const imageInput = document.getElementById("productImage");
 const imagePreview = document.getElementById("imagePreview");
 const uploadBox = document.getElementById("uploadBox");
 const submitBtn = document.getElementById("submitBtn");
 const submitText = document.getElementById("submitText");
-const toast = document.getElementById("toast");
 const successOverlay = document.getElementById("successOverlay");
 const referenceNumber = document.getElementById("referenceNumber");
 
-
-/* IMAGE PREVIEW */
-
 imageInput.addEventListener("change", function(){
-
     const file = this.files[0];
-
     if(!file) return;
-
-    if(file.size > 5 * 1024 * 1024){
-
-        showToast("Image must be less than 5MB.");
-
-        this.value = "";
-
-        return;
-    }
-
-    const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-    ];
-
-    if(!allowedTypes.includes(file.type)){
-
-        showToast("Please upload JPG, PNG or WEBP.");
-
-        this.value = "";
-
-        return;
-    }
+    if(file.size > 5 * 1024 * 1024){ toast("Image must be less than 5MB."); this.value = ""; return; }
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    if(!allowedTypes.includes(file.type)){ toast("Please upload JPG, PNG or WEBP."); this.value = ""; return; }
 
     const reader = new FileReader();
-
     reader.onload = function(e){
-
         imagePreview.src = e.target.result;
-
-        imagePreview.classList.add("show");
-
-        uploadBox.classList.add("has-image");
-
+        imagePreview.style.display = "block"; // Show preview
+        uploadBox.style.border = "none"; // Hide dashed border
     };
-
     reader.readAsDataURL(file);
-
 });
-
-
-/* TOAST */
-
-function showToast(message){
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-    setTimeout(function(){
-
-        toast.classList.remove("show");
-
-    }, 3500);
-
-}
-
-
-/* REFERENCE NUMBER */
 
 function generateReference(){
-
-    const random =
-        Math.floor(10000 + Math.random() * 90000);
-
+    const random = Math.floor(10000 + Math.random() * 90000);
     return "SN-" + Date.now().toString().slice(-5) + random;
-
 }
 
-
-/* SUBMIT */
-
 form.addEventListener("submit", async function(e){
-
     e.preventDefault();
-
-
     const file = imageInput.files[0];
+    const description = document.getElementById("description").value.trim();
+    const quantity = Number(document.getElementById("quantity").value);
+    const budgetValue = document.getElementById("budget").value;
+    const budget = budgetValue ? Number(budgetValue) : null;
+    const location = document.getElementById("location").value.trim();
+    const phone = document.getElementById("phone").value.trim();
 
-    const description =
-        document.getElementById("description").value.trim();
-
-    const quantity =
-        Number(document.getElementById("quantity").value);
-
-    const budgetValue =
-        document.getElementById("budget").value;
-
-    const budget =
-        budgetValue ? Number(budgetValue) : null;
-
-    const location =
-        document.getElementById("location").value.trim();
-
-    const phone =
-        document.getElementById("phone").value.trim();
-
-
-    if(!file){
-
-        showToast("Please upload a product image.");
-
-        return;
-    }
-
-
-    if(quantity < 1){
-
-        showToast("Quantity must be at least 1.");
-
-        return;
-    }
-
-
-    /* LOADING */
+    if(!file){ toast("Please upload a product image."); return; }
+    if(quantity < 1){ toast("Quantity must be at least 1."); return; }
 
     submitBtn.disabled = true;
-
-    submitText.textContent =
-        "SUBMITTING REQUEST...";
-
+    submitText.textContent = "SUBMITTING REQUEST...";
 
     try{
+        const fileExtension = file.name.split(".").pop();
+        const fileName = Date.now() + "-" + Math.random().toString(36).substring(2) + "." + fileExtension;
+        const filePath = "requests/" + fileName;
 
-        /*
-        CREATE UNIQUE FILE NAME
-        */
+        const { error: uploadError } = await supabaseClient.storage.from("preorder-images").upload(filePath, file, { cacheControl: "3600", upsert: false });
+        if(uploadError) throw uploadError;
 
-        const fileExtension =
-            file.name.split(".").pop();
+        const { data: publicUrlData } = supabaseClient.storage.from("preorder-images").getPublicUrl(filePath);
+        const imageUrl = publicUrlData.publicUrl;
+        const reference = generateReference();
 
-        const fileName =
-            Date.now() +
-            "-" +
-            Math.random().toString(36).substring(2) +
-            "." +
-            fileExtension;
+        const { error: insertError } = await supabaseClient.from("preorders").insert({
+            reference_number: reference, product_image_url: imageUrl, product_description: description,
+            quantity: quantity, budget: budget, location: location, phone: phone
+        });
 
+        if(insertError) throw insertError;
 
-        const filePath =
-            "requests/" + fileName;
-
-
-        /*
-        UPLOAD IMAGE
-        */
-
-        const {
-            error: uploadError
-        } = await supabaseClient
-            .storage
-            .from("preorder-images")
-            .upload(
-                filePath,
-                file,
-                {
-                    cacheControl: "3600",
-                    upsert: false
-                }
-            );
-
-
-        if(uploadError){
-
-            throw uploadError;
-
-        }
-
-
-        /*
-        GET PUBLIC IMAGE URL
-        */
-
-        const {
-            data: publicUrlData
-        } =
-            supabaseClient
-            .storage
-            .from("preorder-images")
-            .getPublicUrl(filePath);
-
-
-        const imageUrl =
-            publicUrlData.publicUrl;
-
-
-        /*
-        GENERATE REFERENCE
-        */
-
-        const reference =
-            generateReference();
-
-
-        /*
-        SAVE PRE-ORDER
-        */
-
-        const {
-            error: insertError
-        } =
-            await supabaseClient
-            .from("preorders")
-            .insert({
-
-                reference_number: reference,
-
-                product_image_url: imageUrl,
-
-                product_description: description,
-
-                quantity: quantity,
-
-                budget: budget,
-
-                location: location,
-
-                phone: phone
-
-            });
-
-
-        if(insertError){
-
-            throw insertError;
-
-        }
-
-
-        /*
-        SUCCESS
-        */
-
-        referenceNumber.textContent =
-            reference;
-
+        referenceNumber.textContent = reference;
+        successOverlay.style.display = "flex";
         successOverlay.classList.add("show");
 
-
-        /*
-        WHATSAPP NOTIFICATION
-        */
-
-        const whatsappNumber =
-            "256709568326";
-
-        const message =
-`🛍️ *NEW SHOP NOW PRE-ORDER*
-
-📌 Reference: ${reference}
-
-📦 Product: ${description || "See uploaded image"}
-
-🔢 Quantity: ${quantity}
-
-💰 Budget: ${budget ? "UGX " + budget.toLocaleString() : "Not specified"}
-
-📍 Location: ${location}
-
-📞 Customer: ${phone}
-
-🖼️ Product image:
-${imageUrl}`;
-
-
-        const whatsappUrl =
-            "https://wa.me/" +
-            whatsappNumber +
-            "?text=" +
-            encodeURIComponent(message);
-
-
-        /*
-        OPEN WHATSAPP
-        */
-
-        setTimeout(function(){
-
-            window.open(
-                whatsappUrl,
-                "_blank"
-            );
-
-        }, 1200);
-
+        const whatsappNumber = "256709568326";
+        const message = `🛍️ *NEW PUMEKA PRE-ORDER*\n\n📌 Reference: ${reference}\n\n📦 Product: ${description || "See uploaded image"}\n\n🔢 Quantity: ${quantity}\n\n💰 Budget: ${budget ? "UGX " + budget.toLocaleString() : "Not specified"}\n\n📍 Location: ${location}\n\n📞 Customer: ${phone}\n\n🖼️ Product image:\n${imageUrl}`;
+        
+        setTimeout(function(){ window.open("https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message), "_blank"); }, 1200);
 
         form.reset();
-
         imagePreview.src = "";
+        imagePreview.style.display = "none";
+        uploadBox.style.border = "2px dashed #ddd";
 
-        imagePreview.classList.remove("show");
-
-        uploadBox.classList.remove("has-image");
-
-
-    }catch(error){
-
+    } catch(error){
         console.error(error);
-
-        showToast(
-            "Something went wrong. Please try again."
-        );
-
-    }finally{
-
+        toast("Something went wrong. Please try again.");
+    } finally {
         submitBtn.disabled = false;
-
-        submitText.textContent =
-            "SEND PRE-ORDER REQUEST →";
-
+        submitText.textContent = "SEND PRE-ORDER REQUEST →";
     }
-
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    updateCart();
+    setupCartSync();
+});
 </script>
 
 </body>
