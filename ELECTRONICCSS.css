@@ -1854,6 +1854,120 @@ body{
 }
 
 
+
+
+
+/* =====================================================
+   CATCHY & RESPONSIVE PAGINATION
+===================================================== */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 60px 0;
+    padding: 0 20px;
+    flex-wrap: wrap;
+}
+
+.page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 45px;
+    height: 45px;
+    padding: 0 16px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    color: #111;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+/* Hover effect for clickable numbers */
+.page-btn:hover:not(.disabled):not(.active) {
+    border-color: #111;
+    background: #fdfdfd;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* The active page (neon glow) */
+.page-btn.active {
+    background: #dfff00;
+    border-color: #dfff00;
+    color: #111;
+    box-shadow: 0 8px 25px rgba(223, 255, 0, 0.45);
+    transform: scale(1.08);
+    cursor: default;
+}
+
+/* Prev/Next Buttons */
+.page-btn.prev-btn,
+.page-btn.next-btn {
+    padding: 0 24px;
+    background: #111;
+    color: #ffffff;
+    border-color: #111;
+    letter-spacing: 0.5px;
+}
+
+/* Prev/Next Hover */
+.page-btn.prev-btn:hover:not(.disabled),
+.page-btn.next-btn:hover:not(.disabled) {
+    background: #333;
+    color: #dfff00;
+    border-color: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Disabled state (Grayed out, no hover) */
+.page-btn.disabled {
+    background: #f4f4f2 !important;
+    border-color: #f4f4f2 !important;
+    color: #aaa !important;
+    box-shadow: none !important;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .pagination {
+        gap: 6px;
+        margin: 40px 0;
+    }
+    
+    .page-btn {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 12px;
+        font-size: 13px;
+        border-radius: 10px;
+    }
+    
+    .page-btn.prev-btn,
+    .page-btn.next-btn {
+        padding: 0 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .page-btn.prev-btn,
+    .page-btn.next-btn {
+        padding: 0 12px;
+        font-size: 11px;
+    }
+}
     
     
     
