@@ -1,3340 +1,576 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<!-- FAVICON -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/pumekalogo.png">
-
-<title>Pumeka | Electronics</title>
-
-<link
-    rel="stylesheet"
-    href="ELECTRONICCSS.css"
->
-
-<!-- SUPABASE + SHARED AUTH -->
+<title>Pumeka | Electronics - Page 1</title>
+<link rel="stylesheet" href="ELECTRONICCSS.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth-state.js"></script>
-
 </head>
-
 <body>
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header class="header">
-
     <div class="header-inner">
-
-        <a
-            href="index.html"
-            class="logo"
-        >
-            <span>P</span>PUMEKA 
-        </a>
-
-        <!-- SEARCH -->
-
+        <a href="index.html" class="logo"><span>P</span> PUMEKA</a>
         <div class="search-box">
-
-            <input
-                type="text"
-                id="search"
-                placeholder="Search electronics..."
-                autocomplete="off"
-            >
-
+            <input type="text" id="search" placeholder="Search all electronics..." autocomplete="off">
         </div>
-
-        <!-- HEADER ACTIONS -->
-
         <div class="header-actions">
-
-            <button
-                type="button"
-                class="wishlist-btn"
-                onclick="toast('Wishlist coming soon ❤️')"
-            >
-                ❤️
+            <button type="button" class="wishlist-btn" onclick="toast('Wishlist coming soon ❤️')">❤️</button>
+            <button type="button" class="cart-btn" onclick="openCart()">
+                🛒 <span id="cartCount" class="cart-badge">0</span>
             </button>
-
-            <button
-                type="button"
-                class="cart-btn"
-                onclick="openCart()"
-            >
-
-                🛒
-
-                <span
-                    id="cartCount"
-                    class="cart-badge"
-                >
-                    0
-                </span>
-
-            </button>
-
-            <!-- ACCOUNT MENU -->
-
             <div class="account-menu" id="accountMenu">
-
-                <a
-                    href="auth.html"
-                    id="authButton"
-                    class="auth-btn"
-                    aria-expanded="false"
-                    aria-controls="accountDropdown"
-                >
+                <a href="auth.html" id="authButton" class="auth-btn" aria-expanded="false" aria-controls="accountDropdown">
                     👤 Login / Sign Up
                 </a>
-
-                <div
-                    class="account-dropdown"
-                    id="accountDropdown"
-                    hidden
-                >
-
+                <div class="account-dropdown" id="accountDropdown" hidden>
                     <div class="account-dropdown-header">
-                        <strong id="accountDisplayName">
-                            My Account
-                        </strong>
+                        <strong id="accountDisplayName">My Account</strong>
                         <small id="accountEmail"></small>
                     </div>
-
-                    <button type="button" id="accountLogout">
-                        ↪ Log Out
-                    </button>
-
+                    <button type="button" id="accountLogout">↪ Log Out</button>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 </header>
 
-<!-- =====================================================
-     HERO
-===================================================== -->
-
 <section class="hero">
-
     <div class="hero-content">
-
-        <span class="hero-tag">
-            PUMEKA / ELECTRONICS
-        </span>
-
-        <h1>
-            TECH<br>
-            STARTS HERE.
-        </h1>
-
-        <p>
-            Discover smartphones,
-            laptops, audio devices,
-            accessories and smart technology
-            for everyday life.
-        </p>
-
-        <a
-            href="#products"
-            class="hero-btn"
-        >
-            SHOP ELECTRONICS →
-        </a>
-
+        <span class="hero-tag">PUMEKA / ELECTRONICS</span>
+        <h1>TECH<br>STARTS HERE.</h1>
+        <p>Discover smartphones, laptops, audio devices, accessories and smart technology for everyday life.</p>
+        <a href="#products" class="hero-btn">SHOP ELECTRONICS →</a>
     </div>
-
     <div class="hero-visual">
-
-        <div class="electronics-circle">
-            📱
-        </div>
-
+        <div class="electronics-circle">📱</div>
     </div>
-
 </section>
-
-<!-- =====================================================
-     CATEGORIES
-===================================================== -->
 
 <section class="categories-section">
-
     <div class="categories">
-
-        <button
-            type="button"
-            class="category-btn active"
-            onclick="filterProducts('all', this)"
-        >
-            ALL ELECTRONICS
-        </button>
-
-        <button
-            type="button"
-            class="category-btn"
-            onclick="filterProducts('phones', this)"
-        >
-            PHONES
-        </button>
-
-        <button
-            type="button"
-            class="category-btn"
-            onclick="filterProducts('audio', this)"
-        >
-            AUDIO
-        </button>
-
-        <button
-            type="button"
-            class="category-btn"
-            onclick="filterProducts('computers', this)"
-        >
-            COMPUTERS
-        </button>
-
-        <button
-            type="button"
-            class="category-btn"
-            onclick="filterProducts('accessories', this)"
-        >
-            ACCESSORIES
-        </button>
-
-        <button
-            type="button"
-            class="category-btn"
-            onclick="filterProducts('smart', this)"
-        >
-            SMART DEVICES
-        </button>
-
-        <button
-            type="button"
-            class="category-btn"
-            onclick="filterProducts('gaming', this)"
-        >
-            GAMING
-        </button>
-
+        <button type="button" class="category-btn active" onclick="filterProducts('all', this)">ALL ELECTRONICS</button>
+        <button type="button" class="category-btn" onclick="filterProducts('phones', this)">PHONES</button>
+        <button type="button" class="category-btn" onclick="filterProducts('audio', this)">AUDIO</button>
+        <button type="button" class="category-btn" onclick="filterProducts('computers', this)">COMPUTERS</button>
+        <button type="button" class="category-btn" onclick="filterProducts('accessories', this)">ACCESSORIES</button>
+        <button type="button" class="category-btn" onclick="filterProducts('smart', this)">SMART DEVICES</button>
+        <button type="button" class="category-btn" onclick="filterProducts('gaming', this)">GAMING</button>
     </div>
-
 </section>
 
-<!-- =====================================================
-     PRODUCTS
-===================================================== -->
-
-<main
-    class="products-section"
-    id="products"
->
-
+<main class="products-section" id="products">
     <div class="section-heading">
-
         <div>
-
-            <span class="section-tag">
-                PUMEKA
-            </span>
-
-            <h2>
-                Electronics Collection
-            </h2>
-
+            <span class="section-tag">PUMEKA</span>
+            <h2>Electronics Collection</h2>
         </div>
-
     </div>
 
-    <div
-        class="product-grid"
-        id="productGrid"
-    >
+    <div class="product-grid" id="productGrid">
 
         <!-- PRODUCT 1 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="usb charger"
-        >
-
+        <article class="product" data-category="phones" data-name="usb charger">
             <div class="product-image">
-
-                <img
-                    src="oraimo c to c cable.webp"
-                    alt="usb c2c"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="oraimo c to c cable.webp" alt="usb c2c">
+                <span class="badge">HOT</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    ORAIMO USB C2C
-                </h3>
-
+                <span class="product-category">PHONES</span>
+                <h3 class="product-name">ORAIMO USB C2C</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 6,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 6,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 2 -->
-
-        <article
-            class="product"
-            data-category="POWERBANK"
-            data-name="ORAIMO POWERBANK"
-        >
-
+        <article class="product" data-category="accessories" data-name="ORAIMO POWERBANK">
             <div class="product-image">
-
-                <img
-                    src="oraimo-traveler-15-20000mah-15w-fast-charge-power-bank.webp"
-                    alt="oraimo powerbank"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="oraimo-traveler-15-20000mah-15w-fast-charge-power-bank.webp" alt="oraimo powerbank">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    POWERBANK
-                </span>
-
-                <h3 class="product-name">
-                    20,000 mAh Oraimo powerbank
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">20,000 mAh Oraimo powerbank</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 65,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 65,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 3 -->
-
-        <article
-            class="product"
-            data-category="computers"
-            data-name="HAND FAN"
-        >
-
+        <article class="product" data-category="accessories" data-name="HAND FAN">
             <div class="product-image">
-
-                <img
-                    src="mini hand fan.jfif"
-                    alt="hand fan"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="mini hand fan.jfif" alt="hand fan">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    MINI HAND FAN
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">MINI HAND FAN</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 35,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 35,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 13 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="Scarlett pacolator"
-        >
-
+        <article class="product" data-category="accessories" data-name="Scarlett pacolator">
             <div class="product-image">
-
-                <img
-                    src="scarlett electric pacolater.jpg"
-                    alt="Product 13"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="scarlett electric pacolater.jpg" alt="Product 13">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    Scarlett Electric Pacolater
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">Scarlett Electric Pacolater</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 51,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 51,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 14 -->
-
-        <article
-            class="product"
-            data-category="ACCESSORIES"
-            data-name="fast charger"
-        >
-
+        <article class="product" data-category="accessories" data-name="fast charger">
             <div class="product-image">
-
-                <img
-                    src="fast charger.webp"
-                    alt="Product 14"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="fast charger.webp" alt="Product 14">
+                <span class="badge">HOT</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    Samsung fast charger
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">Samsung fast charger</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 17,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 17,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 15 -->
-
-        <article
-            class="product"
-            data-category="FLAT IRON"
-            data-name="PHILLIPS FLAT IRON"
-        >
-
+        <article class="product" data-category="accessories" data-name="PHILLIPS FLAT IRON">
             <div class="product-image">
-
-                <img
-                    src="Original Phillips Dry Iron Flat Iron 1000 Watts – Grey Silver.jpg"
-                    alt="Product 15"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Original Phillips Dry Iron Flat Iron 1000 Watts – Grey Silver.jpg" alt="Product 15">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    FLAT IRON
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 15
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">PHILLIPS FLAT IRON</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 70,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 70,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 16 -->
-
-        <article
-            class="product"
-            data-category="POWER EXTENSION"
-            data-name="POWERKING EXTENSION"
-        >
-
+        <article class="product" data-category="accessories" data-name="POWERKING EXTENSION">
             <div class="product-image">
-
-                <img
-                    src="POWERKINGEXTENSION.webp"
-                    alt="EXTENSION"
-                >
-
-                <span class="badge">
-                    SALE
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="POWERKINGEXTENSION.webp" alt="EXTENSION">
+                <span class="badge">SALE</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    POWERKING EXTENSION
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">POWERKING EXTENSION</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 13,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 13,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 17 -->
-
-        <article
-            class="product"
-            data-category="ACCESSORIES"
-            data-name="Power extension"
-        >
-
+        <article class="product" data-category="accessories" data-name="Power extension">
             <div class="product-image">
-
-                <img
-                    src="POWERKING EXTENSION 6 WAY.webp"
-                    alt="Product 17"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="POWERKING EXTENSION 6 WAY.webp" alt="Product 17">
+                <span class="badge">TRENDING</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                  
-                </span>
-
-                <h3 class="product-name">
-                 POWERKING EXTENSION 6 WAY 
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">POWERKING EXTENSION 6 WAY</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 18,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 18,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 18 -->
-
-        <article
-            class="product"
-            data-category="ACCESSORIES"
-            data-name="Phone case"
-        >
-
+        <article class="product" data-category="accessories" data-name="Phone case">
             <div class="product-image">
-
-                <img
-                    src="iphone 13 pro phone case.webp"
-                    alt="Product 18"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="iphone 13 pro phone case.webp" alt="Product 18">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    Iphone 13pro, 14pro phone case
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">Iphone 13pro, 14pro phone case</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 18,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 18,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 19 -->
-
-        <article
-            class="product"
-            data-category="ACESSORIES"
-            data-name="buds"
-        >
-
+        <article class="product" data-category="audio" data-name="buds">
             <div class="product-image">
-
-                <img
-                    src="oraimo SpaceBuds Neo+ oraimo SpaceBuds Neo+ ANC Wireless Earbuds.webp"
-                    alt="Product 19"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="oraimo SpaceBuds Neo+ oraimo SpaceBuds Neo+ ANC Wireless Earbuds.webp" alt="Product 19">
+                <span class="badge">HOT</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    Oraimo SpaceBuds Neo+ oraimo SpaceBuds Neo+ ANC Wireless Earbuds
-                </h3>
-
+                <span class="product-category">AUDIO</span>
+                <h3 class="product-name">Oraimo SpaceBuds Neo+ ANC Earbuds</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 60,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 60,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 20 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 20"
-        >
-
+        <article class="product" data-category="phones" data-name="Samsung A06">
             <div class="product-image">
-
-                <img
-                    src="Samsung Galaxy A06 - 6.7 4GB RAM 64GB ROM 50MP 5000mAh - Black.jpg"
-                    alt="Product 20"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Samsung Galaxy A06 - 6.7 4GB RAM 64GB ROM 50MP 5000mAh - Black.jpg" alt="Product 20">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    Samsung Galaxy A06 - 6.7 4GB RAM 64GB ROM 50MP 5000mAh
-                </h3>
-
+                <span class="product-category">PHONES</span>
+                <h3 class="product-name">Samsung Galaxy A06 - 6.7 4GB RAM 64GB ROM</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 500,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 500,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 21 -->
-
-        <article
-            class="product"
-            data-category="computers"
-            data-name="PRODUCT 21"
-        >
-
+        <article class="product" data-category="computers" data-name="PRODUCT 21">
             <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-21.jpg"
-                    alt="Product 21"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="ELECTRONICS PAGE/PRODUCT-21.jpg" alt="Product 21">
+                <span class="badge">TRENDING</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    COMPUTERS
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 21
-                </h3>
-
+                <span class="product-category">COMPUTERS</span>
+                <h3 class="product-name">PRODUCT 21</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 100,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 22 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="PRODUCT 22"
-        >
-
+        <article class="product" data-category="accessories" data-name="PRODUCT 22">
             <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-22.jpg"
-                    alt="Product 22"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="ELECTRONICS PAGE/PRODUCT-22.jpg" alt="Product 22">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 22
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">PRODUCT 22</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 100,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 23 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name=" charger, accesorie, laptop"
-        >
-
+        <article class="product" data-category="smart" data-name="PRODUCT 23">
             <div class="product-image">
-
-                <img
-                    src=" DELL 65W Big Pin Laptop Charger – 19.5V 3.34A Power Adapter 47000.jpg"
-                    alt="Product 23"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="ELECTRONICS PAGE/PRODUCT-23.jpg" alt="Product 23">
+                <span class="badge">HOT</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    DELL 65W Big Pin Laptop Charger – 19.5V 3.34A Power Adapter
-                </h3>
-
+                <span class="product-category">SMART DEVICES</span>
+                <h3 class="product-name">PRODUCT 23</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 47,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 100,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 24 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 24"
-        >
-
+        <article class="product" data-category="phones" data-name="Samsung A17">
             <div class="product-image">
-
-                <img
-                    src="Samsung Galaxy A17 - 6.7 4GB RAM 128GB ROM 50MP 5000mAh - Black 24months waranty 700,000.jpg"
-                    alt="Product 24">
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Samsung Galaxy A17 - 6.7 4GB RAM 128GB ROM 50MP 5000mAh - Black 24months waranty 700,000.jpg" alt="Product 24">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    Samsung Galaxy A17 - 6.7 4GB RAM 128GB ROM 50MP 5000mAh - Black 24months waranty
-                </h3>
-
+                <span class="product-category">PHONES</span>
+                <h3 class="product-name">Samsung Galaxy A17 - 128GB ROM</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 700,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 700,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 25 -->
-
-        <article
-            class="product"
-            data-category="smartdevices"
-            data-name="PRODUCT 25"
-        >
-
+        <article class="product" data-category="smart" data-name="BLACKARK TV">
             <div class="product-image">
-
-                <img
-                    src="BLACKARK 24 Inch Digital HDMI, USB Ports HD Flat LED TV - Black    350,000.jpg"
-                    alt="Product 25"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="BLACKARK 24 Inch Digital HDMI, USB Ports HD Flat LED TV - Black    350,000.jpg" alt="Product 25">
+                <span class="badge">TRENDING</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    SMARTDEVICES
-                </span>
-
-                <h3 class="product-name">
-                    BLACKARK 24 Inch Digital HDMI, USB Ports HD Flat LED TV - Black
-                </h3>
-
+                <span class="product-category">SMART DEVICES</span>
+                <h3 class="product-name">BLACKARK 24 Inch Digital HDMI LED TV</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 350,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 350,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 26 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="PRODUCT 26"
-        >
-
+        <article class="product" data-category="accessories" data-name="Startimes Decoder">
             <div class="product-image">
-
-                <img
-                    src="Startimes Decoder + 1 Month Subscription Package - Black 71,000.jpg"
-                    alt="Product 26"
-                >
-
-                <span class="badge">
-                    SALE
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Startimes Decoder + 1 Month Subscription Package - Black 71,000.jpg" alt="Product 26">
+                <span class="badge">SALE</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    Startimes Decoder + 1 Month Subscription Package - Black 
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">Startimes Decoder + 1 Month Subscription</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 71,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 71,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 27 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 27"
-        >
-
+        <article class="product" data-category="phones" data-name="Samsung A07">
             <div class="product-image">
-
-                <img
-                    src="Samsung Galaxy A07 4G 6.7 4GB RAM 64GB 50MP 5000mAh - Black upgraded.jpg"
-                    alt="Product 27"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Samsung Galaxy A07 4G 6.7 4GB RAM 64GB 50MP 5000mAh - Black upgraded.jpg" alt="Product 27">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    Samsung Galaxy A07 4G 6.7 4GB RAM 64GB 50MP 5000mAh - Black upgraded
-                </h3>
-
+                <span class="product-category">PHONES</span>
+                <h3 class="product-name">Samsung Galaxy A07 4G - 64GB ROM</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 600,000
-                    </span>
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 600,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 28 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="Headset "
-        >
-
+        <article class="product" data-category="audio" data-name="Neck Earphones">
             <div class="product-image">
-
-                <img
-                    src="Neck Hanging Wireless Bluetooth Earphone Sports Earbuds - Black 14500.JPG
-                    
-    "
-                    alt="Product 28"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Neck Hanging Wireless Bluetooth Earphone Sports Earbuds - Black 14500.JPG" alt="Product 28">
+                <span class="badge">HOT</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    Neck Hanging Wireless Bluetooth Earphone Sports Earbuds - Black
-                </h3>
-
+                <span class="product-category">AUDIO</span>
+                <h3 class="product-name">Neck Hanging Wireless Bluetooth Earphone</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 14,500
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 14,500</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 29 -->
-
-        <article
-            class="product"
-            data-category="smart"
-            data-name="Tecno, slim, camon"
-        >
-
+        <article class="product" data-category="phones" data-name="Tecno Camon">
             <div class="product-image">
-
-                <img
-                    src="Tecno CAMON Slim Smartphone – 256GB ROM , Up to 24GB RAM , AMOLED Display , AI Camera , Fast Charging 5600mAh battery of 5 Year Durability-New Modrian  1,420,000.jpg "
-                    alt="Product 29"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Tecno CAMON Slim Smartphone – 256GB ROM , Up to 24GB RAM , AMOLED Display , AI Camera , Fast Charging 5600mAh battery of 5 Year Durability-New Modrian  1,420,000.jpg" alt="Product 29">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    Tecno CAMON Slim Smartphone – 256GB ROM , Up to 24GB RAM , AMOLED Display , AI Camera , Fast Charging 5600mAh battery of 5 Year Durability-New Modrian
-                </h3>
-
+                <span class="product-category">PHONES</span>
+                <h3 class="product-name">Tecno CAMON Slim Smartphone - 256GB ROM</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 1,423,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 1,423,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 30 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 30"
-        >
-
+        <article class="product" data-category="phones" data-name="Itel 2165">
             <div class="product-image">
-
-                <img
-                    src="Itel 2165 1000mah Battery Dual Sim it2165 Small Portable Button Phone.Multcolour 40,000.jpg"
-                    alt="Product 30"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Itel 2165 1000mah Battery Dual Sim it2165 Small Portable Button Phone.Multcolour 40,000.jpg" alt="Product 30">
+                <span class="badge">TRENDING</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    Itel 2165 1000mah Battery Dual Sim it2165 Small Portable Button Phone.Multcolour
-                </h3>
-
+                <span class="product-category">PHONES</span>
+                <h3 class="product-name">Itel 2165 Dual Sim Portable Button Phone</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 40,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 40,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 31 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="PRODUCT 31"
-        >
-
+        <article class="product" data-category="accessories" data-name="Phone Holder">
             <div class="product-image">
-
-                <img
-                    src="Holder Portable Phone Holder Mobile IPhone, Smart Phones (Foldable) 15000.jpg"
-                    alt="Product 31"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Holder Portable Phone Holder Mobile IPhone, Smart Phones (Foldable) 15000.jpg" alt="Product 31">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    Holder Portable Phone Holder Mobile IPhone, Smart Phones (Foldable)
-                </h3>
-
+                <span class="product-category">ACCESSORIES</span>
+                <h3 class="product-name">Holder Portable Phone Holder (Foldable)</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 15,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 15,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 32 -->
-
-        <article
-            class="product"
-            data-category="audio"
-            data-name="PRODUCT 32"
-        >
-
+        <article class="product" data-category="audio" data-name="PRODUCT 32">
             <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-32.jpg"
-                    alt="Product 32"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="ELECTRONICS PAGE/PRODUCT-32.jpg" alt="Product 32">
+                <span class="badge">HOT</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    AUDIO
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 32
-                </h3>
-
+                <span class="product-category">AUDIO</span>
+                <h3 class="product-name">PRODUCT 32</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 100,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 33 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="SCREENGUARD, SCREEN, SCREEN PROTECTER, IPHONE "
-        >
-
+        <article class="product" data-category="computers" data-name="PRODUCT 33">
             <div class="product-image">
-
-                <img
-                    src="Screenguard IPhone 17 Promax Thick clear borderless Tempered Glass UGX 14,000.JPG"
-                    alt="Product 33"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="ELECTRONICS PAGE/PRODUCT-33.jpg" alt="Product 33">
+                <span class="badge">NEW</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    Screenguard IPhone 17 Promax Thick clear borderless Tempered Glass 
-                </h3>
-
+                <span class="product-category">COMPUTERS</span>
+                <h3 class="product-name">PRODUCT 33</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX UGX 14,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 100,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 34 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 34"
-        >
-
+        <article class="product" data-category="phones" data-name="Itel It2163">
             <div class="product-image">
-
-                <img
-                    src="Itel It2163  2163 Dual SIM, 1.8 32MB ROM, 32MB RAM 1000mAh-Blue 40,000.jpg"
-                    alt="Product 34"
-                >
-
-                <span class="badge">
-                    SALE
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Itel It2163  2163 Dual SIM, 1.8 32MB ROM, 32MB RAM 1000mAh-Blue 40,000.jpg" alt="Product 34">
+                <span class="badge">SALE</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                   Itel It2163  2163 Dual SIM, 1.8 32MB ROM, 32MB RAM 1000mAh-Blue 
-                </h3>
-
+                <span class="product-category">PHONES</span>
+                <h3 class="product-name">Itel It2163 Dual SIM - Blue</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 40,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 40,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
         </article>
 
         <!-- PRODUCT 35 -->
-
-        <article
-            class="product"
-            data-category="smart"
-            data-name="PRODUCT 35"
-        >
-
+        <article class="product" data-category="smart" data-name="Global Star TV">
             <div class="product-image">
-
-                <img
-                    src="Global Star 24 Inch Digital Free-To-Air TV - Black   320,000.jpg"
-                    alt="Product 35"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
+                <img src="Global Star 24 Inch Digital Free-To-Air TV - Black   320,000.jpg" alt="Product 35">
+                <span class="badge">TRENDING</span>
+                <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
-
             <div class="product-info">
-
-                <span class="product-category">
-                    SMART DEVICES
-                </span>
-
-                <h3 class="product-name">
-                    Global Star 24 Inch Digital Free-To-Air TV - Black   
-                </h3>
-
+                <span class="product-category">SMART DEVICES</span>
+                <h3 class="product-name">Global Star 24 Inch Digital TV</h3>
                 <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 320,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
+                    <span class="price">UGX 320,000</span>
+                    <button type="button" class="add-cart">+</button>
                 </div>
-
             </div>
-
-        </article>
-
-        <!-- PRODUCT 36 -->
-
-        <article
-            class="product"
-            data-category="gaming"
-            data-name="PRODUCT 36"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-36.jpg"
-                    alt="Product 36"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    GAMING
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 36
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 37 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 37"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-37.jpg"
-                    alt="Product 37"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 37
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 38 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name=" TECNO, CAMOM, 50, PRO, PHONE"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="Tecno Camon 50 pro - 6.78" 8GB RAM 256GB ROM 50MP 6150mAh - Mist Titanium 1,644,00.jpg"
-                    alt="Product 38"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    Tecno Camon 50 pro - 6.78" 8GB RAM 256GB ROM 50MP 6150mAh - Mist Titanium 
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 1,644,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 39 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 39"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="Apple IPhone 14 Pro Max 6.7 6GB RAM 256GB ROM 48MP - color may vary 2,700,000.jpg"
-                    alt="Product 39"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-Apple IPhone 14 Pro Max 6.7 6GB RAM 256GB ROM 48MP - color may vary
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 2,700,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 40 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="PRODUCT 40"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-40.jpg"
-                    alt="Product 40"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 40
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 41 -->
-
-        <article
-            class="product"
-            data-category="smart"
-            data-name="PRODUCT 41"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="Apple iPhone XR 64GB Red Smartphone – 6.1-Inch Liquid Retina HD Display, Face ID, 12MP Camera, Refurbished by Badili, 3-Month Warranty phone 620,000.jpg"
-                    alt="Product 41"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    Apple iPhone XR 64GB Red Smartphone – 6.1-Inch Liquid Retina HD Display, Face ID, 12MP Camera, Refurbished by Badili, 3-Month Warranty phone
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 620,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 42 -->
-
-        <article
-            class="product"
-            data-category="gaming"
-            data-name="PRODUCT 42"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-42.jpg"
-                    alt="Product 42"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    GAMING
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 42
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 43 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 43"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-43.jpg"
-                    alt="Product 43"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 43
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 44 -->
-
-        <article
-            class="product"
-            data-category="audio"
-            data-name="PRODUCT 44"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-44.jpg"
-                    alt="Product 44"
-                >
-
-                <span class="badge">
-                    SALE
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    AUDIO
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 44
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 45 -->
-
-        <article
-            class="product"
-            data-category="computers"
-            data-name="PRODUCT 45"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-45.jpg"
-                    alt="Product 45"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    COMPUTERS
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 45
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 46 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="iphone, 13, 13 pro max"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="REFURBISHED iPhone 13 Pro Max 6GB RAM 128GB ROM (refurbished) white gold green 1,900,000.jpg"
-                    alt="Product 46"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    REFURBISHED iPhone 13 Pro Max 6GB RAM 128GB ROM (refurbished) white gold green 
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 1,907,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 47 -->
-
-        <article
-            class="product"
-            data-category="smart"
-            data-name="PRODUCT 47"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-47.jpg"
-                    alt="Product 47"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    SMART DEVICES
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 47
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 48 -->
-
-        <article
-            class="product"
-            data-category="gaming"
-            data-name="PRODUCT 48"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-48.jpg"
-                    alt="Product 48"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    GAMING
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 48
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 49 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="PRODUCT 49"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-49.jpg"
-                    alt="Product 49"
-                >
-
-                <span class="badge">
-                    NEW
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 49
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 50 -->
-
-        <article
-            class="product"
-            data-category="audio"
-            data-name="PRODUCT 50"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/PRODUCT-50.jpg"
-                    alt="Product 50"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    AUDIO
-                </span>
-
-                <h3 class="product-name">
-                    PRODUCT 50
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 100,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 4 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="FAST CHARGER 25W"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/fast charger.webp"
-                    alt="Fast Charger 25W"
-                >
-
-                <span class="badge">
-                    SALE
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    FAST CHARGER 25W
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 35,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 5 -->
-
-        <article
-            class="product"
-            data-category="smart"
-            data-name="BLACKARK, 32 inch, Display, TV, Television"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="BLACKARK 32 Inch Digital LED TV & Free Wall Mount Bracket - Black  422,000.jpg"
-                    alt="Smart Watch Series 9"
-                >
-
-                <span class="badge">
-                    TRENDING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    SMART DEVICES
-                </span>
-
-                <h3 class="product-name">
-                    BLACKARK 32 Inch Digital LED TV & Free Wall Mount Bracket - Black  
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 422,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 6 -->
-
-        <article
-            class="product"
-            data-category="audio"
-            data-name="PORTABLE BLUETOOTH SPEAKER"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/speaker.jpg"
-                    alt="Portable Bluetooth Speaker"
-                >
-
-                <span class="badge">
-                    HOT
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    AUDIO
-                </span>
-
-                <h3 class="product-name">
-                    PORTABLE BLUETOOTH SPEAKER
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 95,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 7 -->
-
-        <article
-            class="product"
-            data-category="gaming"
-            data-name="WIRELESS GAMING CONTROLLER"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/gamingpad.jfif"
-                    alt="Wireless Gaming Controller"
-                >
-
-                <span class="badge">
-                    GAMING
-                </span>
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    GAMING
-                </span>
-
-                <h3 class="product-name">
-                    WIRELESS GAMING CONTROLLER
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 150,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 8 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="POWER BANK 20,000MAH"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/powerbank.webp"
-                    alt="Power Bank 20,000mAh"
-                >
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    POWER BANK 20,000MAH
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 85,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 9 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="ANDROID SMARTPHONE, tecno pop 20"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="Tecno Pop 20 6.75" 4GB RAM 64GB ROM 13MP 5000mAh. Multcolour 532,000.JPG "
-                    alt="Android Smartphone"
-                >
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                     Tecno Pop 20 6.75" 4GB RAM 64GB ROM 13MP 5000mAh. Multcolour
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 523,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 10 -->
-
-        <article
-            class="product"
-            data-category="audio"
-            data-name="NOISE CANCELLING HEADPHONES"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/headphones.webp"
-                    alt="Noise Cancelling Headphones"
-                >
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    AUDIO
-                </span>
-
-                <h3 class="product-name">
-                    NOISE CANCELLING HEADPHONES
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 180,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 11 -->
-
-        <article
-            class="product"
-            data-category="accessories"
-            data-name="PREMIUM USB-C CABLE"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="ELECTRONICS PAGE/usb cable.jfif"
-                    alt="Premium USB-C Cable"
-                >
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    ACCESSORIES
-                </span>
-
-                <h3 class="product-name">
-                    PREMIUM USB-C CABLE
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 20,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
-        </article>
-
-        <!-- PRODUCT 12 -->
-
-        <article
-            class="product"
-            data-category="phones"
-            data-name="pixel, google pixel, google pixel 7"
-        >
-
-            <div class="product-image">
-
-                <img
-                    src="REFURBISHED PIXEL 7 8GB RAM 128GB ROM 4355 mAh BATTERY (REFURBISHED) 835000.jpg"
-                    alt="Smart Home Camera"
-                >
-
-                <button
-                    type="button"
-                    class="wishlist"
-                    onclick="toast('Wishlist coming soon ❤️')"
-                >
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="product-info">
-
-                <span class="product-category">
-                    PHONES
-                </span>
-
-                <h3 class="product-name">
-                    REFURBISHED PIXEL 7 8GB RAM 128GB ROM 4355 mAh BATTERY (REFURBISHED) 
-                </h3>
-
-                <div class="product-bottom">
-
-                    <span class="price">
-                        UGX 835,000
-                    </span>
-
-                    <button
-                        type="button"
-                        class="add-cart"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            </div>
-
         </article>
 
     </div> <!-- End of product-grid -->
 
-    <!-- ================= PAGINATION ================= -->
+    <!-- PAGINATION -->
     <div class="pagination">
         <span class="page-btn disabled">← Prev</span>
         <span class="page-btn active">1</span>
-        <a href="electronics-page-2.html" class="page-btn">2</a>
-        <a href="electronics-page-2.html" class="page-btn next-btn">Next →</a>
+        <a href="electronics2.html" class="page-btn">2</a>
+        <a href="electronics2.html" class="page-btn next-btn">Next →</a>
     </div>
 
 </main>
 
-<!-- =====================================================
-     CART
-===================================================== -->
-
-<aside
-    class="cart"
-    id="cart"
->
-
+<!-- CART DRAWER -->
+<aside class="cart" id="cart">
     <div class="cart-header">
-
-        <h2>
-            Your Cart 🛒
-        </h2>
-
-        <button
-            type="button"
-            onclick="closeCart()"
-        >
-            ×
-        </button>
-
+        <h2>Your Cart 🛒</h2>
+        <button type="button" onclick="closeCart()">×</button>
     </div>
-
-    <div
-        class="cart-items"
-        id="cartItems"
-    >
-
-        <div class="empty-cart">
-            Your cart is empty 🛒
-        </div>
-
+    <div class="cart-items" id="cartItems">
+        <div class="empty-cart">Your cart is empty 🛒</div>
     </div>
-
-    <div
-        class="checkout-form"
-        id="checkoutForm"
-    >
-
-        <h3>
-            Delivery Details 📦
-        </h3>
-
-        <input
-            type="text"
-            id="customerName"
-            placeholder="Full Name *"
-            autocomplete="name"
-        >
-
-        <input
-            type="tel"
-            id="customerPhone"
-            placeholder="Phone Number *"
-            autocomplete="tel"
-        >
-
-        <input
-            type="tel"
-            id="customerWhatsapp"
-            placeholder="WhatsApp Number"
-            autocomplete="tel"
-        >
-
-        <input
-            type="text"
-            id="deliveryLocation"
-            placeholder="Delivery Location *"
-            autocomplete="street-address"
-        >
-
-        <textarea
-            id="orderNotes"
-            placeholder="Additional instructions (optional)"
-            rows="3"
-        ></textarea>
-
+    <div class="checkout-form" id="checkoutForm">
+        <h3>Delivery Details 📦</h3>
+        <input type="text" id="customerName" placeholder="Full Name *" autocomplete="name">
+        <input type="tel" id="customerPhone" placeholder="Phone Number *" autocomplete="tel">
+        <input type="tel" id="customerWhatsapp" placeholder="WhatsApp Number" autocomplete="tel">
+        <input type="text" id="deliveryLocation" placeholder="Delivery Location *" autocomplete="street-address">
+        <textarea id="orderNotes" placeholder="Additional instructions (optional)" rows="3"></textarea>
     </div>
-
     <div class="cart-footer">
-
         <div class="total">
-
-            <span>
-                Total
-            </span>
-
-            <strong id="cartTotal">
-                UGX 0
-            </strong>
-
+            <span>Total</span>
+            <strong id="cartTotal">UGX 0</strong>
         </div>
-
-        <button
-            type="button"
-            class="checkout checkout-supabase"
-            id="placeOrderButton"
-            onclick="placeOrderSupabase()"
-        >
-            🛒 PLACE ORDER
-        </button>
-
-        <button
-            type="button"
-            class="checkout checkout-whatsapp"
-            onclick="placeOrderWhatsApp()"
-        >
-            📱 ORDER VIA WHATSAPP
-        </button>
-
+        <button type="button" class="checkout checkout-supabase" id="placeOrderButton" onclick="placeOrderSupabase()">🛒 PLACE ORDER</button>
+        <button type="button" class="checkout checkout-whatsapp" onclick="placeOrderWhatsApp()">📱 ORDER VIA WHATSAPP</button>
     </div>
-
 </aside>
 
-<!-- =====================================================
-     MOBILE BOTTOM NAV
-===================================================== -->
-
 <nav class="bottom-nav">
-
-    <a href="index.html">
-        🏠
-        <span>Home</span>
-    </a>
-
-    <a href="#products">
-        💻
-        <span>Tech</span>
-    </a>
-
-    <button
-        type="button"
-        onclick="openCart()"
-    >
-        🛒
-        <span>Cart</span>
-    </button>
-
-    <a href="auth.html">
-        👤
-        <span>Account</span>
-    </a>
-
+    <a href="index.html">🏠 <span>Home</span></a>
+    <a href="#products">💻 <span>Tech</span></a>
+    <button type="button" onclick="openCart()">🛒 <span>Cart</span></button>
+    <a href="auth.html">👤 <span>Account</span></a>
 </nav>
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
 <script>
-
 /* =====================================================
-   SHARED SUPABASE CLIENT
+   JAVASCRIPT LOGIC (SAME FOR BOTH PAGES)
 ===================================================== */
-
 const supabaseClient = window.shopNowSupabase;
-
-/* =====================================================
-   CART STORAGE
-===================================================== */
-
 const CART_STORAGE_KEY = "shopNowCart";
-
 let cart = loadCart();
-
-/* =====================================================
-   CART SYNC STATE
-===================================================== */
-
 let cartSyncEnabled = false;
 let currentCartUserId = null;
 let cartSyncTimer = null;
-
-/* =====================================================
-   LOAD / SAVE (LOCAL)
-===================================================== */
+let otherPageProductsHTML = [];
 
 function loadCart() {
     try {
@@ -3342,842 +578,249 @@ function loadCart() {
         if (!raw) return [];
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed)) return [];
-
-        return parsed
-            .filter(item =>
-                item &&
-                typeof item.name === "string" &&
-                typeof item.price === "number" &&
-                typeof item.quantity === "number"
-            )
-            .map(item => ({
-                name: item.name,
-                price: item.price,
-                quantity: Math.max(1, Math.floor(item.quantity))
-            }));
-    } catch (err) {
-        console.warn("[PUMEKA] Could not load cart:", err);
-        return [];
-    }
+        return parsed.filter(item => item && typeof item.name === "string" && typeof item.price === "number" && typeof item.quantity === "number")
+            .map(item => ({ name: item.name, price: item.price, quantity: Math.max(1, Math.floor(item.quantity)) }));
+    } catch (err) { return []; }
 }
-
-function saveCart() {
-    try {
-        localStorage.setItem(
-            CART_STORAGE_KEY,
-            JSON.stringify(cart)
-        );
-    } catch (err) {
-        console.warn("[PUMEKA] Could not save cart:", err);
-    }
-}
-
-/* =====================================================
-   CART SYNC — SUPABASE
-===================================================== */
-
+function saveCart() { try { localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); } catch (err) {} }
 function mergeCarts(a, b){
-
     const map = new Map();
-
     [...a, ...b].forEach(item => {
-
         if(!item || !item.name) return;
-
         const existing = map.get(item.name);
-
-        if(existing){
-            existing.quantity += item.quantity || 1;
-        }else{
-            map.set(item.name, {
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity || 1
-            });
-        }
-
+        if(existing){ existing.quantity += item.quantity || 1; } 
+        else { map.set(item.name, { name: item.name, price: item.price, quantity: item.quantity || 1 }); }
     });
-
     return Array.from(map.values());
-
 }
-
 async function loadRemoteCart(){
-
     if(!currentCartUserId) return [];
-
-    const { data, error } = await supabaseClient
-        .from("carts")
-        .select("items")
-        .eq("user_id", currentCartUserId)
-        .maybeSingle();
-
-    if(error){
-        console.warn("[PUMEKA] Could not load remote cart:", error);
-        return [];
-    }
-
+    const { data, error } = await supabaseClient.from("carts").select("items").eq("user_id", currentCartUserId).maybeSingle();
+    if(error){ return []; }
     return Array.isArray(data?.items) ? data.items : [];
-
 }
-
 function saveCartToSupabase(){
-
     if(!cartSyncEnabled || !currentCartUserId) return;
-
     clearTimeout(cartSyncTimer);
-
     cartSyncTimer = setTimeout(async () => {
-
-        const { error } = await supabaseClient
-            .from("carts")
-            .upsert(
-                {
-                    user_id: currentCartUserId,
-                    items: cart,
-                    updated_at: new Date().toISOString()
-                },
-                { onConflict: "user_id" }
-            );
-
-        if(error){
-            console.warn("[PUMEKA] Cart sync failed:", error);
-        }
-
+        await supabaseClient.from("carts").upsert({ user_id: currentCartUserId, items: cart, updated_at: new Date().toISOString() }, { onConflict: "user_id" });
     }, 500);
-
 }
-
 async function clearRemoteCart(){
-
     if(!currentCartUserId) return;
-
-    const { error } = await supabaseClient
-        .from("carts")
-        .delete()
-        .eq("user_id", currentCartUserId);
-
-    if(error){
-        console.warn("[PUMEKA] Could not clear remote cart:", error);
-    }
-
+    await supabaseClient.from("carts").delete().eq("user_id", currentCartUserId);
 }
-
 async function syncCartOnLogin(){
-
-    /* User just clicked "Login" during this page visit.
-       Merge their guest cart with their remote cart. */
     const localCart  = [...cart];
     const remoteCart = await loadRemoteCart();
-
     cart = mergeCarts(localCart, remoteCart);
-
     updateCart();
-
 }
-
 async function loadCartFromRemote(){
-
-    /* Page reloaded with an existing session.
-       Remote is the source of truth — do NOT merge. */
     const remoteCart = await loadRemoteCart();
-
-    if(remoteCart.length > 0){
-        cart = remoteCart;
-    }
-
+    if(remoteCart.length > 0){ cart = remoteCart; }
     updateCart();
-
 }
-
 function setupCartSync(){
-
-    supabaseClient.auth.onAuthStateChange(
-        async (event, session) => {
-
-            if(session?.user){
-
-                const userId = session.user.id;
-
-                if(userId !== currentCartUserId){
-
-                    currentCartUserId = userId;
-                    cartSyncEnabled    = true;
-
-                    if(event === "SIGNED_IN"){
-
-                        /* User actively logged in — merge guest + remote */
-                        await syncCartOnLogin();
-
-                    }else{
-
-                        /* INITIAL_SESSION / TOKEN_REFRESHED —
-                           just use the remote cart, no merge */
-                        await loadCartFromRemote();
-
-                    }
-
-                }else{
-
-                    cartSyncEnabled = true;
-
-                }
-
-                return;
-
-            }
-
-            cartSyncEnabled   = false;
-            currentCartUserId = null;
-
-            if(event === "SIGNED_OUT"){
-
-                cart = [];
-
-                localStorage.removeItem(CART_STORAGE_KEY);
-
-                updateCart();
-
-            }
-
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if(session?.user){
+            const userId = session.user.id;
+            if(userId !== currentCartUserId){
+                currentCartUserId = userId;
+                cartSyncEnabled = true;
+                if(event === "SIGNED_IN"){ await syncCartOnLogin(); } else { await loadCartFromRemote(); }
+            } else { cartSyncEnabled = true; }
+            return;
         }
-    );
-
+        cartSyncEnabled = false;
+        currentCartUserId = null;
+        if(event === "SIGNED_OUT"){ cart = []; localStorage.removeItem(CART_STORAGE_KEY); updateCart(); }
+    });
 }
-
-/* =====================================================
-   ADD PRODUCT
-===================================================== */
-
-function addCartFromProduct(button){
-
-    const product = button.closest(".product");
-
-    if(!product){
-        toast("Product could not be added ❌");
-        return;
-    }
-
-    const nameElement = product.querySelector(".product-name");
-    const priceElement = product.querySelector(".price");
-
-    if(!nameElement || !priceElement){
-        toast("Product information missing ❌");
-        return;
-    }
-
-    const name = nameElement.textContent.trim();
-
-    const price = Number(
-        priceElement.textContent.replace(/[^0-9]/g, "")
-    );
-
-    if(!name || !price){
-        toast("Invalid product information ❌");
-        return;
-    }
-
-    addCart(name, price);
-
-}
-
-/* =====================================================
-   ADD CART
-===================================================== */
-
-function addCart(name, price){
-
-    const existing = cart.find(item => item.name === name);
-
-    if(existing){
-        existing.quantity++;
-    }else{
-        cart.push({ name, price, quantity: 1 });
-    }
-
-    updateCart();
-
-    toast(name + " added to cart 🛒");
-
-}
-
-/* =====================================================
-   UPDATE CART
-===================================================== */
-
 function updateCart(){
-
-    const count =
-        cart.reduce((total, item) => total + item.quantity, 0);
-
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
     const cartCount = document.getElementById("cartCount");
-
-    if(cartCount){
-        cartCount.textContent = count;
-    }
-
-    /* Save locally + sync to Supabase */
-    saveCart();
-    saveCartToSupabase();
-
-    renderCart();
-
+    if(cartCount){ cartCount.textContent = count; }
+    saveCart(); saveCartToSupabase(); renderCart();
 }
-
-/* =====================================================
-   RENDER CART
-===================================================== */
-
 function renderCart(){
-
     const container = document.getElementById("cartItems");
     const totalElement = document.getElementById("cartTotal");
-
     if(!container || !totalElement) return;
-
-    if(cart.length === 0){
-
-        container.innerHTML = `
-
-            <div class="empty-cart">
-                Your cart is empty 🛒
-            </div>
-
-        `;
-
-        totalElement.textContent = "UGX 0";
-        return;
-
-    }
-
-    let total = 0;
-    container.innerHTML = "";
-
+    if(cart.length === 0){ container.innerHTML = `<div class="empty-cart">Your cart is empty 🛒</div>`; totalElement.textContent = "UGX 0"; return; }
+    let total = 0; container.innerHTML = "";
     cart.forEach((item, index) => {
-
-        const subtotal = item.price * item.quantity;
-        total += subtotal;
-
+        const subtotal = item.price * item.quantity; total += subtotal;
         container.innerHTML += `
-
             <div class="cart-item">
-
-                <div class="cart-item-info">
-
-                    <strong>
-                        ${escapeHTML(item.name)}
-                    </strong>
-
-                    <small>
-                        ${item.quantity}
-                        × UGX
-                        ${item.price.toLocaleString()}
-                    </small>
-
-                </div>
-
+                <div class="cart-item-info"><strong>${escapeHTML(item.name)}</strong><small>${item.quantity} × UGX ${item.price.toLocaleString()}</small></div>
                 <div class="cart-item-actions">
-
-                    <button
-                        type="button"
-                        onclick="decreaseQuantity(${index})"
-                    >
-                        −
-                    </button>
-
-                    <span>
-                        ${item.quantity}
-                    </span>
-
-                    <button
-                        type="button"
-                        onclick="increaseQuantity(${index})"
-                    >
-                        +
-                    </button>
-
-                    <button
-                        type="button"
-                        class="remove"
-                        onclick="removeItem(${index})"
-                    >
-                        Remove
-                    </button>
-
+                    <button type="button" onclick="decreaseQuantity(${index})">−</button>
+                    <span>${item.quantity}</span>
+                    <button type="button" onclick="increaseQuantity(${index})">+</button>
+                    <button type="button" class="remove" onclick="removeItem(${index})">Remove</button>
                 </div>
-
-            </div>
-
-        `;
-
+            </div>`;
     });
-
     totalElement.textContent = "UGX " + total.toLocaleString();
-
 }
-
-/* =====================================================
-   QUANTITY
-===================================================== */
-
-function increaseQuantity(index){
-
-    if(!cart[index]) return;
-
-    cart[index].quantity++;
-
-    updateCart();
-
-}
-
-function decreaseQuantity(index){
-
-    if(!cart[index]) return;
-
-    cart[index].quantity--;
-
-    if(cart[index].quantity <= 0){
-        cart.splice(index, 1);
-    }
-
-    updateCart();
-
-}
-
-function removeItem(index){
-
-    if(!cart[index]) return;
-
-    const removed = cart[index].name;
-
-    cart.splice(index, 1);
-
-    updateCart();
-
-    toast(removed + " removed");
-
-}
-
-/* =====================================================
-   CART OPEN / CLOSE
-===================================================== */
-
-function openCart(){
-
-    const cartElement = document.getElementById("cart");
-
-    if(cartElement){
-        cartElement.classList.add("open");
-    }
-
-}
-
-function closeCart(){
-
-    const cartElement = document.getElementById("cart");
-
-    if(cartElement){
-        cartElement.classList.remove("open");
-    }
-
-}
-
-/* =====================================================
-   CLEAR CART + FORM (shared)
-===================================================== */
-
+function increaseQuantity(index){ if(!cart[index]) return; cart[index].quantity++; updateCart(); }
+function decreaseQuantity(index){ if(!cart[index]) return; cart[index].quantity--; if(cart[index].quantity <= 0){ cart.splice(index, 1); } updateCart(); }
+function removeItem(index){ if(!cart[index]) return; const removed = cart[index].name; cart.splice(index, 1); updateCart(); toast(removed + " removed"); }
+function openCart(){ const cartElement = document.getElementById("cart"); if(cartElement){ cartElement.classList.add("open"); } }
+function closeCart(){ const cartElement = document.getElementById("cart"); if(cartElement){ cartElement.classList.remove("open"); } }
 function clearCartAndForm(){
-
-    cart = [];
-
-    localStorage.removeItem(CART_STORAGE_KEY);
-
-    updateCart();
-
-    ["customerName","customerPhone","customerWhatsapp",
-     "deliveryLocation","orderNotes"].forEach(id => {
-
-        const el = document.getElementById(id);
-
-        if(el) el.value = "";
-
-    });
-
+    cart = []; localStorage.removeItem(CART_STORAGE_KEY); updateCart();
+    ["customerName","customerPhone","customerWhatsapp","deliveryLocation","orderNotes"].forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; });
     clearRemoteCart();
-
 }
-
-/* =====================================================
-   CHECKOUT OPTION 1 — SUPABASE
-===================================================== */
-
 async function placeOrderSupabase(){
-
-    if(cart.length === 0){
-        toast("Your cart is empty 🛒");
-        return;
-    }
-
-    const {
-        data: { session },
-        error: sessionError
-    } = await supabaseClient.auth.getSession();
-
-    if(sessionError){
-        console.error(sessionError);
-        toast("Could not check login status ❌");
-        return;
-    }
-
-    if(!session){
-
-        toast("Please login before ordering 🔐");
-
-        sessionStorage.setItem(
-            "shopNowReturnTo",
-            window.location.pathname.split("/").pop() || "index.html"
-        );
-
-        setTimeout(() => {
-            window.location.href = "auth.html";
-        }, 1000);
-
-        return;
-
-    }
-
-    const customerName =
-        (document.getElementById("customerName")?.value || "").trim();
-
-    const customerPhone =
-        (document.getElementById("customerPhone")?.value || "").trim();
-
-    const customerWhatsapp =
-        (document.getElementById("customerWhatsapp")?.value || "").trim();
-
-    const deliveryLocation =
-        (document.getElementById("deliveryLocation")?.value || "").trim();
-
-    const orderNotes =
-        (document.getElementById("orderNotes")?.value || "").trim();
-
+    if(cart.length === 0){ toast("Your cart is empty 🛒"); return; }
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if(!session){ toast("Please login before ordering 🔐"); sessionStorage.setItem("shopNowReturnTo", window.location.pathname.split("/").pop() || "index.html"); setTimeout(() => { window.location.href = "auth.html"; }, 1000); return; }
+    const customerName = (document.getElementById("customerName")?.value || "").trim();
+    const customerPhone = (document.getElementById("customerPhone")?.value || "").trim();
+    const customerWhatsapp = (document.getElementById("customerWhatsapp")?.value || "").trim();
+    const deliveryLocation = (document.getElementById("deliveryLocation")?.value || "").trim();
+    const orderNotes = (document.getElementById("orderNotes")?.value || "").trim();
     if(!customerName){ toast("Enter your full name 👤"); return; }
     if(!customerPhone){ toast("Enter your phone number 📞"); return; }
     if(!deliveryLocation){ toast("Enter your delivery location 📍"); return; }
-
-    let total = 0;
-    cart.forEach(item => {
-        total += item.price * item.quantity;
-    });
-
+    let total = 0; cart.forEach(item => { total += item.price * item.quantity; });
     const orderButton = document.getElementById("placeOrderButton");
-
-    if(orderButton){
-        orderButton.disabled = true;
-        orderButton.textContent = "Placing Order...";
-    }
-
-    const orderItems = cart.map(item => ({
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        subtotal: item.price * item.quantity
-    }));
-
-    const { data, error } =
-        await supabaseClient
-            .from("orders")
-            .insert([{
-                user_id: session.user.id,
-                customer_name: customerName,
-                phone: customerPhone,
-                whatsapp: customerWhatsapp || null,
-                delivery_location: deliveryLocation,
-                notes: orderNotes || null,
-                items: orderItems,
-                total: total
-            }])
-            .select()
-            .single();
-
-    if(error){
-
-        console.error("ORDER ERROR:", error);
-        toast("Order failed. Please try again ❌");
-
-        if(orderButton){
-            orderButton.disabled = false;
-            orderButton.textContent = "🛒 PLACE ORDER";
-        }
-
-        return;
-
-    }
-
-    const orderNumber = data.order_number;
-
-    clearCartAndForm();
-
-    if(orderButton){
-        orderButton.disabled = false;
-        orderButton.textContent = "🛒 PLACE ORDER";
-    }
-
-    closeCart();
-
-    setTimeout(() => {
-
-        alert(
-            "ORDER PLACED SUCCESSFULLY 🎉\n\n" +
-            "Order Number: #" + orderNumber +
-            "\n\nThank you for shopping with PUMEKA."
-        );
-
-    }, 200);
-
+    if(orderButton){ orderButton.disabled = true; orderButton.textContent = "Placing Order..."; }
+    const orderItems = cart.map(item => ({ name: item.name, price: item.price, quantity: item.quantity, subtotal: item.price * item.quantity }));
+    const { data, error } = await supabaseClient.from("orders").insert([{ user_id: session.user.id, customer_name: customerName, phone: customerPhone, whatsapp: customerWhatsapp || null, delivery_location: deliveryLocation, notes: orderNotes || null, items: orderItems, total: total }]).select().single();
+    if(error){ console.error(error); toast("Order failed. Please try again ❌"); if(orderButton){ orderButton.disabled = false; orderButton.textContent = "🛒 PLACE ORDER"; } return; }
+    clearCartAndForm(); if(orderButton){ orderButton.disabled = false; orderButton.textContent = "🛒 PLACE ORDER"; } closeCart();
+    setTimeout(() => { alert("ORDER PLACED SUCCESSFULLY 🎉\n\nOrder Number: #" + data.order_number + "\n\nThank you for shopping with PUMEKA."); }, 200);
 }
-
-/* =====================================================
-   CHECKOUT OPTION 2 — WHATSAPP
-===================================================== */
-
 function placeOrderWhatsApp(){
-
-    if(cart.length === 0){
-        toast("Your cart is empty 🛒");
-        return;
-    }
-
-    const phone = "256709568326";
-
-    const name =
-        (document.getElementById("customerName")?.value || "").trim();
-
-    const customerPhone =
-        (document.getElementById("customerPhone")?.value || "").trim();
-
-    const location =
-        (document.getElementById("deliveryLocation")?.value || "").trim();
-
-    const notes =
-        (document.getElementById("orderNotes")?.value || "").trim();
-
-    let message =
-        "Hello PUMEKA 👋\n\n" +
-        "I would like to order:\n";
-
-    let total = 0;
-
-    cart.forEach(item => {
-
-        const subtotal = item.price * item.quantity;
-
-        total += subtotal;
-
-        message +=
-            "\n• " + item.name +
-            " × " + item.quantity +
-            " — UGX " + subtotal.toLocaleString();
-
-    });
-
+    if(cart.length === 0){ toast("Your cart is empty 🛒"); return; }
+    const phone = "256709568326"; const name = (document.getElementById("customerName")?.value || "").trim(); const customerPhone = (document.getElementById("customerPhone")?.value || "").trim(); const location = (document.getElementById("deliveryLocation")?.value || "").trim(); const notes = (document.getElementById("orderNotes")?.value || "").trim();
+    let message = "Hello PUMEKA 👋\n\nI would like to order:\n"; let total = 0;
+    cart.forEach(item => { const subtotal = item.price * item.quantity; total += subtotal; message += "\n• " + item.name + " × " + item.quantity + " — UGX " + subtotal.toLocaleString(); });
     message += "\n\nTotal: UGX " + total.toLocaleString();
-
-    if(name || customerPhone || location || notes){
-
-        message += "\n\n--- Delivery Details ---";
-
-        if(name) message += "\nName: " + name;
-        if(customerPhone) message += "\nPhone: " + customerPhone;
-        if(location) message += "\nLocation: " + location;
-        if(notes) message += "\nNotes: " + notes;
-
-    }
-
-    const whatsapp =
-        "https://wa.me/" +
-        phone +
-        "?text=" +
-        encodeURIComponent(message);
-
-    window.open(whatsapp, "_blank");
-
-    clearCartAndForm();
-
-    toast("WhatsApp opened 📱");
-
-    closeCart();
-
+    if(name || customerPhone || location || notes){ message += "\n\n--- Delivery Details ---"; if(name) message += "\nName: " + name; if(customerPhone) message += "\nPhone: " + customerPhone; if(location) message += "\nLocation: " + location; if(notes) message += "\nNotes: " + notes; }
+    window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(message), "_blank"); clearCartAndForm(); toast("WhatsApp opened 📱"); closeCart();
+}
+function toast(message){
+    let toastElement = document.getElementById("shopNowToast");
+    if(!toastElement){ toastElement = document.createElement("div"); toastElement.id = "shopNowToast"; toastElement.className = "toast"; document.body.appendChild(toastElement); }
+    toastElement.textContent = message; toastElement.classList.add("show");
+    clearTimeout(window.shopNowToastTimer); window.shopNowToastTimer = setTimeout(() => { toastElement.classList.remove("show"); }, 2500);
+}
+function escapeHTML(value){ return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+function fixProductButtons(){ 
+    const products = document.querySelectorAll(".product"); 
+    products.forEach(product => { 
+        const button = product.querySelector(".add-cart"); 
+        if(!button || button.dataset.bound === "true") return; 
+        button.dataset.bound = "true";
+        button.addEventListener("click", function(){ addCartFromProduct(this); }); 
+    }); 
+}
+function addCartFromProduct(button){
+    const product = button.closest(".product"); if(!product){ toast("Product could not be added ❌"); return; }
+    const nameElement = product.querySelector(".product-name"); const priceElement = product.querySelector(".price");
+    if(!nameElement || !priceElement){ toast("Product information missing ❌"); return; }
+    const name = nameElement.textContent.trim(); const price = Number(priceElement.textContent.replace(/[^0-9]/g, ""));
+    if(!name || !price){ toast("Invalid product information ❌"); return; }
+    addCart(name, price);
+}
+function addCart(name, price){
+    const existing = cart.find(item => item.name === name);
+    if(existing){ existing.quantity++; } else { cart.push({ name, price, quantity: 1 }); }
+    updateCart(); toast(name + " added to cart 🛒");
 }
 
-/* =====================================================
-   PRODUCT BUTTONS
-===================================================== */
-
-function fixProductButtons(){
-
-    const products = document.querySelectorAll(".product");
-
-    products.forEach(product => {
-
-        const button = product.querySelector(".add-cart");
-
-        if(!button) return;
-
-        button.addEventListener("click", function(){
-
-            addCartFromProduct(this);
-
-        });
-
-    });
-
+/* SEARCH LOGIC */
+async function preloadOtherPageProducts() {
+    const currentPage = window.location.pathname.split('/').pop() || 'test.html';
+    const otherPage = currentPage.includes('electronics2') ? 'test.html' : 'electronics2.html';
+    try {
+        const response = await fetch(otherPage);
+        const text = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const products = doc.querySelectorAll('.product');
+        products.forEach(p => { otherPageProductsHTML.push(p.outerHTML); });
+    } catch (err) { console.warn("Could not preload other page products:", err); }
 }
-
-/* =====================================================
-   SEARCH
-===================================================== */
 
 function searchProducts(){
-
     const searchInput = document.getElementById("search");
-
     if(!searchInput) return;
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const grid = document.getElementById("productGrid");
+    
+    document.querySelectorAll('.global-search-result').forEach(el => el.remove());
 
-    const searchTerm =
-        searchInput.value.toLowerCase().trim();
-
-    const products = document.querySelectorAll(".product");
-
-    products.forEach(product => {
-
-        const name =
-            product.querySelector(".product-name")
-                ?.textContent.toLowerCase() || "";
-
-        const category =
-            product.querySelector(".product-category")
-                ?.textContent.toLowerCase() || "";
-
-        const matches =
-            name.includes(searchTerm) ||
-            category.includes(searchTerm);
-
+    const localProducts = grid.querySelectorAll(".product:not(.global-search-result)");
+    localProducts.forEach(product => {
+        const name = product.querySelector(".product-name")?.textContent.toLowerCase() || "";
+        const category = product.querySelector(".product-category")?.textContent.toLowerCase() || "";
+        const matches = name.includes(searchTerm) || category.includes(searchTerm);
         product.style.display = matches ? "" : "none";
-
     });
 
-}
+    if (searchTerm.length > 0 && otherPageProductsHTML.length > 0) {
+        let foundOnOtherPage = false;
+        const currentPage = window.location.pathname.split('/').pop() || 'test.html';
+        const pageNum = currentPage.includes('electronics2') ? '1' : '2';
 
-/* =====================================================
-   CATEGORY FILTER
-===================================================== */
+        otherPageProductsHTML.forEach(htmlString => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlString;
+            const product = tempDiv.firstElementChild;
+            
+            const name = product.querySelector(".product-name")?.textContent.toLowerCase() || "";
+            const category = product.querySelector(".product-category")?.textContent.toLowerCase() || "";
+            
+            if (name.includes(searchTerm) || category.includes(searchTerm)) {
+                product.classList.add("global-search-result");
+                product.style.display = "";
+                
+                const badge = document.createElement("div");
+                badge.className = "global-search-badge";
+                badge.textContent = "FROM PAGE " + pageNum;
+                product.querySelector('.product-image').appendChild(badge);
+                
+                grid.appendChild(product);
+                foundOnOtherPage = true;
+            }
+        });
+
+        if (foundOnOtherPage) fixProductButtons();
+    }
+}
 
 function filterProducts(category, button){
+    const searchInput = document.getElementById("search");
+    if (searchInput) searchInput.value = "";
+    document.querySelectorAll('.global-search-result').forEach(el => el.remove());
 
-    const products = document.querySelectorAll(".product");
-
+    const products = document.querySelectorAll(".product"); 
     const selected = category.toLowerCase();
-
     products.forEach(product => {
-
         const productCategory = product.dataset.category || "";
-
-        if(selected === "all" || productCategory === selected){
-            product.style.display = "";
-        }else{
-            product.style.display = "none";
-        }
-
+        if(selected === "all" || productCategory === selected){ product.style.display = ""; } else { product.style.display = "none"; }
     });
-
-    document.querySelectorAll(".category-btn").forEach(btn => {
-        btn.classList.remove("active");
-    });
-
-    if(button){
-        button.classList.add("active");
-    }
-
+    document.querySelectorAll(".category-btn").forEach(btn => { btn.classList.remove("active"); });
+    if(button){ button.classList.add("active"); }
 }
 
-/* =====================================================
-   TOAST
-===================================================== */
-
-function toast(message){
-
-    let toastElement = document.getElementById("shopNowToast");
-
-    if(!toastElement){
-
-        toastElement = document.createElement("div");
-        toastElement.id = "shopNowToast";
-        toastElement.className = "toast";
-
-        document.body.appendChild(toastElement);
-
-    }
-
-    toastElement.textContent = message;
-    toastElement.classList.add("show");
-
-    clearTimeout(window.shopNowToastTimer);
-
-    window.shopNowToastTimer = setTimeout(() => {
-
-        toastElement.classList.remove("show");
-
-    }, 2500);
-
-}
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHTML(value){
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-/* =====================================================
-   START
-===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        fixProductButtons();
-
-        updateCart();
-
-        setupCartSync();
-
-        const searchInput = document.getElementById("search");
-
-        if(searchInput){
-
-            searchInput.addEventListener(
-                "input",
-                searchProducts
-            );
-
-        }
-
-    }
-);
-
+document.addEventListener("DOMContentLoaded", () => {
+    fixProductButtons(); 
+    updateCart(); 
+    setupCartSync();
+    preloadOtherPageProducts();
+    
+    const searchInput = document.getElementById("search");
+    if(searchInput){ searchInput.addEventListener("input", searchProducts); }
+});
 </script>
 
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"e2c107eadc6e41499302b0ff665a0dfc","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
-
 </html>
