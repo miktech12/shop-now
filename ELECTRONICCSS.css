@@ -1804,6 +1804,57 @@ body{
     }
 }
 
+
+
+/* PUMEKA PAGINATION FIX */
+.pagination,
+.pagination-container,
+.pagination-links {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    margin: 35px auto;
+    padding: 20px 10px;
+    box-sizing: border-box;
+}
+
+.pagination a,
+.pagination-container a,
+.pagination-links a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 15px;
+    box-sizing: border-box;
+
+    background: #111 !important;
+    color: #fff !important;
+    border: 1px solid #dfff00 !important;
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none !important;
+
+    transition: 0.25s ease;
+}
+
+.pagination a:hover,
+.pagination-container a:hover,
+.pagination-links a:hover {
+    background: #dfff00 !important;
+    color: #000 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(223, 255, 0, 0.25);
+}
+
+
+    
     
     
 }
