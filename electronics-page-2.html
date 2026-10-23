@@ -15,7 +15,7 @@
     <div class="header-inner">
         <a href="index.html" class="logo"><span>P</span> PUMEKA</a>
         <div class="search-box">
-            <input type="text" id="search" placeholder="Search electronics..." autocomplete="off">
+            <input type="text" id="search" placeholder="Search all electronics..." autocomplete="off">
         </div>
         <div class="header-actions">
             <button type="button" class="wishlist-btn" onclick="toast('Wishlist coming soon ❤️')">❤️</button>
@@ -158,7 +158,7 @@
         </article>
 
         <!-- PRODUCT 41 -->
-        <article class="product" data-category="smart" data-name="IPhone XR">
+        <article class="product" data-category="phones" data-name="IPhone XR">
             <div class="product-image">
                 <img src="Apple iPhone XR 64GB Red Smartphone – 6.1-Inch Liquid Retina HD Display, Face ID, 12MP Camera, Refurbished by Badili, 3-Month Warranty phone 620,000.jpg" alt="Product 41">
                 <span class="badge">HOT</span>
@@ -522,13 +522,16 @@
 </nav>
 
 <script>
-/* JAVASCRIPT (Identical to Page 1) */
+/* =====================================================
+   JAVASCRIPT LOGIC (SAME FOR BOTH PAGES)
+===================================================== */
 const supabaseClient = window.shopNowSupabase;
 const CART_STORAGE_KEY = "shopNowCart";
 let cart = loadCart();
 let cartSyncEnabled = false;
 let currentCartUserId = null;
 let cartSyncTimer = null;
+let otherPageProductsHTML = [];
 
 function loadCart() {
     try {
@@ -669,7 +672,15 @@ function toast(message){
     clearTimeout(window.shopNowToastTimer); window.shopNowToastTimer = setTimeout(() => { toastElement.classList.remove("show"); }, 2500);
 }
 function escapeHTML(value){ return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
-function fixProductButtons(){ const products = document.querySelectorAll(".product"); products.forEach(product => { const button = product.querySelector(".add-cart"); if(!button) return; button.addEventListener("click", function(){ addCartFromProduct(this); }); }); }
+function fixProductButtons(){ 
+    const products = document.querySelectorAll(".product"); 
+    products.forEach(product => { 
+        const button = product.querySelector(".add-cart"); 
+        if(!button || button.dataset.bound === "true") return; 
+        button.dataset.bound = "true";
+        button.addEventListener("click", function(){ addCartFromProduct(this); }); 
+    }); 
+}
 function addCartFromProduct(button){
     const product = button.closest(".product"); if(!product){ toast("Product could not be added ❌"); return; }
     const nameElement = product.querySelector(".product-name"); const priceElement = product.querySelector(".price");
@@ -683,18 +694,75 @@ function addCart(name, price){
     if(existing){ existing.quantity++; } else { cart.push({ name, price, quantity: 1 }); }
     updateCart(); toast(name + " added to cart 🛒");
 }
+
+/* SEARCH LOGIC */
+async function preloadOtherPageProducts() {
+    const currentPage = window.location.pathname.split('/').pop() || 'electronics2.html';
+    const otherPage = currentPage.includes('electronics2') ? 'test.html' : 'electronics2.html';
+    try {
+        const response = await fetch(otherPage);
+        const text = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const products = doc.querySelectorAll('.product');
+        products.forEach(p => { otherPageProductsHTML.push(p.outerHTML); });
+    } catch (err) { console.warn("Could not preload other page products:", err); }
+}
+
 function searchProducts(){
-    const searchInput = document.getElementById("search"); if(!searchInput) return;
-    const searchTerm = searchInput.value.toLowerCase().trim(); const products = document.querySelectorAll(".product");
-    products.forEach(product => {
+    const searchInput = document.getElementById("search");
+    if(!searchInput) return;
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const grid = document.getElementById("productGrid");
+    
+    document.querySelectorAll('.global-search-result').forEach(el => el.remove());
+
+    const localProducts = grid.querySelectorAll(".product:not(.global-search-result)");
+    localProducts.forEach(product => {
         const name = product.querySelector(".product-name")?.textContent.toLowerCase() || "";
         const category = product.querySelector(".product-category")?.textContent.toLowerCase() || "";
         const matches = name.includes(searchTerm) || category.includes(searchTerm);
         product.style.display = matches ? "" : "none";
     });
+
+    if (searchTerm.length > 0 && otherPageProductsHTML.length > 0) {
+        let foundOnOtherPage = false;
+        const currentPage = window.location.pathname.split('/').pop() || 'electronics2.html';
+        const pageNum = currentPage.includes('electronics2') ? '1' : '2';
+
+        otherPageProductsHTML.forEach(htmlString => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlString;
+            const product = tempDiv.firstElementChild;
+            
+            const name = product.querySelector(".product-name")?.textContent.toLowerCase() || "";
+            const category = product.querySelector(".product-category")?.textContent.toLowerCase() || "";
+            
+            if (name.includes(searchTerm) || category.includes(searchTerm)) {
+                product.classList.add("global-search-result");
+                product.style.display = "";
+                
+                const badge = document.createElement("div");
+                badge.className = "global-search-badge";
+                badge.textContent = "FROM PAGE " + pageNum;
+                product.querySelector('.product-image').appendChild(badge);
+                
+                grid.appendChild(product);
+                foundOnOtherPage = true;
+            }
+        });
+
+        if (foundOnOtherPage) fixProductButtons();
+    }
 }
+
 function filterProducts(category, button){
-    const products = document.querySelectorAll(".product"); const selected = category.toLowerCase();
+    const searchInput = document.getElementById("search");
+    if (searchInput) searchInput.value = "";
+    document.querySelectorAll('.global-search-result').forEach(el => el.remove());
+
+    const products = document.querySelectorAll(".product"); 
+    const selected = category.toLowerCase();
     products.forEach(product => {
         const productCategory = product.dataset.category || "";
         if(selected === "all" || productCategory === selected){ product.style.display = ""; } else { product.style.display = "none"; }
@@ -702,8 +770,13 @@ function filterProducts(category, button){
     document.querySelectorAll(".category-btn").forEach(btn => { btn.classList.remove("active"); });
     if(button){ button.classList.add("active"); }
 }
+
 document.addEventListener("DOMContentLoaded", () => {
-    fixProductButtons(); updateCart(); setupCartSync();
+    fixProductButtons(); 
+    updateCart(); 
+    setupCartSync();
+    preloadOtherPageProducts();
+    
     const searchInput = document.getElementById("search");
     if(searchInput){ searchInput.addEventListener("input", searchProducts); }
 });
