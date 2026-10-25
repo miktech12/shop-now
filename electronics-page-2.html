@@ -414,7 +414,8 @@
         <!-- PRODUCT 9 -->
         <article class="product" data-category="phones" data-name="Tecno Pop 20">
             <div class="product-image">
-                <img src="Tecno Pop 20 6.75" 4GB RAM 64GB ROM 13MP 5000mAh. Multcolour 532,000.JPG" alt="Android Smartphone">
+                <!-- FIXED: Removed the quotation mark that was breaking the image link -->
+                <img src="Tecno Pop 20 6.75 4GB RAM 64GB ROM 13MP 5000mAh. Multcolour 532,000.JPG" alt="Android Smartphone">
                 <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
             <div class="product-info">
@@ -695,10 +696,12 @@ function addCart(name, price){
     updateCart(); toast(name + " added to cart 🛒");
 }
 
-/* SEARCH LOGIC */
+/* =====================================================
+   CROSS-PAGE SEARCH LOGIC (FIXED FOR PAGE 2)
+===================================================== */
 async function preloadOtherPageProducts() {
-    const currentPage = window.location.pathname.split('/').pop() || 'electronics2.html';
-    const otherPage = currentPage.includes('electronics2') ? 'test.html' : 'electronics2.html';
+    // Since this is Page 2, the "other page" is always test.html
+    const otherPage = 'test.html';
     try {
         const response = await fetch(otherPage);
         const text = await response.text();
@@ -727,9 +730,7 @@ function searchProducts(){
 
     if (searchTerm.length > 0 && otherPageProductsHTML.length > 0) {
         let foundOnOtherPage = false;
-        const currentPage = window.location.pathname.split('/').pop() || 'electronics2.html';
-        const pageNum = currentPage.includes('electronics2') ? '1' : '2';
-
+        
         otherPageProductsHTML.forEach(htmlString => {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = htmlString;
@@ -744,7 +745,7 @@ function searchProducts(){
                 
                 const badge = document.createElement("div");
                 badge.className = "global-search-badge";
-                badge.textContent = "FROM PAGE " + pageNum;
+                badge.textContent = "FROM PAGE 1"; // FIXED: Page 2 will always pull from Page 1
                 product.querySelector('.product-image').appendChild(badge);
                 
                 grid.appendChild(product);
