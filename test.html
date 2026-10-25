@@ -262,7 +262,7 @@
         <!-- PRODUCT 21 -->
         <article class="product" data-category="phones" data-name="Samsung galaxy s26 ultra, phone">
             <div class="product-image">
-                <img src=" Samsung Galaxy S26 Ultra 6.9 12GB RAM 256GB ROM 200MP 5000mAh - Black 4,675,625 2.JPG" alt="Product 21">
+                <img src="Samsung Galaxy S26 Ultra 6.9 12GB RAM 256GB ROM 200MP 5000mAh - Black 4,675,625 2.JPG" alt="Product 21">
                 <span class="badge">TRENDING</span>
                 <button type="button" class="wishlist" onclick="toast('Wishlist coming soon ❤️')">♡</button>
             </div>
@@ -520,7 +520,7 @@
     <div class="pagination">
         <span class="page-btn disabled">← Prev</span>
         <span class="page-btn active">1</span>
-        <a href="electronics-page-2.html">2</a>
+        <a href="electronics-page-2.html" class="page-btn">2</a>
         <a href="electronics-page-2.html" class="page-btn next-btn">Next →</a>
     </div>
 
@@ -734,10 +734,12 @@ function addCart(name, price){
     updateCart(); toast(name + " added to cart 🛒");
 }
 
-/* SEARCH LOGIC */
+/* =====================================================
+   CROSS-PAGE SEARCH LOGIC
+===================================================== */
 async function preloadOtherPageProducts() {
-    const currentPage = window.location.pathname.split('/').pop() || 'test.html';
-    const otherPage = currentPage.includes('electronics2') ? 'test.html' : 'electronics2.html';
+    // Since this is Page 1 (test.html), the "other page" is electronics-page-2.html
+    const otherPage = 'electronics-page-2.html';
     try {
         const response = await fetch(otherPage);
         const text = await response.text();
@@ -745,6 +747,7 @@ async function preloadOtherPageProducts() {
         const doc = parser.parseFromString(text, 'text/html');
         const products = doc.querySelectorAll('.product');
         products.forEach(p => { otherPageProductsHTML.push(p.outerHTML); });
+        console.log("Loaded products from page 2 for search.");
     } catch (err) { console.warn("Could not preload other page products:", err); }
 }
 
@@ -766,9 +769,7 @@ function searchProducts(){
 
     if (searchTerm.length > 0 && otherPageProductsHTML.length > 0) {
         let foundOnOtherPage = false;
-        const currentPage = window.location.pathname.split('/').pop() || 'test.html';
-        const pageNum = currentPage.includes('electronics2') ? '1' : '2';
-
+        
         otherPageProductsHTML.forEach(htmlString => {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = htmlString;
@@ -783,7 +784,7 @@ function searchProducts(){
                 
                 const badge = document.createElement("div");
                 badge.className = "global-search-badge";
-                badge.textContent = "FROM PAGE " + pageNum;
+                badge.textContent = "FROM PAGE 2";
                 product.querySelector('.product-image').appendChild(badge);
                 
                 grid.appendChild(product);
