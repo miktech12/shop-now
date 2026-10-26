@@ -1964,4 +1964,22 @@ footer{
         gap:9px;
     }
 
+
+
+
+.global-search-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #111;
+    color: #dfff00;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 5px 8px;
+    border-radius: 4px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+   
 }
