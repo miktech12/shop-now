@@ -18,11 +18,8 @@
 
 <link rel="stylesheet" href="indexcss.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth-state.js"></script>
-
-
-
 
 </head>
 
@@ -44,7 +41,7 @@
         <input
             type="text"
             id="search"
-            placeholder="Search products..."
+            placeholder="Search all products..."
             autocomplete="off"
         >
 
@@ -71,8 +68,8 @@
             👤 Login / Sign Up
         </a>
 
-        <div class="account-dropdown" id="accountDropdown" hidden>
-            <div class="account-dropdown-header">
+        <div class="account-dropdown" id="accountDropdown       " hidden>
+            <div class="account-dropdown De-header">
                 <strong id="accountDisplayName">My Account</strong>
                 <small id="accountEmail"></small>
             </div>
@@ -85,16 +82,17 @@
 </div>
 
 
-</div>
+als</div>
 
 </header>
 
 
-<!-- ================= HERO ================= -->
+<!-- =================
+ HERO =   ================ -->
 
 <section class="hero">
 
-<div class="hero-content">
+<div class=" </hero-content">
 
     <span class="hero-tag">
         🇺🇬 SHOPPING MADE SIMPLE
@@ -1002,8 +1000,7 @@
     </a>
 
     <a href="#products">
-        Deals
-    </a>
+a>
 
 </div>
 
@@ -1269,6 +1266,7 @@ let cart = loadCart();
 let cartSyncEnabled = false;
 let currentCartUserId = null;
 let cartSyncTimer = null;
+let otherPageProductsHTML = [];
 
 
 /* =====================================================
@@ -1706,47 +1704,99 @@ function wishlist(button){
 
 
 /* =====================================================
-   SEARCH
+   CROSS-PAGE SEARCH LOGIC
 ===================================================== */
 
-const search =
-    document.getElementById("search");
+const pagesToSearch = [
+    { url: 'test.html', label: 'ELECTRONICS' },
+    { url: 'electronics-page-2.html', label: 'ELECTRONICS' },
+    { url: 'FASHION.html', label: 'FASHION' }
+];
 
-
-if(search){
-
-    search.addEventListener(
-        "input",
-        function(){
-
-            const value =
-                this.value.toLowerCase().trim();
-
-            const products =
-                document.querySelectorAll(".product");
-
-            products.forEach(product=>{
-
-                const name =
-                    (product.dataset.name || "").toLowerCase();
-
-                const category =
-                    (product.dataset.category || "").toLowerCase();
-
-                if(
-                    name.includes(value) ||
-                    category.includes(value)
-                ){
-                    product.style.display = "";
-                }else{
-                    product.style.display = "none";
-                }
-
+async function preloadOtherPageProducts() {
+    for (const page of pagesToSearch) {
+        try {
+            const response = await fetch(page.url);
+            const text = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'text/html');
+            const products = doc.querySelectorAll('.product');
+            products.forEach(p => { 
+                otherPageProductsHTML.push({ html: p.outerHTML, source: page.label }); 
             });
-
+        } catch (err) { 
+            console.warn("Could not preload " + page.url + " for search."); 
         }
-    );
+    }
+}
 
+function searchProducts(){
+    const searchInput = document.getElementById("search");
+    if(!searchInput) return;
+    
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const grid = document.getElementById("productGrid");
+    
+    document.querySelectorAll('.global-search-result').forEach(el => el.remove());
+
+    const localProducts = grid.querySelectorAll(".product:not(.global-search-result)");
+    localProducts.forEach(product => {
+        const name = product.querySelector(".product-name")?.textContent.toLowerCase() || product.dataset.name?.toLowerCase() || "";
+        const category = product.querySelector(".product-category")?.textContent.toLowerCase() || product.dataset.category?.toLowerCase() || "";
+        const matches = name.includes(searchTerm) || category.includes(searchTerm);
+        product.style.display = matches ? "" : "none";
+    });
+
+    if (searchTerm.length > 0 && otherPageProductsHTML.length > 0) {
+        let foundOnOtherPage = false;
+        
+        otherPageProductsHTML.forEach(item => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = item.html;
+            const product = tempDiv.firstElementChild;
+            
+            const name = product.querySelector(".product-name")?.textContent.toLowerCase() || "";
+            const category = product.querySelector(".product-category")?.textContent.toLowerCase() || "";
+            
+            if (name.includes(searchTerm) || category.includes(searchTerm)) {
+                product.classList.add("global-search-result");
+                product.style.display = "";
+                
+                const badge = document.createElement("div");
+                badge.className = "global-search-badge";
+                badge.textContent = "FROM " + item.source;
+                product.querySelector('.product-image').appendChild(badge);
+                
+                grid.appendChild(product);
+                foundOnOtherPage = true;
+            }
+        });
+
+        if (foundOnOtherPage) fixProductButtons();
+    }
+}
+
+/* Bind + button for injected products */
+function fixProductButtons(){
+    const products = document.querySelectorAll(".product"); 
+    products.forEach(product => { 
+        const button = product.querySelector(".add, .add-cart"); 
+        if(!button || button.dataset.bound === "true") return; 
+        button.dataset.bound = "true";
+        
+        if (!button.hasAttribute('onclick')) {
+            button.addEventListener("click", function(){ addCartFromProduct(this); }); 
+        }
+    }); 
+}
+
+function addCartFromProduct(button){
+    const product = button.closest(".product"); if(!product){ toast("Product could not be added ❌"); return; }
+    const nameElement = product.querySelector(".product-name"); const priceElement = product.querySelector(".price");
+    if(!nameElement || !priceElement){ toast("Product information missing ❌"); return; }
+    const name = nameElement.textContent.trim(); const price = Number(priceElement.textContent.replace(/[^0-9]/g, ""));
+    if(!name || !price){ toast("Invalid product information ❌"); return; }
+    addCart(name, price);
 }
 
 
@@ -2062,6 +2112,13 @@ document.addEventListener(
 updateCart();
 
 setupCartSync();
+
+preloadOtherPageProducts();
+
+const searchInput = document.getElementById("search");
+if(searchInput){
+    searchInput.addEventListener("input", searchProducts);
+}
 
 </script>
 
