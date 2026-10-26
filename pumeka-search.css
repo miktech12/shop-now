@@ -178,3 +178,13 @@
         flex-basis: 48px;
     }
 }
+
+
+.product.pumeka-search-highlight {
+    outline: 3px solid #dfff00;
+    outline-offset: 5px;
+    box-shadow: 0 0 22px rgba(223, 255, 0, 0.45);
+    border-radius: 12px;
+}
+
+
