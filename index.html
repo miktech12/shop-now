@@ -18,8 +18,9 @@
 
 <link rel="stylesheet" href="indexcss.css">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth-state.js"></script>
+<!-- DEFERRED SCRIPTS FOR FASTER PAGE LOAD -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="auth-state.js" defer></script>
 
 </head>
 
@@ -68,8 +69,8 @@
             👤 Login / Sign Up
         </a>
 
-        <div class="account-dropdown" id="accountDropdown       " hidden>
-            <div class="account-dropdown De-header">
+        <div class="account-dropdown" id="accountDropdown" hidden>
+            <div class="account-dropdown-header">
                 <strong id="accountDisplayName">My Account</strong>
                 <small id="accountEmail"></small>
             </div>
@@ -82,17 +83,16 @@
 </div>
 
 
-als</div>
+</div>
 
 </header>
 
 
-<!-- =================
- HERO =   ================ -->
+<!-- ================= HERO ================= -->
 
 <section class="hero">
 
-<div class=" </hero-content">
+<div class="hero-content">
 
     <span class="hero-tag">
         🇺🇬 SHOPPING MADE SIMPLE
@@ -420,6 +420,7 @@ als</div>
         <img
             src="FASION PAGE/SHORTS.JFIF"
             alt="2 Piece Shorts"
+            loading="lazy"
         >
 
         <span class="badge">
@@ -479,6 +480,7 @@ als</div>
         <img
             src="ELECTRONICS PAGE/Apple-iPhone-18-Pro.jpg"
             alt="Smartphone Pro"
+            loading="lazy"
         >
 
         <span class="badge">
@@ -537,6 +539,7 @@ als</div>
         <img
             src="FASION PAGE/SHORTS.JFIF"
             alt="Classic Fashion"
+            loading="lazy"
         >
 
         <span class="badge">
@@ -595,6 +598,7 @@ als</div>
         <img
             src="HOME PAGE/SIGNATURE PERFUME.jfif"
             alt="Signature Perfume"
+            loading="lazy"
         >
 
         <span class="badge">
@@ -653,6 +657,7 @@ als</div>
         <img
             src="ELECTRONICS PAGE/wireless earbuds.jfif"
             alt="Wireless Earbuds Pro"
+            loading="lazy"
         >
 
         <span class="badge">
@@ -711,6 +716,7 @@ als</div>
         <img
             src="FASION PAGE/SHORTS.JFIF"
             alt="Premium Fashion Set"
+            loading="lazy"
         >
 
         <button
@@ -765,6 +771,7 @@ als</div>
         <img
             src="ELECTRONICS PAGE/smartwatch.webp"
             alt="Smart Watch Series 9"
+            loading="lazy"
         >
 
         <span class="badge">
@@ -823,6 +830,7 @@ als</div>
         <img
             src="HOME PAGE/SIGNATURE PERFUME.jfif"
             alt="Luxury Fragrance"
+            loading="lazy"
         >
 
         <button
@@ -1000,7 +1008,8 @@ als</div>
     </a>
 
     <a href="#products">
-a>
+        Deals
+    </a>
 
 </div>
 
@@ -1204,7 +1213,6 @@ a>
 <a href="index.html" class="active">
 
     <span>⌂</span>
-
     Home
 
 </a>
@@ -1213,7 +1221,6 @@ a>
 <a href="#categories">
 
     <span>▦</span>
-
     Categories
 
 </a>
@@ -1222,7 +1229,6 @@ a>
 <button onclick="openCart()">
 
     <span>🛒</span>
-
     Cart
 
 </button>
@@ -1231,7 +1237,6 @@ a>
 <a href="#products">
 
     <span>♡</span>
-
     Products
 
 </a>
@@ -1762,10 +1767,7 @@ function searchProducts(){
                 product.classList.add("global-search-result");
                 product.style.display = "";
                 
-                const badge = document.createElement("div");
-                badge.className = "global-search-badge";
-                badge.textContent = "FROM " + item.source;
-                product.querySelector('.product-image').appendChild(badge);
+                // Badge injection removed here so the search results look native.
                 
                 grid.appendChild(product);
                 foundOnOtherPage = true;
@@ -2106,17 +2108,24 @@ document.addEventListener(
 
 
 /* =====================================================
-   START
+   START & SMART SEARCH FETCHING
 ===================================================== */
 
 updateCart();
-
 setupCartSync();
 
-preloadOtherPageProducts();
+// We REMOVED the immediate preload call here so the page loads fast.
 
 const searchInput = document.getElementById("search");
 if(searchInput){
+    // When the user clicks the search bar, we quietly fetch the other pages
+    searchInput.addEventListener("focus", () => {
+        if (otherPageProductsHTML.length === 0) {
+            preloadOtherPageProducts();
+        }
+    });
+    
+    // When they start typing, filter the results
     searchInput.addEventListener("input", searchProducts);
 }
 
