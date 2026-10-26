@@ -37,15 +37,18 @@
         PUMEKA
     </a>
 
+    <!-- NEW CATCHY SEARCH BOX -->
     <div class="search-box">
-
+        <svg class="search-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
         <input
             type="text"
             id="search"
-            placeholder="Search all products..."
+            placeholder="What are you looking for?"
             autocomplete="off"
         >
-
+        <button id="searchBtn" class="search-btn">SEARCH</button>
     </div>
 
 
@@ -1213,6 +1216,7 @@
 <a href="index.html" class="active">
 
     <span>⌂</span>
+
     Home
 
 </a>
@@ -1430,8 +1434,6 @@ async function clearRemoteCart(){
 
 async function syncCartOnLogin(){
 
-    /* User just clicked "Login" during this page visit.
-       Merge their guest cart with their remote cart. */
     const localCart  = [...cart];
     const remoteCart = await loadRemoteCart();
 
@@ -1444,8 +1446,6 @@ async function syncCartOnLogin(){
 
 async function loadCartFromRemote(){
 
-    /* Page reloaded with an existing session.
-       Remote is the source of truth — do NOT merge. */
     const remoteCart = await loadRemoteCart();
 
     if(remoteCart.length > 0){
@@ -1473,13 +1473,10 @@ function setupCartSync(){
 
                     if(event === "SIGNED_IN"){
 
-                        /* User actively logged in — merge guest + remote */
                         await syncCartOnLogin();
 
                     }else{
 
-                        /* INITIAL_SESSION / TOKEN_REFRESHED —
-                           just use the remote cart, no merge */
                         await loadCartFromRemote();
 
                     }
@@ -1727,7 +1724,7 @@ async function preloadOtherPageProducts() {
             const doc = parser.parseFromString(text, 'text/html');
             const products = doc.querySelectorAll('.product');
             products.forEach(p => { 
-                otherPageProductsHTML.push({ html: p.outerHTML, source: page.label }); 
+                otherPageProductsHTML.push(p.outerHTML); 
             });
         } catch (err) { 
             console.warn("Could not preload " + page.url + " for search."); 
@@ -1735,15 +1732,35 @@ async function preloadOtherPageProducts() {
     }
 }
 
-function searchProducts(){
+async function searchProducts(){
     const searchInput = document.getElementById("search");
     if(!searchInput) return;
     
     const searchTerm = searchInput.value.toLowerCase().trim();
     const grid = document.getElementById("productGrid");
     
+    // If the user clears the search, reset everything
+    if (searchTerm === "") {
+        document.querySelectorAll('.global-search-result').forEach(el => el.remove());
+        grid.querySelectorAll(".product").forEach(p => p.style.display = "");
+        return;
+    }
+
+    // Show a loading indicator on the button
+    const searchBtn = document.getElementById("searchBtn");
+    const originalBtnText = searchBtn.textContent;
+    searchBtn.textContent = "...";
+    searchBtn.disabled = true;
+
+    // Ensure background pages are fetched before searching
+    if (otherPageProductsHTML.length === 0) {
+        await preloadOtherPageProducts();
+    }
+
+    // Reset previous search results
     document.querySelectorAll('.global-search-result').forEach(el => el.remove());
 
+    // Filter products currently on the page
     const localProducts = grid.querySelectorAll(".product:not(.global-search-result)");
     localProducts.forEach(product => {
         const name = product.querySelector(".product-name")?.textContent.toLowerCase() || product.dataset.name?.toLowerCase() || "";
@@ -1752,12 +1769,13 @@ function searchProducts(){
         product.style.display = matches ? "" : "none";
     });
 
-    if (searchTerm.length > 0 && otherPageProductsHTML.length > 0) {
+    // Check injected products from other pages
+    if (otherPageProductsHTML.length > 0) {
         let foundOnOtherPage = false;
         
-        otherPageProductsHTML.forEach(item => {
+        otherPageProductsHTML.forEach(htmlString => {
             const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = item.html;
+            tempDiv.innerHTML = htmlString;
             const product = tempDiv.firstElementChild;
             
             const name = product.querySelector(".product-name")?.textContent.toLowerCase() || "";
@@ -1767,8 +1785,6 @@ function searchProducts(){
                 product.classList.add("global-search-result");
                 product.style.display = "";
                 
-                // Badge injection removed here so the search results look native.
-                
                 grid.appendChild(product);
                 foundOnOtherPage = true;
             }
@@ -1776,6 +1792,13 @@ function searchProducts(){
 
         if (foundOnOtherPage) fixProductButtons();
     }
+
+    // Reset button
+    searchBtn.textContent = originalBtnText;
+    searchBtn.disabled = false;
+
+    // Scroll to products section automatically
+    document.getElementById("products").scrollIntoView({ behavior: 'smooth' });
 }
 
 /* Bind + button for injected products */
@@ -2108,25 +2131,28 @@ document.addEventListener(
 
 
 /* =====================================================
-   START & SMART SEARCH FETCHING
+   START & SEARCH SETUP
 ===================================================== */
 
 updateCart();
 setupCartSync();
 
-// We REMOVED the immediate preload call here so the page loads fast.
-
 const searchInput = document.getElementById("search");
+const searchBtn = document.getElementById("searchBtn");
+
+// Trigger search when button is clicked
+if(searchBtn){
+    searchBtn.addEventListener("click", searchProducts);
+}
+
+// Trigger search when Enter is pressed in the input
 if(searchInput){
-    // When the user clicks the search bar, we quietly fetch the other pages
-    searchInput.addEventListener("focus", () => {
-        if (otherPageProductsHTML.length === 0) {
-            preloadOtherPageProducts();
+    searchInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            searchProducts();
         }
     });
-    
-    // When they start typing, filter the results
-    searchInput.addEventListener("input", searchProducts);
 }
 
 </script>
