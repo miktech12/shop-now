@@ -1,0 +1,180 @@
+
+/* ==========================================
+   PUMEKA GLOBAL SEARCH
+   Black + neon yellow | Mobile friendly
+========================================== */
+
+.search-box {
+    position: relative;
+    flex: 1 1 320px;
+    min-width: 0;
+    max-width: 520px;
+    margin: 0 auto;
+    z-index: 1000;
+}
+
+.search-box input {
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+    padding: 0 46px 0 17px;
+    border: 2px solid #dfff00;
+    border-radius: 15px;
+    outline: none;
+    background: #fff;
+    color: #171717;
+    font: inherit;
+    font-size: 15px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, .08);
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.search-box input:focus {
+    border-color: #b8d900;
+    box-shadow: 0 0 0 4px rgba(223, 255, 0, .22);
+}
+
+.search-box input::placeholder {
+    color: #777;
+}
+
+.pumeka-search-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: #fff;
+    color: #171717;
+    border: 1px solid #e7e7e7;
+    border-radius: 16px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, .2);
+    z-index: 99999;
+    padding: 8px;
+}
+
+.pumeka-search-dropdown[hidden] {
+    display: none !important;
+}
+
+.pumeka-search-heading {
+    padding: 9px 10px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.pumeka-search-result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 11px;
+    text-decoration: none;
+    color: inherit;
+    transition: background .18s;
+}
+
+.pumeka-search-result:hover,
+.pumeka-search-result:focus-visible {
+    background: #f5f7ed;
+    outline: none;
+}
+
+.pumeka-search-result img {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    object-fit: contain;
+    background: #f7f7f7;
+    border-radius: 9px;
+}
+
+.pumeka-search-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.pumeka-search-name {
+    display: block;
+    font-size: 13px;
+    font-weight: 750;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.pumeka-search-category {
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: #777;
+    text-transform: uppercase;
+}
+
+.pumeka-search-price {
+    display: block;
+    margin-top: 4px;
+    color: #526600;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.pumeka-search-arrow {
+    color: #647600;
+    font-size: 20px;
+    padding: 0 3px;
+}
+
+.pumeka-search-message {
+    padding: 20px 12px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.pumeka-search-footer {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    color: #777;
+    font-size: 11px;
+    text-align: center;
+}
+
+@media (max-width: 800px) {
+    .search-box {
+        order: 3;
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: none;
+        margin: 8px 0 0;
+    }
+
+    .pumeka-search-dropdown {
+        max-height: 60vh;
+    }
+}
+
+@media (max-width: 380px) {
+    .search-box input {
+        height: 44px;
+        font-size: 14px;
+    }
+
+    .pumeka-search-result {
+        gap: 9px;
+        padding: 8px;
+    }
+
+    .pumeka-search-result img {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+    }
+}
