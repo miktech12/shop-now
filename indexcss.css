@@ -2353,6 +2353,87 @@ footer{
     }
 }
 
+
+
+/* PUMEKA SEARCH — EMERGENCY OVERRIDE */
+.header-inner {
+    display: flex !important;
+    flex-wrap: wrap !important;
+}
+
+.header-inner > .search-box {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 8px 0 !important;
+    padding: 4px !important;
+    gap: 0 !important;
+    border: 1px solid #ddd !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.header-inner > .search-box > .search-icon {
+    display: block !important;
+    position: static !important;
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    margin: 0 4px 0 10px !important;
+    fill: #555 !important;
+}
+
+.header-inner > .search-box > input {
+    display: block !important;
+    position: static !important;
+    flex: 1 1 0% !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 14px !important;
+}
+
+.header-inner > .search-box > .search-btn {
+    display: flex !important;
+    position: static !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 76px !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: #111 !important;
+    color: #dfff00 !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+    transform: none !important;
+}
+
+@media (min-width: 801px) {
+    .header-inner > .search-box {
+        flex: 1 1 300px !important;
+        max-width: 450px !important;
+        margin: 0 auto !important;
+    }
+}
+
+
    
    
    
