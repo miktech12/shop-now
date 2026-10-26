@@ -2433,7 +2433,24 @@ footer{
     }
 }
 
+.search-box .search-icon {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    flex: 0 0 20px !important;
+}
 
+.search-box {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+.search-box .search-btn {
+    display: inline-flex !important;
+    width: auto !important;
+    flex-shrink: 0 !important;
+}
    
    
    
