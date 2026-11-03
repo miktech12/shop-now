@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,11 +16,11 @@
   "url": "https://pumeka.com/"
 }
 </script>
+
 <link rel="stylesheet" href="pumeka-search.css">
 <script src="pumeka-search.js" defer></script>
 <link rel="stylesheet" href="indexcss.css">
 
-<!-- DEFERRED SCRIPTS FOR FASTER PAGE LOAD -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="auth-state.js" defer></script>
 
@@ -30,7 +31,6 @@
 <!-- ================= HEADER ================= -->
 
 <header class="header">
-
 <div class="header-inner">
 
     <a href="index.html" class="logo">
@@ -39,53 +39,52 @@
     </a>
 
     <div class="search-box">
-
         <input
             type="text"
             id="search"
             placeholder="Search all products..."
             autocomplete="off"
         >
-
     </div>
 
+    <div class="header-actions">
 
-<div class="header-actions">
-    <button class="wishlist-btn"
-        onclick="toast('Wishlist coming soon ❤️')"
-        aria-label="Wishlist">♡</button>
+        <button class="wishlist-btn"
+            onclick="toast('Wishlist coming soon ❤️')"
+            aria-label="Wishlist">♡</button>
 
-    <button class="cart-btn"
-        onclick="openCart()"
-        aria-label="Shopping cart">
-        🛒 <span class="cart-badge" id="cartCount">0</span>
-    </button>
+        <button class="cart-btn"
+            onclick="openCart()"
+            aria-label="Shopping cart">
+            🛒 <span class="cart-badge" id="cartCount">0</span>
+        </button>
 
-    <div class="account-menu" id="accountMenu">
-        <a href="auth.html"
-           class="auth-btn"
-           id="authButton"
-           aria-expanded="false"
-           aria-controls="accountDropdown">
-            👤 Login / Sign Up
-        </a>
+        <div class="account-menu" id="accountMenu">
 
-        <div class="account-dropdown" id="accountDropdown" hidden>
-            <div class="account-dropdown-header">
-                <strong id="accountDisplayName">My Account</strong>
-                <small id="accountEmail"></small>
+            <a href="auth.html"
+               class="auth-btn"
+               id="authButton"
+               aria-expanded="false"
+               aria-controls="accountDropdown">
+                👤 Login / Sign Up
+            </a>
+
+            <div class="account-dropdown" id="accountDropdown" hidden>
+
+                <div class="account-dropdown-header">
+                    <strong id="accountDisplayName">My Account</strong>
+                    <small id="accountEmail"></small>
+                </div>
+
+                <button type="button" id="accountLogout">
+                    ↪ Log Out
+                </button>
+
             </div>
-
-            <button type="button" id="accountLogout">
-                ↪ Log Out
-            </button>
         </div>
+
     </div>
 </div>
-
-
-</div>
-
 </header>
 
 
@@ -106,24 +105,17 @@
     </h1>
 
     <p>
-        Discover electronics, fashion, perfumes,
-        medical supplies and everyday essentials —
+        Discover electronics and everyday essentials
         all in one place.
     </p>
 
     <div class="hero-buttons">
 
-        <a
-            href="#products"
-            class="hero-btn"
-        >
+        <a href="#products" class="hero-btn">
             SHOP NOW →
         </a>
 
-        <a
-            href="#categories"
-            class="hero-outline-btn"
-        >
+        <a href="#categories" class="hero-outline-btn">
             EXPLORE CATEGORIES
         </a>
 
@@ -131,15 +123,10 @@
 
 </div>
 
-
 <div class="hero-visual">
 
     <div class="hero-circle">
-
-        <div class="hero-icon">
-            🛍️
-        </div>
-
+        <div class="hero-icon">🛍️</div>
     </div>
 
     <div class="floating-card card-one">
@@ -151,198 +138,129 @@
     </div>
 
 </div>
-
 </section>
 
 
 <!-- ================= CATEGORIES ================= -->
 
-<section
-    class="categories-section"
-    id="categories"
->
+<section class="categories-section" id="categories">
 
 <div class="section-heading">
 
     <div>
-
-        <span class="section-tag">
-            EXPLORE
-        </span>
-
-        <h2>
-            Shop by category
-        </h2>
-
+        <span class="section-tag">EXPLORE</span>
+        <h2>Shop by category</h2>
     </div>
 
 </div>
-
 
 <div class="category-grid">
 
+    <!-- ELECTRONICS -->
 
-<!-- ELECTRONICS -->
+    <a href="test.html" class="category-card">
 
-<a
-    href="test.html"
-    class="category-card"
->
+        <div class="category-icon electronics">
+            📱
+        </div>
 
-    <div class="category-icon electronics">
-        📱
-    </div>
+        <strong>Electronics</strong>
 
-    <strong>
-        Electronics
-    </strong>
+        <small>Phones, gadgets & accessories</small>
 
-    <small>
-        Phones, gadgets & accessories
-    </small>
+        <span class="category-arrow">→</span>
 
-    <span class="category-arrow">
-        →
-    </span>
-
-</a>
+    </a>
 
 
-<!-- FASHION -->
+    <!--
+    FASHION
 
-<a
-    href="FASHION.html"
-    class="category-card"
->
+    <a href="FASHION.html" class="category-card">
 
-    <div class="category-icon fashion">
-        👗
-    </div>
+        <div class="category-icon fashion">👗</div>
 
-    <strong>
-        Fashion
-    </strong>
+        <strong>Fashion</strong>
 
-    <small>
-        Clothes, shoes & bags
-    </small>
+        <small>Clothes, shoes & bags</small>
 
-    <span class="category-arrow">
-        →
-    </span>
+        <span class="category-arrow">→</span>
 
-</a>
+    </a>
+    -->
 
 
-<!-- BEAUTY -->
+    <!--
+    PERFUMES & BEAUTY
 
-<a
-    href="#products"
-    class="category-card"
-    onclick="showComingSoon(event,'Perfumes & Beauty')"
->
+    <a href="#products" class="category-card"
+       onclick="showComingSoon(event,'Perfumes & Beauty')">
 
-    <div class="category-icon beauty">
-        🌸
-    </div>
+        <div class="category-icon beauty">🌸</div>
 
-    <strong>
-        Perfumes & Beauty
-    </strong>
+        <strong>Perfumes & Beauty</strong>
 
-    <small>
-        Fragrances & personal care
-    </small>
+        <small>Fragrances & personal care</small>
 
-    <span class="category-arrow">
-        →
-    </span>
+        <span class="category-arrow">→</span>
 
-</a>
+    </a>
+    -->
 
 
-<!-- MEDICAL -->
+    <!--
+    MEDICAL SUPPLIES
 
-<a
-    href="#products"
-    class="category-card"
-    onclick="showComingSoon(event,'Medical Supplies')"
->
+    <a href="#products" class="category-card"
+       onclick="showComingSoon(event,'Medical Supplies')">
 
-    <div class="category-icon medical">
-        🩺
-    </div>
+        <div class="category-icon medical">🩺</div>
 
-    <strong>
-        Medical Supplies
-    </strong>
+        <strong>Medical Supplies</strong>
 
-    <small>
-        Healthcare essentials
-    </small>
+        <small>Healthcare essentials</small>
 
-    <span class="category-arrow">
-        →
-    </span>
+        <span class="category-arrow">→</span>
 
-</a>
+    </a>
+    -->
 
 
-<!-- HOME -->
+    <!--
+    HOME & LIFESTYLE
 
-<a
-    href="#products"
-    class="category-card"
-    onclick="showComingSoon(event,'Home & Lifestyle')"
->
+    <a href="#products" class="category-card"
+       onclick="showComingSoon(event,'Home & Lifestyle')">
 
-    <div class="category-icon home">
-        🏠
-    </div>
+        <div class="category-icon home">🏠</div>
 
-    <strong>
-        Home & Lifestyle
-    </strong>
+        <strong>Home & Lifestyle</strong>
 
-    <small>
-        Everyday essentials
-    </small>
+        <small>Everyday essentials</small>
 
-    <span class="category-arrow">
-        →
-    </span>
+        <span class="category-arrow">→</span>
 
-</a>
+    </a>
+    -->
 
 
-<!-- PRE-ORDER -->
+    <!-- PRE-ORDER -->
 
-<a
-    href="pre order.html"
-    class="category-card"
->
+    <a href="pre order.html" class="category-card">
 
-    <div class="category-icon preorder">
-        🔥
-    </div>
+        <div class="category-icon preorder">
+            🔥
+        </div>
 
-    <strong>
-        Pre-Order
-    </strong>
+        <strong>Pre-Order</strong>
 
-    <small>
-        Reserve upcoming items
-    </small>
+        <small>Reserve upcoming items</small>
 
-    <span class="category-arrow">
-        →
-    </span>
+        <span class="category-arrow">→</span>
 
-</a>
-
+    </a>
 
 </div>
-
 </section>
 
 
@@ -352,9 +270,7 @@
 
 <div class="deal-content">
 
-    <span>
-        ⚡ FLASH DEALS
-    </span>
+    <span>⚡ FLASH DEALS</span>
 
     <h2>
         Prices worth<br>
@@ -368,10 +284,7 @@
 
 </div>
 
-<a
-    href="#products"
-    class="deal-button"
->
+<a href="#products" class="deal-button">
     VIEW DEALS →
 </a>
 
@@ -380,103 +293,69 @@
 
 <!-- ================= PRODUCTS ================= -->
 
-<main
-    class="products-section"
-    id="products"
->
+<main class="products-section" id="products">
 
 <div class="section-heading">
 
     <div>
-
-        <span class="section-tag">
-            PUMEKA
-        </span>
-
-        <h2>
-            Popular picks
-        </h2>
-
+        <span class="section-tag">PUMEKA</span>
+        <h2>Popular picks</h2>
     </div>
 
 </div>
 
-
-<div
-    class="product-grid"
-    id="productGrid"
->
+<div class="product-grid" id="productGrid">
 
 
 <!-- PRODUCT 1 -->
 
-<article
-    class="product"
+<article class="product"
     data-category="electronics"
-    data-name="google pixel, 7, refurbished"
->
+    data-name="google pixel, 7, refurbished">
 
     <div class="product-image">
 
         <img
             src="REFURBISHED PIXEL 7 8GB RAM 128GB ROM 4355 mAh BATTERY (REFURBISHED) 835000.jpg"
-            alt="google pixel 7"
+            alt="Google Pixel 7"
             loading="lazy"
         >
 
-        <span class="badge">
-            HOT
-        </span>
+        <span class="badge">HOT</span>
 
-        <button
-            class="wishlist"
+        <button class="wishlist"
             onclick="wishlist(this)"
-            aria-label="Add to wishlist"
-        >
-            ♡
-        </button>
+            aria-label="Add to wishlist">♡</button>
 
     </div>
 
     <div class="product-info">
 
-        <div class="product-category">
-            ELECTRONICS
-        </div>
+        <div class="product-category">ELECTRONICS</div>
 
         <div class="product-name">
-            REFURBISHED PIXEL 7 8GB RAM 128GB ROM 4355 mAh BATTERY (REFURBISHED) </div>
+            REFURBISHED PIXEL 7 8GB RAM 128GB ROM 4355 mAh BATTERY (REFURBISHED)
+        </div>
 
         <div class="product-bottom">
 
-            <strong class="price">
-                UGX 835,000
-            </strong>
+            <strong class="price">UGX 835,000</strong>
 
-           
-<button
-    class="add"
-    type="button"
-    onclick="addCart('REFURBISHED PIXEL 7 8GB RAM 128GB ROM 4355 mAh BATTERY (REFURBISHED)', 835000)"
->
-    +
-</button>
-
+            <button class="add" type="button"
+                onclick="addCart('REFURBISHED PIXEL 7 8GB RAM 128GB ROM 4355 mAh BATTERY (REFURBISHED)', 835000)">
+                +
+            </button>
 
         </div>
-
     </div>
-
 </article>
 
 
 <!-- PRODUCT 2 -->
 
-<article
-    class="product"
+<article class="product"
     data-category="electronics"
-    data-name="powerbank, amaya"
->
+    data-name="powerbank, amaya">
 
     <div class="product-image">
 
@@ -486,24 +365,15 @@
             loading="lazy"
         >
 
-        <span class="badge">
-            TRENDING
-        </span>
+        <span class="badge">TRENDING</span>
 
-        <button
-            class="wishlist"
-            onclick="wishlist(this)"
-        >
-            ♡
-        </button>
+        <button class="wishlist" onclick="wishlist(this)">♡</button>
 
     </div>
 
     <div class="product-info">
 
-        <div class="product-category">
-            ELECTRONICS
-        </div>
+        <div class="product-category">ELECTRONICS</div>
 
         <div class="product-name">
             Amaya 20000 Power Bank - White
@@ -511,34 +381,23 @@
 
         <div class="product-bottom">
 
-            <strong class="price">
-                UGX 81,000
-            </strong>
+            <strong class="price">UGX 81,000</strong>
 
-            
-<button
-    class="add"
-    type="button"
-    onclick="addCart('Amaya 20000 Power Bank - White', 81000)"
->
-    +
-</button>
-
+            <button class="add" type="button"
+                onclick="addCart('Amaya 20000 Power Bank - White', 81000)">
+                +
+            </button>
 
         </div>
-
     </div>
-
 </article>
 
 
 <!-- PRODUCT 3 -->
 
-<article
-    class="product"
+<article class="product"
     data-category="electronics"
-    data-name="Samsung galaxy s23"
->
+    data-name="Samsung galaxy s23">
 
     <div class="product-image">
 
@@ -548,24 +407,15 @@
             loading="lazy"
         >
 
-        <span class="badge">
-            NEW
-        </span>
+        <span class="badge">NEW</span>
 
-        <button
-            class="wishlist"
-            onclick="wishlist(this)"
-        >
-            ♡
-        </button>
+        <button class="wishlist" onclick="wishlist(this)">♡</button>
 
     </div>
 
     <div class="product-info">
 
-        <div class="product-category">
-            ELECTRONICS
-        </div>
+        <div class="product-category">ELECTRONICS</div>
 
         <div class="product-name">
             Samsung Galaxy S23 Ultra 6.8 8GB RAM 256GB ROM 200MP
@@ -573,58 +423,41 @@
 
         <div class="product-bottom">
 
-            <strong class="price">
-                UGX 2,326,000
-            </strong>
+            <strong class="price">UGX 2,326,000</strong>
 
-            <button
-                class="add"
-                onclick="addCart('S23 ultra',2326000)"
-            >
+            <button class="add"
+                onclick="addCart('S23 ultra',2326000)">
                 +
             </button>
 
         </div>
-
     </div>
-
 </article>
 
 
 <!-- PRODUCT 4 -->
 
-<article
-    class="product"
+<article class="product"
     data-category="electronics"
-    data-name="oraimo powerbank"
->
+    data-name="oraimo powerbank">
 
     <div class="product-image">
 
         <img
             src="oraimo PowerFlow B11 10000mAh 15W Power Bank  40,000.JPG"
-            alt="oraimo powerbank"
+            alt="Oraimo powerbank"
             loading="lazy"
         >
 
-        <span class="badge">
-            NEW
-        </span>
+        <span class="badge">NEW</span>
 
-        <button
-            class="wishlist"
-            onclick="wishlist(this)"
-        >
-            ♡
-        </button>
+        <button class="wishlist" onclick="wishlist(this)">♡</button>
 
     </div>
 
     <div class="product-info">
 
-        <div class="product-category">
-            ELECTRONICS
-        </div>
+        <div class="product-category">ELECTRONICS</div>
 
         <div class="product-name">
             oraimo PowerFlow B11 10000mAh 15W Power Bank
@@ -632,31 +465,23 @@
 
         <div class="product-bottom">
 
-            <strong class="price">
-                UGX 40,000
-            </strong>
+            <strong class="price">UGX 40,000</strong>
 
-            <button
-                class="add"
-                onclick="addCart('Oraimo powerbank',40000)"
-            >
+            <button class="add"
+                onclick="addCart('Oraimo powerbank',40000)">
                 +
             </button>
 
         </div>
-
     </div>
-
 </article>
 
 
 <!-- PRODUCT 5 -->
 
-<article
-    class="product"
+<article class="product"
     data-category="electronics"
-    data-name="Wireless Earbuds Pro"
->
+    data-name="Wireless Earbuds Pro">
 
     <div class="product-image">
 
@@ -666,24 +491,15 @@
             loading="lazy"
         >
 
-        <span class="badge">
-            HOT
-        </span>
+        <span class="badge">HOT</span>
 
-        <button
-            class="wishlist"
-            onclick="wishlist(this)"
-        >
-            ♡
-        </button>
+        <button class="wishlist" onclick="wishlist(this)">♡</button>
 
     </div>
 
     <div class="product-info">
 
-        <div class="product-category">
-            ELECTRONICS
-        </div>
+        <div class="product-category">ELECTRONICS</div>
 
         <div class="product-name">
             Airbuds Premium TWS Wireless Earbuds – HD Sound, Bluetooth 5.3, AirPods-Style Headset
@@ -691,54 +507,39 @@
 
         <div class="product-bottom">
 
-            <strong class="price">
-                UGX 37,000
-            </strong>
+            <strong class="price">UGX 37,000</strong>
 
-            <button
-                class="add"
-                onclick="addCart('Wireless Earbuds Pro',37000)"
-            >
+            <button class="add"
+                onclick="addCart('Wireless Earbuds Pro',37000)">
                 +
             </button>
 
         </div>
-
     </div>
-
 </article>
 
 
 <!-- PRODUCT 6 -->
 
-<article
-    class="product"
+<article class="product"
     data-category="electronics"
-    data-name="iphone SE 2020"
->
+    data-name="iphone SE 2020">
 
     <div class="product-image">
 
         <img
             src="REFURBISHED iphone SE 2020 64GB (RENEWED) - Black:Red. 646,000.JPG"
-            alt="iphone SE 2020"
+            alt="iPhone SE 2020"
             loading="lazy"
         >
 
-        <button
-            class="wishlist"
-            onclick="wishlist(this)"
-        >
-            ♡
-        </button>
+        <button class="wishlist" onclick="wishlist(this)">♡</button>
 
     </div>
 
     <div class="product-info">
 
-        <div class="product-category">
-            ELECTRONICS
-        </div>
+        <div class="product-category">ELECTRONICS</div>
 
         <div class="product-name">
             REFURBISHED iphone SE 2020 64GB (RENEWED) - Black:Red
@@ -746,58 +547,41 @@
 
         <div class="product-bottom">
 
-            <strong class="price">
-                UGX 646,000
-            </strong>
+            <strong class="price">UGX 646,000</strong>
 
-            <button
-                class="add"
-                onclick="addCart('iphone SE 2020',646000)"
-            >
+            <button class="add"
+                onclick="addCart('iphone SE 2020',646000)">
                 +
             </button>
 
         </div>
-
     </div>
-
 </article>
 
 
 <!-- PRODUCT 7 -->
 
-<article
-    class="product"
+<article class="product"
     data-category="electronics"
-    data-name="single earpod"
->
+    data-name="single earpod">
 
     <div class="product-image">
 
         <img
             src="single earpod original wireless pure sound -multicolor ,white,purple, black UGX 27,900.JPG"
-            alt="single earpod"
+            alt="Single earpod"
             loading="lazy"
         >
 
-        <span class="badge">
-            TRENDING
-        </span>
+        <span class="badge">TRENDING</span>
 
-        <button
-            class="wishlist"
-            onclick="wishlist(this)"
-        >
-            ♡
-        </button>
+        <button class="wishlist" onclick="wishlist(this)">♡</button>
 
     </div>
 
     <div class="product-info">
 
-        <div class="product-category">
-            ELECTRONICS
-        </div>
+        <div class="product-category">ELECTRONICS</div>
 
         <div class="product-name">
             single earpod original wireless pure sound -multicolor ,white,purple, black
@@ -805,54 +589,39 @@
 
         <div class="product-bottom">
 
-            <strong class="price">
-                UGX 27,900
-            </strong>
+            <strong class="price">UGX 27,900</strong>
 
-            <button
-                class="add"
-                onclick="addCart('single earpod',27900)"
-            >
+            <button class="add"
+                onclick="addCart('single earpod',27900)">
                 +
             </button>
 
         </div>
-
     </div>
-
 </article>
 
 
 <!-- PRODUCT 8 -->
 
-<article
-    class="product"
+<article class="product"
     data-category="electronics"
-    data-name="desktop powercable"
->
+    data-name="desktop powercable">
 
     <div class="product-image">
 
         <img
             src="XLT Desktop Power Cable 250V 13A Monitor Power Cord 3 Pin UK Main Leads Universal AC Power Cord Replacement for PC Computer Printer LED LCD Smart TVs - 1.5m UGX 14,500.JPG"
-            alt="powercable desktop"
+            alt="Desktop power cable"
             loading="lazy"
         >
 
-        <button
-            class="wishlist"
-            onclick="wishlist(this)"
-        >
-            ♡
-        </button>
+        <button class="wishlist" onclick="wishlist(this)">♡</button>
 
     </div>
 
     <div class="product-info">
 
-        <div class="product-category">
-            ELECTRONICS
-        </div>
+        <div class="product-category">ELECTRONICS</div>
 
         <div class="product-name">
             XLT Desktop Power Cable 250V 13A Monitor Power Cord 3 Pin UK Main Leads Universal AC Power Cord Replacement for PC Computer Printer LED LCD Smart TVs - 1.5m
@@ -860,26 +629,19 @@
 
         <div class="product-bottom">
 
-            <strong class="price">
-                UGX 14,500
-            </strong>
+            <strong class="price">UGX 14,500</strong>
 
-            <button
-                class="add"
-                onclick="addCart('desktop powercable',14500)"
-            >
+            <button class="add"
+                onclick="addCart('desktop powercable',14500)">
                 +
             </button>
 
         </div>
-
     </div>
-
 </article>
 
 
 </div>
-
 </main>
 
 
@@ -889,81 +651,31 @@
 
 <div class="feature-grid">
 
-
-<div class="feature">
-
-    <div class="feature-icon">
-        🚚
+    <div class="feature">
+        <div class="feature-icon">🚚</div>
+        <h3>Easy Delivery</h3>
+        <p>Convenient delivery options for your orders.</p>
     </div>
 
-    <h3>
-        Easy Delivery
-    </h3>
-
-    <p>
-        Convenient delivery options
-        for your orders.
-    </p>
-
-</div>
-
-
-<div class="feature">
-
-    <div class="feature-icon">
-        🔒
+    <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <h3>Shop With Confidence</h3>
+        <p>A simple and secure shopping experience.</p>
     </div>
 
-    <h3>
-        Shop With Confidence
-    </h3>
-
-    <p>
-        A simple and secure shopping
-        experience.
-    </p>
-
-</div>
-
-
-<div class="feature">
-
-    <div class="feature-icon">
-        💬
+    <div class="feature">
+        <div class="feature-icon">💬</div>
+        <h3>WhatsApp Support</h3>
+        <p>Get assistance quickly through WhatsApp.</p>
     </div>
 
-    <h3>
-        WhatsApp Support
-    </h3>
-
-    <p>
-        Get assistance quickly through
-        WhatsApp.
-    </p>
-
-</div>
-
-
-<div class="feature">
-
-    <div class="feature-icon">
-        🇺🇬
+    <div class="feature">
+        <div class="feature-icon">🇺🇬</div>
+        <h3>Built for Uganda</h3>
+        <p>Local prices and convenient ordering.</p>
     </div>
 
-    <h3>
-        Built for Uganda
-    </h3>
-
-    <p>
-        Local prices and convenient
-        ordering.
-    </p>
-
 </div>
-
-
-</div>
-
 </section>
 
 
@@ -975,21 +687,14 @@
 
 <div class="footer-brand">
 
-    <a
-        href="index.html"
-        class="logo"
-    >
-
+    <a href="index.html" class="logo">
         <span>P</span>
-
         PUMEKA
-
     </a>
 
     <p>
-        Your online destination for
-        electronics, fashion, perfumes,
-        medical supplies and more.
+        Your online destination for electronics
+        and everyday essentials.
     </p>
 
 </div>
@@ -997,53 +702,29 @@
 
 <div>
 
-    <h4>
-        Shop
-    </h4>
+    <h4>Shop</h4>
 
-    <a href="#categories">
-        Categories
-    </a>
-
-    <a href="#products">
-        Products
-    </a>
-
-    <a href="pre order.html">
-        Pre-Order
-    </a>
-
-    <a href="#products">
-        Deals
-    </a>
+    <a href="#categories">Categories</a>
+    <a href="#products">Products</a>
+    <a href="pre order.html">Pre-Order</a>
+    <a href="#products">Deals</a>
 
 </div>
 
 
 <div>
 
-    <h4>
-        Help
-    </h4>
+    <h4>Help</h4>
 
-    <a
-        href="https://wa.me/256709568326"
-        target="_blank"
-    >
+    <a href="https://wa.me/256709568326" target="_blank">
         Delivery
     </a>
 
-    <a
-        href="https://wa.me/256709568326"
-        target="_blank"
-    >
+    <a href="https://wa.me/256709568326" target="_blank">
         Contact
     </a>
 
-    <a
-        href="https://wa.me/256709568326"
-        target="_blank"
-    >
+    <a href="https://wa.me/256709568326" target="_blank">
         WhatsApp
     </a>
 
@@ -1054,18 +735,11 @@
 
 <div class="copyright">
 
-    <p>
-        <b>MELIVAR</b>
-    </p>
+    <p><b>MELIVAR</b></p>
 
-    <p>
-        <b><i>GULA KATI BEEYI LAYISI</i></b>
-    </p>
+    <p><b><i>GULA KATI BEEYI LAYISI</i></b></p>
 
-    <p>
-        © 2026 PUMEKA Uganda.
-        All rights reserved.
-    </p>
+    <p>© 2026 PUMEKA Uganda. All rights reserved.</p>
 
 </div>
 
@@ -1074,55 +748,30 @@
 
 <!-- ================= CART OVERLAY ================= -->
 
-<div
-    class="overlay"
-    id="overlay"
-    onclick="closeCart()"
-></div>
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
 
 
 <!-- ================= CART ================= -->
 
-<aside
-    class="cart"
-    id="cart"
->
+<aside class="cart" id="cart">
 
 <div class="cart-header">
 
-    <h2>
-        Your Cart 🛒
-    </h2>
+    <h2>Your Cart 🛒</h2>
 
-    <button
-        onclick="closeCart()"
-        aria-label="Close cart"
-    >
+    <button onclick="closeCart()" aria-label="Close cart">
         ×
     </button>
 
 </div>
 
 
-<div
-    class="cart-items"
-    id="cartItems"
->
+<div class="cart-items" id="cartItems">
 
     <div class="empty">
-
-        <div>
-            🛒
-        </div>
-
-        <h3>
-            Your cart is empty
-        </h3>
-
-        <p>
-            Add something you love.
-        </p>
-
+        <div>🛒</div>
+        <h3>Your cart is empty</h3>
+        <p>Add something you love.</p>
     </div>
 
 </div>
@@ -1130,48 +779,25 @@
 
 <!-- DELIVERY DETAILS FORM -->
 
-<div
-    class="checkout-form"
-    id="checkoutForm"
->
+<div class="checkout-form" id="checkoutForm">
 
-    <h3>
-        Delivery Details 📦
-    </h3>
+    <h3>Delivery Details 📦</h3>
 
-    <input
-        type="text"
-        id="customerName"
-        placeholder="Full Name *"
-        autocomplete="name"
-    >
+    <input type="text" id="customerName"
+        placeholder="Full Name *" autocomplete="name">
 
-    <input
-        type="tel"
-        id="customerPhone"
-        placeholder="Phone Number *"
-        autocomplete="tel"
-    >
+    <input type="tel" id="customerPhone"
+        placeholder="Phone Number *" autocomplete="tel">
 
-    <input
-        type="tel"
-        id="customerWhatsapp"
-        placeholder="WhatsApp Number"
-        autocomplete="tel"
-    >
+    <input type="tel" id="customerWhatsapp"
+        placeholder="WhatsApp Number" autocomplete="tel">
 
-    <input
-        type="text"
-        id="deliveryLocation"
-        placeholder="Delivery Location *"
-        autocomplete="street-address"
-    >
+    <input type="text" id="deliveryLocation"
+        placeholder="Delivery Location *" autocomplete="street-address">
 
-    <textarea
-        id="orderNotes"
+    <textarea id="orderNotes"
         placeholder="Additional instructions (optional)"
-        rows="3"
-    ></textarea>
+        rows="3"></textarea>
 
 </div>
 
@@ -1179,31 +805,20 @@
 <div class="cart-footer">
 
     <div class="total">
-
-        <span>
-            Total
-        </span>
-
-        <strong id="cartTotal">
-            UGX 0
-        </strong>
-
+        <span>Total</span>
+        <strong id="cartTotal">UGX 0</strong>
     </div>
 
-    <button
-        type="button"
+    <button type="button"
         class="checkout checkout-supabase"
         id="placeOrderButton"
-        onclick="placeOrderSupabase()"
-    >
+        onclick="placeOrderSupabase()">
         🛒 PLACE ORDER
     </button>
 
-    <button
-        type="button"
+    <button type="button"
         class="checkout checkout-whatsapp"
-        onclick="placeOrderWhatsApp()"
-    >
+        onclick="placeOrderWhatsApp()">
         📱 ORDER VIA WHATSAPP
     </button>
 
@@ -1216,36 +831,25 @@
 
 <nav class="bottom-nav">
 
-<a href="index.html" class="active">
+    <a href="index.html" class="active">
+        <span>⌂</span>
+        Home
+    </a>
 
-    <span>⌂</span>
-    Home
+    <a href="#categories">
+        <span>▦</span>
+        Categories
+    </a>
 
-</a>
+    <button onclick="openCart()">
+        <span>🛒</span>
+        Cart
+    </button>
 
-
-<a href="#categories">
-
-    <span>▦</span>
-    Categories
-
-</a>
-
-
-<button onclick="openCart()">
-
-    <span>🛒</span>
-    Cart
-
-</button>
-
-
-<a href="#products">
-
-    <span>♡</span>
-    Products
-
-</a>
+    <a href="#products">
+        <span>♡</span>
+        Products
+    </a>
 
 </nav>
 
@@ -1254,25 +858,19 @@
 
 <script>
 
-/* =====================================================
-   SHARED SUPABASE CLIENT
-===================================================== */
+/* SHARED SUPABASE CLIENT */
 
 const supabaseClient = window.shopNowSupabase;
 
 
-/* =====================================================
-   CART STORAGE
-===================================================== */
+/* CART STORAGE */
 
 const CART_STORAGE_KEY = "shopNowCart";
 
 let cart = loadCart();
 
 
-/* =====================================================
-   CART SYNC STATE
-===================================================== */
+/* CART SYNC STATE */
 
 let cartSyncEnabled = false;
 let currentCartUserId = null;
@@ -1280,16 +878,13 @@ let cartSyncTimer = null;
 let otherPageProductsHTML = [];
 
 
-/* =====================================================
-   LOAD / SAVE (LOCAL)
-===================================================== */
+/* LOAD LOCAL CART */
 
 function loadCart(){
 
     try{
 
-        const raw =
-            localStorage.getItem(CART_STORAGE_KEY);
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
 
         if(!raw) return [];
 
@@ -1321,6 +916,8 @@ function loadCart(){
 }
 
 
+/* SAVE LOCAL CART */
+
 function saveCart(){
 
     try{
@@ -1339,9 +936,7 @@ function saveCart(){
 }
 
 
-/* =====================================================
-   CART SYNC — SUPABASE
-===================================================== */
+/* CART SYNC — SUPABASE */
 
 function mergeCarts(a, b){
 
@@ -1354,13 +949,17 @@ function mergeCarts(a, b){
         const existing = map.get(item.name);
 
         if(existing){
+
             existing.quantity += item.quantity || 1;
+
         }else{
+
             map.set(item.name, {
                 name: item.name,
                 price: item.price,
                 quantity: item.quantity || 1
             });
+
         }
 
     });
@@ -1372,7 +971,7 @@ function mergeCarts(a, b){
 
 async function loadRemoteCart(){
 
-    if(!currentCartUserId) return [];
+    if(!supabaseClient || !currentCartUserId) return [];
 
     const { data, error } = await supabaseClient
         .from("carts")
@@ -1381,8 +980,11 @@ async function loadRemoteCart(){
         .maybeSingle();
 
     if(error){
+
         console.warn("[PUMEKA] Could not load remote cart:", error);
+
         return [];
+
     }
 
     return Array.isArray(data?.items) ? data.items : [];
@@ -1392,7 +994,7 @@ async function loadRemoteCart(){
 
 function saveCartToSupabase(){
 
-    if(!cartSyncEnabled || !currentCartUserId) return;
+    if(!supabaseClient || !cartSyncEnabled || !currentCartUserId) return;
 
     clearTimeout(cartSyncTimer);
 
@@ -1410,7 +1012,9 @@ function saveCartToSupabase(){
             );
 
         if(error){
+
             console.warn("[PUMEKA] Cart sync failed:", error);
+
         }
 
     }, 500);
@@ -1420,7 +1024,7 @@ function saveCartToSupabase(){
 
 async function clearRemoteCart(){
 
-    if(!currentCartUserId) return;
+    if(!supabaseClient || !currentCartUserId) return;
 
     const { error } = await supabaseClient
         .from("carts")
@@ -1428,7 +1032,9 @@ async function clearRemoteCart(){
         .eq("user_id", currentCartUserId);
 
     if(error){
+
         console.warn("[PUMEKA] Could not clear remote cart:", error);
+
     }
 
 }
@@ -1436,9 +1042,8 @@ async function clearRemoteCart(){
 
 async function syncCartOnLogin(){
 
-    /* User just clicked "Login" during this page visit.
-       Merge their guest cart with their remote cart. */
-    const localCart  = [...cart];
+    const localCart = [...cart];
+
     const remoteCart = await loadRemoteCart();
 
     cart = mergeCarts(localCart, remoteCart);
@@ -1450,12 +1055,12 @@ async function syncCartOnLogin(){
 
 async function loadCartFromRemote(){
 
-    /* Page reloaded with an existing session.
-       Remote is the source of truth — do NOT merge. */
     const remoteCart = await loadRemoteCart();
 
     if(remoteCart.length > 0){
+
         cart = remoteCart;
+
     }
 
     updateCart();
@@ -1464,6 +1069,14 @@ async function loadCartFromRemote(){
 
 
 function setupCartSync(){
+
+    if(!supabaseClient?.auth){
+
+        console.warn("[PUMEKA] Supabase client not available.");
+
+        return;
+
+    }
 
     supabaseClient.auth.onAuthStateChange(
         async (event, session) => {
@@ -1475,17 +1088,14 @@ function setupCartSync(){
                 if(userId !== currentCartUserId){
 
                     currentCartUserId = userId;
-                    cartSyncEnabled    = true;
+                    cartSyncEnabled = true;
 
                     if(event === "SIGNED_IN"){
 
-                        /* User actively logged in — merge guest + remote */
                         await syncCartOnLogin();
 
                     }else{
 
-                        /* INITIAL_SESSION / TOKEN_REFRESHED —
-                           just use the remote cart, no merge */
                         await loadCartFromRemote();
 
                     }
@@ -1500,7 +1110,7 @@ function setupCartSync(){
 
             }
 
-            cartSyncEnabled   = false;
+            cartSyncEnabled = false;
             currentCartUserId = null;
 
             if(event === "SIGNED_OUT"){
@@ -1519,15 +1129,11 @@ function setupCartSync(){
 }
 
 
-/* =====================================================
-   ADD CART
-===================================================== */
+/* ADD CART */
 
 function addCart(name, price){
 
-    let item = cart.find(
-        product => product.name === name
-    );
+    let item = cart.find(product => product.name === name);
 
     if(item){
 
@@ -1550,26 +1156,25 @@ function addCart(name, price){
 }
 
 
-/* =====================================================
-   UPDATE CART
-===================================================== */
+/* UPDATE CART */
 
 function updateCart(){
 
-    const count =
-        document.getElementById("cartCount");
+    const count = document.getElementById("cartCount");
 
-    const items =
-        cart.reduce(
-            (sum, item) => sum + item.quantity,
-            0
-        );
+    const items = cart.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+    );
 
     if(count){
+
         count.textContent = items;
+
     }
 
     saveCart();
+
     saveCartToSupabase();
 
     renderCart();
@@ -1577,17 +1182,13 @@ function updateCart(){
 }
 
 
-/* =====================================================
-   RENDER CART
-===================================================== */
+/* RENDER CART */
 
 function renderCart(){
 
-    const container =
-        document.getElementById("cartItems");
+    const container = document.getElementById("cartItems");
 
-    const totalElement =
-        document.getElementById("cartTotal");
+    const totalElement = document.getElementById("cartTotal");
 
     if(!container || !totalElement) return;
 
@@ -1629,9 +1230,7 @@ function renderCart(){
 
             <div>
 
-                <strong>
-                    ${escapeHTML(item.name)}
-                </strong>
+                <strong>${escapeHTML(item.name)}</strong>
 
                 <small>
                     ${item.quantity} ×
@@ -1640,10 +1239,8 @@ function renderCart(){
 
             </div>
 
-            <button
-                class="remove"
-                onclick="removeItem(${index})"
-            >
+            <button class="remove"
+                onclick="removeItem(${index})">
                 Remove
             </button>
 
@@ -1659,9 +1256,7 @@ function renderCart(){
 }
 
 
-/* =====================================================
-   REMOVE ITEM
-===================================================== */
+/* REMOVE ITEM */
 
 function removeItem(index){
 
@@ -1672,147 +1267,244 @@ function removeItem(index){
 }
 
 
-/* =====================================================
-   CART OPEN / CLOSE
-===================================================== */
+/* CART OPEN / CLOSE */
 
 function openCart(){
 
-    document.getElementById("cart")
-        .classList.add("open");
+    document.getElementById("cart").classList.add("open");
 
-    document.getElementById("overlay")
-        .classList.add("show");
+    document.getElementById("overlay").classList.add("show");
 
 }
 
 
 function closeCart(){
 
-    document.getElementById("cart")
-        .classList.remove("open");
+    document.getElementById("cart").classList.remove("open");
 
-    document.getElementById("overlay")
-        .classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 
 }
 
 
-/* =====================================================
-   WISHLIST
-===================================================== */
+/* WISHLIST */
 
 function wishlist(button){
 
     button.classList.toggle("active");
 
     button.textContent =
-        button.classList.contains("active")
-        ? "♥"
-        : "♡";
+        button.classList.contains("active") ? "♥" : "♡";
 
 }
 
 
-/* =====================================================
-   CROSS-PAGE SEARCH LOGIC
-===================================================== */
+/* CROSS-PAGE SEARCH */
 
 const pagesToSearch = [
-    { url: 'test.html', label: 'ELECTRONICS' },
-    { url: 'electronics-page-2.html', label: 'ELECTRONICS' },
-    { url: 'FASHION.html', label: 'FASHION' }
+
+    { url: "test.html", label: "ELECTRONICS" },
+
+    { url: "electronics-page-2.html", label: "ELECTRONICS" },
+
+    { url: "FASHION.html", label: "FASHION" }
+
 ];
 
-async function preloadOtherPageProducts() {
-    for (const page of pagesToSearch) {
-        try {
+
+async function preloadOtherPageProducts(){
+
+    for(const page of pagesToSearch){
+
+        try{
+
             const response = await fetch(page.url);
+
+            if(!response.ok) continue;
+
             const text = await response.text();
+
             const parser = new DOMParser();
-            const doc = parser.parseFromString(text, 'text/html');
-            const products = doc.querySelectorAll('.product');
-            products.forEach(p => { 
-                otherPageProductsHTML.push({ html: p.outerHTML, source: page.label }); 
+
+            const doc = parser.parseFromString(text, "text/html");
+
+            const products = doc.querySelectorAll(".product");
+
+            products.forEach(p => {
+
+                otherPageProductsHTML.push({
+                    html: p.outerHTML,
+                    source: page.label
+                });
+
             });
-        } catch (err) { 
-            console.warn("Could not preload " + page.url + " for search."); 
+
+        }catch(err){
+
+            console.warn("Could not preload " + page.url);
+
         }
+
     }
+
 }
+
 
 function searchProducts(){
-    const searchInput = document.getElementById("search");
-    if(!searchInput) return;
-    
-    const searchTerm = searchInput.value.toLowerCase().trim();
-    const grid = document.getElementById("productGrid");
-    
-    document.querySelectorAll('.global-search-result').forEach(el => el.remove());
 
-    const localProducts = grid.querySelectorAll(".product:not(.global-search-result)");
+    const searchInput = document.getElementById("search");
+
+    if(!searchInput) return;
+
+    const searchTerm = searchInput.value.toLowerCase().trim();
+
+    const grid = document.getElementById("productGrid");
+
+    document.querySelectorAll(".global-search-result").forEach(el => el.remove());
+
+    const localProducts = grid.querySelectorAll(
+        ".product:not(.global-search-result)"
+    );
+
     localProducts.forEach(product => {
-        const name = product.querySelector(".product-name")?.textContent.toLowerCase() || product.dataset.name?.toLowerCase() || "";
-        const category = product.querySelector(".product-category")?.textContent.toLowerCase() || product.dataset.category?.toLowerCase() || "";
-        const matches = name.includes(searchTerm) || category.includes(searchTerm);
-        product.style.display = matches ? "" : "none";
+
+        const name =
+            product.querySelector(".product-name")?.textContent.toLowerCase()
+            || product.dataset.name?.toLowerCase()
+            || "";
+
+        const category =
+            product.querySelector(".product-category")?.textContent.toLowerCase()
+            || product.dataset.category?.toLowerCase()
+            || "";
+
+        const matches =
+            name.includes(searchTerm) ||
+            category.includes(searchTerm);
+
+        product.style.display =
+            !searchTerm || matches ? "" : "none";
+
     });
 
-    if (searchTerm.length > 0 && otherPageProductsHTML.length > 0) {
+    if(searchTerm.length > 0 && otherPageProductsHTML.length > 0){
+
         let foundOnOtherPage = false;
-        
+
         otherPageProductsHTML.forEach(item => {
-            const tempDiv = document.createElement('div');
+
+            const tempDiv = document.createElement("div");
+
             tempDiv.innerHTML = item.html;
+
             const product = tempDiv.firstElementChild;
-            
-            const name = product.querySelector(".product-name")?.textContent.toLowerCase() || "";
-            const category = product.querySelector(".product-category")?.textContent.toLowerCase() || "";
-            
-            if (name.includes(searchTerm) || category.includes(searchTerm)) {
+
+            if(!product) return;
+
+            const name =
+                product.querySelector(".product-name")?.textContent.toLowerCase() || "";
+
+            const category =
+                product.querySelector(".product-category")?.textContent.toLowerCase() || "";
+
+            if(name.includes(searchTerm) || category.includes(searchTerm)){
+
                 product.classList.add("global-search-result");
-                product.style.display = "";
-                
-                // Badge injection removed here so the search results look native.
-                
+
                 grid.appendChild(product);
+
                 foundOnOtherPage = true;
+
             }
+
         });
 
-        if (foundOnOtherPage) fixProductButtons();
+        if(foundOnOtherPage){
+
+            fixProductButtons();
+
+        }
+
     }
+
 }
 
-/* Bind + button for injected products */
+
+/* FIX INJECTED PRODUCT BUTTONS */
+
 function fixProductButtons(){
-    const products = document.querySelectorAll(".product"); 
-    products.forEach(product => { 
-        const button = product.querySelector(".add, .add-cart"); 
-        if(!button || button.dataset.bound === "true") return; 
+
+    const products = document.querySelectorAll(".product");
+
+    products.forEach(product => {
+
+        const button = product.querySelector(".add, .add-cart");
+
+        if(!button || button.dataset.bound === "true") return;
+
         button.dataset.bound = "true";
-        
-        if (!button.hasAttribute('onclick')) {
-            button.addEventListener("click", function(){ addCartFromProduct(this); }); 
+
+        if(!button.hasAttribute("onclick")){
+
+            button.addEventListener("click", function(){
+
+                addCartFromProduct(this);
+
+            });
+
         }
-    }); 
+
+    });
+
 }
+
 
 function addCartFromProduct(button){
-    const product = button.closest(".product"); if(!product){ toast("Product could not be added ❌"); return; }
-    const nameElement = product.querySelector(".product-name"); const priceElement = product.querySelector(".price");
-    if(!nameElement || !priceElement){ toast("Product information missing ❌"); return; }
-    const name = nameElement.textContent.trim(); const price = Number(priceElement.textContent.replace(/[^0-9]/g, ""));
-    if(!name || !price){ toast("Invalid product information ❌"); return; }
-    addCart(name, price);
+
+    const product = button.closest(".product");
+
+    if(!product){
+
+        toast("Product could not be added ❌");
+
+        return;
+
+    }
+
+    const nameElement = product.querySelector(".product-name");
+
+    const priceElement = product.querySelector(".price");
+
+    if(!nameElement || !priceElement){
+
+        toast("Product information missing ❌");
+
+        return;
+
+    }
+
+    const name = nameElement.textContent.trim();
+
+    const price = Number(
+        priceElement.textContent.replace(/[^0-9]/g, "")
+    );
+
+    if(!name || !price){
+
+        toast("Invalid product information ❌");
+
+        return;
+
+    }
+
+    addCart(name,price);
+
 }
 
 
-/* =====================================================
-   COMING SOON
-===================================================== */
+/* COMING SOON */
 
-function showComingSoon(event, category){
+function showComingSoon(event,category){
 
     event.preventDefault();
 
@@ -1821,35 +1513,32 @@ function showComingSoon(event, category){
 }
 
 
-/* =====================================================
-   TOAST
-===================================================== */
+/* TOAST */
 
 function toast(message){
 
-    const old =
-        document.querySelector(".toast");
+    const old = document.querySelector(".toast");
 
     if(old) old.remove();
 
-    const element =
-        document.createElement("div");
+    const element = document.createElement("div");
 
     element.className = "toast";
+
     element.textContent = message;
 
     document.body.appendChild(element);
 
     setTimeout(()=>{
+
         element.remove();
+
     },2500);
 
 }
 
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
+/* ESCAPE HTML */
 
 function escapeHTML(value){
 
@@ -1863,9 +1552,7 @@ function escapeHTML(value){
 }
 
 
-/* =====================================================
-   CLEAR CART + FORM (shared)
-===================================================== */
+/* CLEAR CART AND FORM */
 
 function clearCartAndForm(){
 
@@ -1875,8 +1562,13 @@ function clearCartAndForm(){
 
     updateCart();
 
-    ["customerName","customerPhone","customerWhatsapp",
-     "deliveryLocation","orderNotes"].forEach(id => {
+    [
+        "customerName",
+        "customerPhone",
+        "customerWhatsapp",
+        "deliveryLocation",
+        "orderNotes"
+    ].forEach(id => {
 
         const el = document.getElementById(id);
 
@@ -1889,15 +1581,24 @@ function clearCartAndForm(){
 }
 
 
-/* =====================================================
-   CHECKOUT OPTION 1 — SUPABASE
-===================================================== */
+/* CHECKOUT OPTION 1 — SUPABASE */
 
 async function placeOrderSupabase(){
 
     if(cart.length === 0){
+
         toast("Your cart is empty 🛒");
+
         return;
+
+    }
+
+    if(!supabaseClient?.auth){
+
+        toast("Shopping service unavailable. Please try again.");
+
+        return;
+
     }
 
     const {
@@ -1906,9 +1607,13 @@ async function placeOrderSupabase(){
     } = await supabaseClient.auth.getSession();
 
     if(sessionError){
+
         console.error(sessionError);
+
         toast("Could not check login status ❌");
+
         return;
+
     }
 
     if(!session){
@@ -1917,13 +1622,14 @@ async function placeOrderSupabase(){
 
         sessionStorage.setItem(
             "shopNowReturnTo",
-            window.location.pathname
-                .split("/").pop() || "index.html"
+            window.location.pathname.split("/").pop() || "index.html"
         );
 
-        setTimeout(() => {
+        setTimeout(()=>{
+
             window.location.href = "auth.html";
-        }, 1000);
+
+        },1000);
 
         return;
 
@@ -1944,35 +1650,63 @@ async function placeOrderSupabase(){
     const orderNotes =
         (document.getElementById("orderNotes")?.value || "").trim();
 
-    if(!customerName){ toast("Enter your full name 👤"); return; }
-    if(!customerPhone){ toast("Enter your phone number 📞"); return; }
-    if(!deliveryLocation){ toast("Enter your delivery location 📍"); return; }
+    if(!customerName){
 
-    let total = 0;
-    cart.forEach(item => {
-        total += item.price * item.quantity;
-    });
+        toast("Enter your full name 👤");
 
-    const orderButton =
-        document.getElementById("placeOrderButton");
+        return;
 
-    if(orderButton){
-        orderButton.disabled = true;
-        orderButton.textContent = "Placing Order...";
     }
 
-    const orderItems =
-        cart.map(item => ({
+    if(!customerPhone){
+
+        toast("Enter your phone number 📞");
+
+        return;
+
+    }
+
+    if(!deliveryLocation){
+
+        toast("Enter your delivery location 📍");
+
+        return;
+
+    }
+
+    let total = 0;
+
+    cart.forEach(item => {
+
+        total += item.price * item.quantity;
+
+    });
+
+    const orderButton = document.getElementById("placeOrderButton");
+
+    if(orderButton){
+
+        orderButton.disabled = true;
+
+        orderButton.textContent = "Placing Order...";
+
+    }
+
+    try{
+
+        const orderItems = cart.map(item => ({
+
             name: item.name,
             price: item.price,
             quantity: item.quantity,
             subtotal: item.price * item.quantity
+
         }));
 
-    const { data, error } =
-        await supabaseClient
+        const { data, error } = await supabaseClient
             .from("orders")
             .insert([{
+
                 user_id: session.user.id,
                 customer_name: customerName,
                 phone: customerPhone,
@@ -1981,57 +1715,68 @@ async function placeOrderSupabase(){
                 notes: orderNotes || null,
                 items: orderItems,
                 total: total
+
             }])
             .select()
             .single();
 
-    if(error){
+        if(error){
 
-        console.error("ORDER ERROR:", error);
-        toast("Order failed. Please try again ❌");
+            console.error("ORDER ERROR:", error);
 
-        if(orderButton){
-            orderButton.disabled = false;
-            orderButton.textContent = "🛒 PLACE ORDER";
+            toast("Order failed. Please try again ❌");
+
+            return;
+
         }
 
-        return;
+        const orderNumber = data.order_number;
+
+        clearCartAndForm();
+
+        closeCart();
+
+        setTimeout(()=>{
+
+            alert(
+                "ORDER PLACED SUCCESSFULLY 🎉\n\n" +
+                "Order Number: #" + orderNumber +
+                "\n\nThank you for shopping with PUMEKA."
+            );
+
+        },200);
+
+    }catch(err){
+
+        console.error("CHECKOUT ERROR:",err);
+
+        toast("Something went wrong. Please try again.");
+
+    }finally{
+
+        if(orderButton){
+
+            orderButton.disabled = false;
+
+            orderButton.textContent = "🛒 PLACE ORDER";
+
+        }
 
     }
-
-    const orderNumber = data.order_number;
-
-    clearCartAndForm();
-
-    if(orderButton){
-        orderButton.disabled = false;
-        orderButton.textContent = "🛒 PLACE ORDER";
-    }
-
-    closeCart();
-
-    setTimeout(() => {
-
-        alert(
-            "ORDER PLACED SUCCESSFULLY 🎉\n\n" +
-            "Order Number: #" + orderNumber +
-            "\n\nThank you for shopping with PUMEKA."
-        );
-
-    }, 200);
 
 }
 
 
-/* =====================================================
-   CHECKOUT OPTION 2 — WHATSAPP
-===================================================== */
+/* CHECKOUT OPTION 2 — WHATSAPP */
 
 function placeOrderWhatsApp(){
 
     if(cart.length === 0){
+
         toast("Your cart is empty 🛒");
+
         return;
+
     }
 
     const phone = "256709568326";
@@ -2074,8 +1819,11 @@ function placeOrderWhatsApp(){
         message += "\n\n--- Delivery Details ---";
 
         if(name) message += "\nName: " + name;
+
         if(customerPhone) message += "\nPhone: " + customerPhone;
+
         if(location) message += "\nLocation: " + location;
+
         if(notes) message += "\nNotes: " + notes;
 
     }
@@ -2097,46 +1845,58 @@ function placeOrderWhatsApp(){
 }
 
 
-/* =====================================================
-   ESC KEY
-===================================================== */
+/* ESC KEY */
 
-document.addEventListener(
-    "keydown",
-    function(event){
+document.addEventListener("keydown",function(event){
 
-        if(event.key === "Escape"){
-            closeCart();
-        }
+    if(event.key === "Escape"){
+
+        closeCart();
 
     }
-);
+
+});
 
 
-/* =====================================================
-   START & SMART SEARCH FETCHING
-===================================================== */
+/* START */
 
 updateCart();
+
 setupCartSync();
 
-// We REMOVED the immediate preload call here so the page loads fast.
+
+/* SEARCH INITIALISATION */
 
 const searchInput = document.getElementById("search");
+
 if(searchInput){
-    // When the user clicks the search bar, we quietly fetch the other pages
-    searchInput.addEventListener("focus", () => {
-        if (otherPageProductsHTML.length === 0) {
+
+    searchInput.addEventListener("focus",()=>{
+
+        if(otherPageProductsHTML.length === 0){
+
             preloadOtherPageProducts();
+
         }
+
     });
-    
-    // When they start typing, filter the results
-    searchInput.addEventListener("input", searchProducts);
+
+    searchInput.addEventListener("input",searchProducts);
+
 }
 
 </script>
 
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"e2c107eadc6e41499302b0ff665a0dfc","r":1,"spa":2}' crossorigin="anonymous"></script>
+
+<!-- CLOUDFLARE ANALYTICS -->
+
+<script
+    type="module"
+    src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920"
+    integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA=="
+    data-cf-beacon='{"version":"2024.11.0","token":"e2c107eadc6e41499302b0ff665a0dfc","r":1,"spa":2}'
+    crossorigin="anonymous">
+</script>
+
 </body>
 </html>
